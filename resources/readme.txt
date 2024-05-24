@@ -1,0 +1,1 @@
+Here will be the resources. Many of them will be under certain category. Store only .tres and .res files here.

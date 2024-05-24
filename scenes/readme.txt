@@ -1,0 +1,1 @@
+Here will be the scenes. Many of them will be under certain category. Any .tres or res file must be in the "resources" folder.

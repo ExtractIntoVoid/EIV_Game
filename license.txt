@@ -1,0 +1,51 @@
+Extract Into Void License
+
+Version 1.0, May 2024
+
+Copyright (c) 2024, SlejmUr, pixelkingliam, and any contributors, see CONTRIBUTORS file.
+
+1. License Grant
+
+This License Agreement ("License") grants you, the recipient ("Licensee"), a non-exclusive, non-transferable, royalty-free right to use, modify, and distribute the Extract Into Void software ("Software").  The Organization ("Organization") has the right to restrict access to this license. 
+
+This License is subject to the following conditions:
+
+2. Conditions
+
+Copy of the License: You must include a copy of this License with every copy of the Software you distribute.
+
+Listed Conditions: You must adhere to all the conditions listed in this License.
+
+Disclaimers: You acknowledge and agree to the disclaimer below.
+
+3. Commercial Use
+
+Commercial use of the Software, including incorporating it into products or services sold for profit, requires prior written approval from The Organization. To request approval, please contact ExtractIntoVoid@proton.me.
+
+4. Compiled Binaries
+
+Distributing compiled binaries of the Software is strictly prohibited unless explicitly authorized by The Organization.
+
+5. Disclaimer
+
+The Software is provided "AS IS" without any warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. The Organization shall not be liable for any damages arising out of the use of the Software.
+
+6. Termination
+
+This License will terminate automatically if you violate any of its terms and conditions. Upon termination, you must cease all use and distribution of the Software.
+
+7. Governing Law
+
+This License shall be governed by and construed in accordance with the laws of The European Union.
+
+8. Entire Agreement
+
+This License constitutes the entire agreement between the parties with respect to the use of the Software and supersedes all prior or contemporaneous communications and agreements, whether oral or written.
+
+9. Modifications
+
+The Organization may modify this License at any time by posting a revised version on its website. By continuing to use the Software after such modification, you agree to be bound by the revised License.
+
+10. Severability
+
+If any provision of this License is held to be invalid or unenforceable, such provision shall be struck and the remaining provisions shall remain in full force and effect.
