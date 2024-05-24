@@ -1,8 +1,50 @@
 <Project Sdk="Godot.NET.Sdk/4.3.0-dev.6">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
-    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>ExtractIntoVoid</RootNamespace>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>$(DefineConstants);DRMFREE;GAME;SERVER;CLIENT;MODDABLE</DefineConstants>
+  </PropertyGroup>
+
+
+	<PropertyGroup>
+		<GodotExportConstants>GODOT_EXPORT</GodotExportConstants>
+		<DefineConstants>$(GodotExportConstants);$(DefineConstants)</DefineConstants>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+	  <Compile Remove="libs\**" />
+	  <EmbeddedResource Remove="libs\**" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="libs\GodotCSharpMod\ModAPI\ModAPI.csproj" />
+	</ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="csharp\Properties\Resource.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resource.resx</DependentUpon>
+        </Compile>
+  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="csharp\Properties\Resource.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+
+    <Target Name="PreBuild" BeforeTargets="Rebuild">
+        <Exec Command="git branch --show-current &gt; &quot;$(ProjectDir)/csharp/Properties/BuildDate.txt&quot;&#xD;&#xA;echo $([System.DateTime]::UtcNow.ToString(&quot;s&quot;))&gt;&gt; &quot;$(ProjectDir)/csharp/Properties/BuildDate.txt&quot;&#xD;&#xA;git rev-parse --short HEAD &gt;&gt; &quot;$(ProjectDir)/csharp/Properties/BuildDate.txt&quot;" />
+    </Target>
 </Project>
