@@ -1,0 +1,3 @@
+[submodule "libs/GodotCSharpMod"]
+	path = libs/GodotCSharpMod
+	url = https://github.com/SlejmUr/GodotCSharpMod.git
