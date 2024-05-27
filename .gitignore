@@ -4,3 +4,9 @@ android/
 
 # vs related
 .vs/
+
+
+# sketchfab assets related
+assets/sketchfab/**/**.bin
+assets/sketchfab/**/**.gltf
+assets/sketchfab/**/**.import 

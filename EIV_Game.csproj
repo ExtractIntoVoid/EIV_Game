@@ -1,18 +1,15 @@
-<Project Sdk="Godot.NET.Sdk/4.3.0-dev.6">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <EnableDynamicLoading>true</EnableDynamicLoading>
-    <RootNamespace>ExtractIntoVoid</RootNamespace>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-    <GenerateDocumentationFile>False</GenerateDocumentationFile>
-  </PropertyGroup>
+﻿<Project Sdk="Godot.NET.Sdk/4.3.0-dev.6">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <RootNamespace>ExtractIntoVoid</RootNamespace>
+        <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+        <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    </PropertyGroup>
 
-
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>$(DefineConstants);DRMFREE;GAME;SERVER;CLIENT;MODDABLE</DefineConstants>
-  </PropertyGroup>
-
-
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+        <DefineConstants>$(DefineConstants);DRMFREE;GAME;SERVER;CLIENT;MODDABLE</DefineConstants>
+    </PropertyGroup>
 	<PropertyGroup>
 		<GodotExportConstants>GODOT_EXPORT</GodotExportConstants>
 		<DefineConstants>$(GodotExportConstants);$(DefineConstants)</DefineConstants>
@@ -35,12 +32,15 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Resource.resx</DependentUpon>
         </Compile>
-  </ItemGroup>
+    </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Update="csharp\Properties\Resource.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Resource.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="csharp\Controllers\" />
     </ItemGroup>
 
 

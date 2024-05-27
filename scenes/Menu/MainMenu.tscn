@@ -1,0 +1,106 @@
+[gd_scene load_steps=5 format=3 uid="uid://daqwboncrypgx"]
+
+[ext_resource type="PackedScene" uid="uid://camb27xjx4gw3" path="res://scenes/Menu/Settings.tscn" id="1_pyfhx"]
+
+[sub_resource type="SystemFont" id="SystemFont_wgpvl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_mxtb3"]
+line_spacing = 1.0
+font = SubResource("SystemFont_wgpvl")
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_1culb"]
+line_spacing = 2.0
+font_size = 20
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0705882, 0.572549, 0.584314, 1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 150
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 150
+
+[node name="Settings" parent="MarginContainer" instance=ExtResource("1_pyfhx")]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+visible = false
+layout_mode = 2
+
+[node name="EIV" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Extract Into Void"
+label_settings = SubResource("LabelSettings_mxtb3")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 350
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 350
+
+[node name="ButtonList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PlayButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/ButtonList"]
+layout_mode = 2
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/ButtonList"]
+layout_mode = 2
+text = "  Setttings  "
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/ButtonList"]
+layout_mode = 2
+text = "Quit"
+
+[node name="ReloadMods" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/ButtonList"]
+layout_mode = 2
+text = "Reload Mods"
+
+[node name="VersionLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -28.0
+offset_right = 236.0
+grow_vertical = 0
+size_flags_horizontal = 4
+text = "EIV Testing 0.0.1"
+label_settings = SubResource("LabelSettings_1culb")
+vertical_alignment = 2
