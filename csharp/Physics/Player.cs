@@ -49,6 +49,7 @@ public partial class Player : CharacterBody3D
             GlobalRotation = GlobalRotation.Lerp(Rot, 0.5f);
             return;
         }
+        bool IsJumping = false;
         var speed = Speed;
         Vector3 velocity = Velocity;
         if (!IsOnFloor())
@@ -62,7 +63,10 @@ public partial class Player : CharacterBody3D
         //if (GameManager.Instance.UIManagerInstance.IsInEscapeScene || Inventory.IsOpen)
             //return;
         if (Input.IsActionJustPressed("move_jump") && IsOnFloor())
+        {
+            IsJumping = true;
             velocity.Y = JumpVelocity;
+        }
 
         if (Input.IsActionJustPressed("use"))
             //Use();
@@ -78,6 +82,8 @@ public partial class Player : CharacterBody3D
 
         Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+        RpcId(1, "ServerMove", NetId, direction, Velocity, (float)delta, IsJumping);
+        /*
         if (direction != Vector3.Zero)
         {
             velocity.X = direction.X * speed;
@@ -92,6 +98,39 @@ public partial class Player : CharacterBody3D
         Velocity = velocity;
         MoveAndSlide();
         Pos = GlobalPosition;
-        Rot = GlobalRotation;
+        Rot = GlobalRotation;*/
+    }
+    /*
+    [Rpc(mode: MultiplayerApi.RpcMode.Authority)]
+    public void ClientMove(int id, Vector3 velocity)
+    {
+        if (id == NetId)
+        {
+
+        }
+    }*/
+
+    [Rpc(mode: MultiplayerApi.RpcMode.Authority)]
+    public void ServerMove(int id, Vector3 direction, Vector3 velocity, float delta, bool IsJumping)
+    {
+        GD.Print($"Client {id} wants to move to D: {direction}, with V: {velocity}, in Delta: {delta} ");
+        if (!IsOnFloor())
+            velocity.Y -= gravity * delta;
+        if (IsOnFloor() && IsJumping)
+            velocity.Y = JumpVelocity;
+
+        if (direction != Vector3.Zero)
+        {
+            velocity.X = direction.X * Speed;
+            velocity.Z = direction.Z * Speed;
+        }
+        else
+        {
+            velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+            velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+        }
+        MoveAndSlide();
+        //Rpc("ClientMove", id, velocity);
+
     }
 }

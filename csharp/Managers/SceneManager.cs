@@ -12,14 +12,17 @@ public class SceneManager
         Scenes = new()
         {
             //worlds
-            { "TestWorld", "res://scenes/World/main_world.tscn" },
-            { "MainWorld", "res://scenes/World/Worlds.tscn" },
+            { "MainWorld", "res://scenes/World/MainWorld.tscn" },
+            { "TestWorld", "res://scenes/World/TestWorld.tscn" },
             //menus
-            { "MainMenu", "res://scenes/Menus/MainMenu.tscn" },
-            { "Inventory", "res://scenes/Menus/Inventory.tscn" },
-            { "Escape", "res://scenes/Menus/EscapeScene.tscn" },
+            { "MainMenu", "res://scenes/Menu/MainMenu.tscn" },
+            { "Settings", "res://scenes/Menu/Settings.tscn" },
+            { "LoadingScreen", "res://scenes/Menu/LoadingScreen.tscn" },
+            // soon
+            { "Inventory", "res://scenes/Menu/Inventory.tscn" },
+            { "Escape", "res://scenes/Menu/EscapeScene.tscn" },
             //others
-            { "Player", "res://scenes/Player.tscn" },
+            { "Player", "res://scenes/Character/Player.tscn" },
         };
 
     }

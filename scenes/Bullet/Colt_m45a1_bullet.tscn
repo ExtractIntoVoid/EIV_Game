@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://3g47oij57cxp"]
+
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/ammo1.res" id="1_sqxlq"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/ammo2.res" id="2_75ipx"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/ammo3.res" id="3_16aoq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d83ht"]
+size = Vector3(0.0135254, 0.0337311, 0.0132538)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_l054o"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:scale")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+
+[node name="Area3D" type="Area3D"]
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000561522, 0.0154037, -5.34067e-05)
+shape = SubResource("BoxShape3D_d83ht")
+
+[node name="ColtM45a1Bullet" type="Node3D" parent="."]
+
+[node name="Bullet_Middle" type="MeshInstance3D" parent="ColtM45a1Bullet"]
+mesh = ExtResource("1_sqxlq")
+
+[node name="Bullet_Botton" type="MeshInstance3D" parent="ColtM45a1Bullet"]
+mesh = ExtResource("2_75ipx")
+
+[node name="Bullet_Top" type="MeshInstance3D" parent="ColtM45a1Bullet"]
+mesh = ExtResource("3_16aoq")
+
+[node name="MSync" type="MultiplayerSynchronizer" parent="."]
+root_path = NodePath("../ColtM45a1Bullet")
+replication_config = SubResource("SceneReplicationConfig_l054o")

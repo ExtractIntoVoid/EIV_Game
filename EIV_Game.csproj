@@ -40,7 +40,12 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="csharp\Controllers\" />
+      <Folder Include="csharp\Client\" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="SemanticVersioning" Version="2.0.2" />
     </ItemGroup>
 
 

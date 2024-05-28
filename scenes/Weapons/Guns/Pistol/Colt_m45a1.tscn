@@ -1,0 +1,113 @@
+[gd_scene load_steps=18 format=3 uid="uid://bfrfd1gw1rype"]
+
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/frame1.res" id="2_l6il0"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/frame2.res" id="3_napps"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/frame3.res" id="4_4ttgi"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/slide1.res" id="5_8b6ty"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/frame4.res" id="5_vi0ob"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/slide2.res" id="6_d8hhk"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/slide3.res" id="7_fscp0"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/slide4.res" id="8_q5cqb"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/trigger.res" id="9_ijtuk"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/mag1.res" id="10_luxcc"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/mag2.res" id="11_lqif2"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/barrel.res" id="12_5nymm"]
+[ext_resource type="ArrayMesh" uid="uid://dgk42l4use8s0" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/hammer.res" id="13_8q16w"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/safety.res" id="14_bceoj"]
+[ext_resource type="ArrayMesh" path="res://assets/sketchfab/low-poly_colt_m45a1/mesh_gltf/sidelock.res" id="15_avwmi"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g4k8t"]
+size = Vector3(0.0374384, 0.139995, 0.232025)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xk6d2"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:lock_rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
+[node name="ColtM45a1" type="RigidBody3D"]
+freeze = true
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000910965, -0.0496871, -0.0102047)
+shape = SubResource("BoxShape3D_g4k8t")
+
+[node name="BulletSpawner" type="Marker3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.127506)
+
+[node name="MSync" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_xk6d2")
+
+[node name="Gun" type="Node3D" parent="."]
+
+[node name="Frame" type="Node3D" parent="Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.005)
+
+[node name="Frame1" type="MeshInstance3D" parent="Gun/Frame"]
+mesh = ExtResource("2_l6il0")
+
+[node name="Frame2" type="MeshInstance3D" parent="Gun/Frame"]
+mesh = ExtResource("3_napps")
+
+[node name="Frame3" type="MeshInstance3D" parent="Gun/Frame"]
+mesh = ExtResource("4_4ttgi")
+
+[node name="Frame4" type="MeshInstance3D" parent="Gun/Frame"]
+mesh = ExtResource("5_vi0ob")
+
+[node name="Slide" type="Node3D" parent="Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.005)
+
+[node name="Slide1" type="MeshInstance3D" parent="Gun/Slide"]
+mesh = ExtResource("5_8b6ty")
+
+[node name="Slide2" type="MeshInstance3D" parent="Gun/Slide"]
+mesh = ExtResource("6_d8hhk")
+
+[node name="Slide3" type="MeshInstance3D" parent="Gun/Slide"]
+mesh = ExtResource("7_fscp0")
+
+[node name="Slide4" type="MeshInstance3D" parent="Gun/Slide"]
+mesh = ExtResource("8_q5cqb")
+
+[node name="Trigger" type="Node3D" parent="Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04, 0.005)
+
+[node name="Trigger" type="MeshInstance3D" parent="Gun/Trigger"]
+mesh = ExtResource("9_ijtuk")
+
+[node name="Mag" type="Node3D" parent="Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.006, 0.01)
+
+[node name="Mag1" type="MeshInstance3D" parent="Gun/Mag"]
+mesh = ExtResource("10_luxcc")
+
+[node name="Mag2" type="MeshInstance3D" parent="Gun/Mag"]
+mesh = ExtResource("11_lqif2")
+
+[node name="Barrel" type="Node3D" parent="Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.005)
+
+[node name="Barrel" type="MeshInstance3D" parent="Gun/Barrel"]
+mesh = ExtResource("12_5nymm")
+
+[node name="Hammer" type="Node3D" parent="Gun"]
+transform = Transform3D(1, 0, 0, 0, 0.512043, -0.85896, 0, 0.85896, 0.512043, 0, -0.024, 0.067)
+
+[node name="Hammer" type="MeshInstance3D" parent="Gun/Hammer"]
+mesh = ExtResource("13_8q16w")
+
+[node name="Safety" type="Node3D" parent="Gun"]
+transform = Transform3D(1, 0, 0, 0, 0.981293, -0.192522, 0, 0.192522, 0.981293, 0, -0.026, 0.078)
+
+[node name="Safety" type="MeshInstance3D" parent="Gun/Safety"]
+mesh = ExtResource("14_bceoj")
+
+[node name="Slide_Lock" type="Node3D" parent="Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.019, -0.01)
+
+[node name="Slide_Lock" type="MeshInstance3D" parent="Gun/Slide_Lock"]
+mesh = ExtResource("15_avwmi")

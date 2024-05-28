@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://w0yy8lhvkbqx"]
+
+[ext_resource type="Script" path="res://csharp/Worlds/MainWorld.cs" id="1_pr63q"]
+
+[node name="MainWorld" type="Node"]
+script = ExtResource("1_pr63q")
+
+[node name="Spawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("..")

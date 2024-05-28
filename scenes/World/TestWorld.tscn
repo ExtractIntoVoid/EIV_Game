@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://ck2kghjq5p5ds"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jkf5s"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5h6r4"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jiat8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p44wm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4mun"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_pvemk"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_e8h43"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3oaxh"]
+size = Vector3(100, 1, 100)
+
+[node name="TestWorld" type="Node3D"]
+
+[node name="Lighting" type="Node" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.56928, 0.685574, -0.453772, 0, 0.551937, 0.833886, 0.822144, -0.474714, 0.314206, 0, 6.76155, -4.36544)
+
+[node name="Base" type="Node" parent="."]
+
+[node name="Cube" type="MeshInstance3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.73173, -2.441, 0.135462)
+material_override = SubResource("StandardMaterial3D_jkf5s")
+mesh = SubResource("BoxMesh_5h6r4")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Base/Cube"]
+physics_material_override = SubResource("PhysicsMaterial_jiat8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Base/Cube/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0102191, 0)
+shape = SubResource("BoxShape3D_p44wm")
+
+[node name="Plane_floor" type="MeshInstance3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0)
+material_override = SubResource("StandardMaterial3D_e4mun")
+mesh = SubResource("BoxMesh_pvemk")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Base/Plane_floor"]
+physics_material_override = SubResource("PhysicsMaterial_e8h43")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Base/Plane_floor/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0102191, 0)
+shape = SubResource("BoxShape3D_3oaxh")
+
+[node name="Multi" type="Node" parent="."]
+
+[node name="Spawns" type="Node" parent="Multi"]
+
+[node name="Spawn1" type="Node3D" parent="Multi/Spawns" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.316938, -0.91992)
+
+[node name="Spawn0" type="Node3D" parent="Multi/Spawns" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.01222, -12.5632)
