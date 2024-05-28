@@ -5,7 +5,7 @@ namespace ExtractIntoVoid.Modding
 {
     public class NodeEvent : BaseEvent
     {
-        public NodeEvent() 
+        public NodeEvent()
         {
             Node = null;
         }

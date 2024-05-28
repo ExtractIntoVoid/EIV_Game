@@ -16,7 +16,7 @@ namespace ExtractIntoVoid.Modding
             public SpawnNode(Node node) : base(node) { }
             public bool Disable { get; set; } = false;
         }
-        
+
         public class DeSpawnNode : NodeEvent, IDisableCoreEvent
         {
             public DeSpawnNode(Node node) : base(node) { }

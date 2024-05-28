@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ExtractIntoVoid.Server
 {
@@ -11,8 +7,8 @@ namespace ExtractIntoVoid.Server
         public static List<string> Maps = new List<string>();
 
         public static void LoadMapList()
-        { 
-            
+        {
+
         }
     }
 }

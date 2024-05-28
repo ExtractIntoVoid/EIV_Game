@@ -1,5 +1,4 @@
-﻿using ExtractIntoVoid.Managers;
-using Godot;
+﻿using Godot;
 
 namespace ExtractIntoVoid.Physics;
 // Next one is copy-pasted. will be working toward the better one.
@@ -61,7 +60,7 @@ public partial class Player : CharacterBody3D
         }*/
 
         //if (GameManager.Instance.UIManagerInstance.IsInEscapeScene || Inventory.IsOpen)
-            //return;
+        //return;
         if (Input.IsActionJustPressed("move_jump") && IsOnFloor())
         {
             IsJumping = true;
@@ -71,14 +70,14 @@ public partial class Player : CharacterBody3D
         if (Input.IsActionJustPressed("use"))
             //Use();
 
-        if (Input.IsActionJustPressed("cancel_use"))
-            //CancelUse();
+            if (Input.IsActionJustPressed("cancel_use"))
+                //CancelUse();
 
-        if (Input.IsActionJustPressed("weapon_reload"))
-            //Reload();
+                if (Input.IsActionJustPressed("weapon_reload"))
+                    //Reload();
 
-        if (Input.IsActionJustPressed("move_sprint"))
-            speed = RunSpeed;
+                    if (Input.IsActionJustPressed("move_sprint"))
+                        speed = RunSpeed;
 
         Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
