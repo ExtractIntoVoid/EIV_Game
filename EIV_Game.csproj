@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-        <DefineConstants>$(DefineConstants);DRMFREE;GAME;SERVER;CLIENT;MODDABLE</DefineConstants>
+        <DefineConstants>$(DefineConstants);DRMFREE;GAME;SERVER;CLIENT;MODDABLE;TESTING</DefineConstants>
     </PropertyGroup>
 	<PropertyGroup>
 		<GodotExportConstants>GODOT_EXPORT</GodotExportConstants>

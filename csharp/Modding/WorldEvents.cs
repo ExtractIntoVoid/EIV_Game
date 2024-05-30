@@ -6,6 +6,7 @@ namespace ExtractIntoVoid.Modding
 {
     public class WorldEvents
     {
+        #region MainWorld
         public class OnStartWorld : BaseEvent
         {
             public List<string> SpawnableNodes = new();
@@ -20,6 +21,11 @@ namespace ExtractIntoVoid.Modding
         public class DeSpawnNode : NodeEvent, IDisableCoreEvent
         {
             public DeSpawnNode(Node node) : base(node) { }
+            public bool Disable { get; set; } = false;
+        }
+        #endregion
+        public class OnStartMapGen : BaseEvent, IDisableCoreEvent
+        {
             public bool Disable { get; set; } = false;
         }
     }

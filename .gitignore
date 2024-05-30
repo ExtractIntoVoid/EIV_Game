@@ -11,3 +11,6 @@ assets/sketchfab/**/**.res
 assets/sketchfab/**/**.bin
 assets/sketchfab/**/**.gltf
 assets/sketchfab/**/**.import 
+
+
+EXPORT/

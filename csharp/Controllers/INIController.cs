@@ -1,23 +1,28 @@
 ﻿using IniParser;
 using IniParser.Model;
+using System;
 
 namespace ExtractIntoVoid.Controllers
 {
     public class INIController
     {
-        public static string Read(string name, string section)
+        public static string Read(string filename, string section, string key)
         {
             var parser = new FileIniDataParser();
-            IniData data = parser.ReadFile("Config.ini", System.Text.Encoding.UTF8);
-            return data[name][section];
+            IniData data = parser.ReadFile(filename, System.Text.Encoding.UTF8);
+            if (!data.Sections.ContainsSection(section))
+                return string.Empty;
+            if (!data[section].ContainsKey(key))
+                return string.Empty;
+            return data[section][key];
         }
 
-        public static void Write(string name, string section, string Value)
+        public static void Write(string filename, string category, string section, string Value)
         {
             var parser = new FileIniDataParser();
-            IniData data = parser.ReadFile("Config.ini", System.Text.Encoding.UTF8);
-            data[name][section] = Value;
-            parser.WriteFile("Config.ini", data, System.Text.Encoding.UTF8);
+            IniData data = parser.ReadFile(filename, System.Text.Encoding.UTF8);
+            data[category][section] = Value;
+            parser.WriteFile(filename, data, System.Text.Encoding.UTF8);
         }
 
     }
