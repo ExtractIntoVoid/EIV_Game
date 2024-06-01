@@ -1,4 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://ck2kghjq5p5ds"]
+[gd_scene load_steps=10 format=3 uid="uid://ck2kghjq5p5ds"]
+
+[ext_resource type="Script" path="res://csharp/Worlds/TestWorld.cs" id="1_3ia5i"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jkf5s"]
 
@@ -19,6 +21,7 @@ size = Vector3(100, 1, 100)
 size = Vector3(100, 1, 100)
 
 [node name="TestWorld" type="Node3D"]
+script = ExtResource("1_3ia5i")
 
 [node name="Lighting" type="Node" parent="."]
 

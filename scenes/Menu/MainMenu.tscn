@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://daqwboncrypgx"]
 
-[ext_resource type="PackedScene" uid="uid://camb27xjx4gw3" path="res://scenes/Menu/Settings.tscn" id="1_pyfhx"]
+[ext_resource type="Script" path="res://csharp/Menus/MainMenu.cs" id="1_7veok"]
 
 [sub_resource type="SystemFont" id="SystemFont_wgpvl"]
 
@@ -20,6 +20,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_7veok")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -52,11 +53,7 @@ theme_override_constants/margin_top = 150
 theme_override_constants/margin_right = 300
 theme_override_constants/margin_bottom = 150
 
-[node name="Settings" parent="MarginContainer" instance=ExtResource("1_pyfhx")]
-layout_mode = 2
-
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-visible = false
 layout_mode = 2
 
 [node name="EIV" type="Label" parent="MarginContainer/VBoxContainer"]
@@ -64,9 +61,10 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Extract Into Void"
 label_settings = SubResource("LabelSettings_mxtb3")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 350
 theme_override_constants/margin_top = 40
@@ -88,10 +86,6 @@ text = "  Setttings  "
 layout_mode = 2
 text = "Quit"
 
-[node name="ReloadMods" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/ButtonList"]
-layout_mode = 2
-text = "Reload Mods"
-
 [node name="VersionLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 2
@@ -101,6 +95,6 @@ offset_top = -28.0
 offset_right = 236.0
 grow_vertical = 0
 size_flags_horizontal = 4
-text = "EIV Testing 0.0.1"
+text = "EIV Testing 0.0.1-alpha"
 label_settings = SubResource("LabelSettings_1culb")
 vertical_alignment = 2

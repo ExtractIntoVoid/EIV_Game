@@ -9,6 +9,8 @@ public partial class GameManager : Node
     public static GameManager Instance { get; set; }
     public SceneManager SceneManager { get; set; }
     public GodotResourceManager GodotResourceManager { get; set; }
+
+    public UIManager UIManager { get; set; }
 #if MODDABLE
     internal ModManager ModManagerInstance { get; set; }
 #endif
@@ -47,6 +49,7 @@ public partial class GameManager : Node
         Instance = this;
         SceneManager = new();
         GodotResourceManager = new();
+        UIManager = new();
 #if MODDABLE
         ModManagerInstance = new();
         Nodes.Add(ModManagerInstance);
@@ -61,10 +64,9 @@ public partial class GameManager : Node
             this.CallDeferred("add_sibling", item);
         }
 #if CLIENT
-        /*
         var ls = SceneManager.GetPackedScene("LoadingScreen").Instantiate();
         this.CallDeferred("add_sibling", ls);
-        */
+        UIManager.LoadingScreen = ls as Control;
         var MainMenu = SceneManager.GetPackedScene("MainMenu").Instantiate();
         this.CallDeferred("add_sibling", MainMenu);
 #endif

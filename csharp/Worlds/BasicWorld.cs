@@ -8,7 +8,7 @@ namespace ExtractIntoVoid.Worlds;
 
 public partial class BasicWorld : Node3D
 {
-    public static List<Node3D> SpwanPoints = new();
+    public List<Node3D> SpwanPoints = new();
 
     public override void _Ready()
     {
@@ -21,5 +21,11 @@ public partial class BasicWorld : Node3D
         }
         //start map gen (if something like that exists)
         V2EventManager.TriggerEvent(new OnStartMapGen());
+    }
+
+
+    public virtual void Spawn(long id)
+    {
+        GD.Print("Spawn",id);
     }
 }
