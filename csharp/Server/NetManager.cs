@@ -1,5 +1,6 @@
-﻿#if SERVER
+﻿#if SERVER || GAME
 using ExtractIntoVoid.Controllers;
+using ExtractIntoVoid.Managers;
 using System;
 
 namespace ExtractIntoVoid.Server
@@ -8,32 +9,32 @@ namespace ExtractIntoVoid.Server
     {
         public static int GetPort()
         {
-            string port = INIController.Read("Server.ini", "Net", "Port");
-            int result = 0;
+            string port = INIController.Read(GameManager.INI, "Net", "Port");
+            int result = 7878;
             bool ret = int.TryParse(port, out result);
-            if (ret)
-                Console.WriteLine("Server.ini: Net.Port cannot parse to int!");
+            if (!ret)
+                Console.WriteLine("Server.NetManager: Net.Port cannot parse to int!");
             return result;
         }
 
         public static int GetMaxClients()
         {
-            string port = INIController.Read("Server.ini", "Net", "MaxClients");
+            string port = INIController.Read(GameManager.INI, "Net", "MaxClients");
             int result = 32;
             bool ret = int.TryParse(port, out result);
-            if (ret)
-                Console.WriteLine("Server.ini: Net.MaxClients cannot parse to int!");
+            if (!ret)
+                Console.WriteLine("Server.NetManager: Net.MaxClients cannot parse to int!");
             return result;
         }
 
         public static string GetBindIP()
         {
-            return INIController.Read("Server.ini", "Net", "BindIP");
+            return INIController.Read(GameManager.INI, "Net", "BindIP");
         }
 
         public static string GetExternalIP()
         {
-            return INIController.Read("Server.ini", "Net", "ExternalIP");
+            return INIController.Read(GameManager.INI, "Net", "ExternalIP");
         }
     }
 }

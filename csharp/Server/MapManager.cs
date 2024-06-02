@@ -1,4 +1,4 @@
-﻿#if SERVER
+﻿#if SERVER || GAME
 using ExtractIntoVoid.Controllers;
 using ExtractIntoVoid.Extensions;
 using ExtractIntoVoid.Managers;

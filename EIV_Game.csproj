@@ -5,10 +5,19 @@
         <RootNamespace>ExtractIntoVoid</RootNamespace>
         <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
+        <Configurations>Debug;ExportDebug;ExportRelease;DebugClient;DebugServer</Configurations>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-        <DefineConstants>$(DefineConstants);DRMFREE;GAME;SERVER;CLIENT;MODDABLE;TESTING</DefineConstants>
+        <DefineConstants>$(DefineConstants);DRMFREE;GAME;MODDABLE;TESTING</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='DebugServer'">
+      <DefineConstants>$(DefineConstants);DRMFREE;SERVER;MODDABLE;TESTING</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='DebugClient'">
+      <DefineConstants>$(DefineConstants);DRMFREE;CLIENT;MODDABLE;TESTING</DefineConstants>
     </PropertyGroup>
 	<PropertyGroup>
 		<GodotExportConstants>GODOT_EXPORT</GodotExportConstants>
@@ -40,16 +49,13 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="csharp\Client\" />
-    </ItemGroup>
-    <ItemGroup>
       <PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="SemanticVersioning" Version="2.0.2" />
     </ItemGroup>
 
 
-    <Target Name="PreBuild" BeforeTargets="Rebuild">
+    <Target Name="PreBuild" BeforeTargets="Build">
         <Exec Command="git branch --show-current &gt; &quot;$(ProjectDir)/csharp/Properties/BuildDate.txt&quot;&#xD;&#xA;echo $([System.DateTime]::UtcNow.ToString(&quot;s&quot;))&gt;&gt; &quot;$(ProjectDir)/csharp/Properties/BuildDate.txt&quot;&#xD;&#xA;git rev-parse --short HEAD &gt;&gt; &quot;$(ProjectDir)/csharp/Properties/BuildDate.txt&quot;" />
     </Target>
 </Project>

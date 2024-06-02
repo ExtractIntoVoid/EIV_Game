@@ -16,9 +16,9 @@ script = ExtResource("1_25ms0")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 0
-offset_left = 52.0
+offset_left = 55.0
 offset_top = 125.0
-offset_right = 832.0
+offset_right = 855.0
 offset_bottom = 685.0
 
 [node name="ServerList" type="VBoxContainer" parent="ScrollContainer"]
@@ -85,7 +85,8 @@ offset_left = 600.0
 offset_top = 10.0
 offset_right = 698.0
 offset_bottom = 33.0
-text = "10000/10000"
+text = "100/100"
+horizontal_alignment = 2
 
 [node name="ConnectButton" type="Button" parent="ScrollContainer/ServerList/SlejmUrs_Official_Server2"]
 layout_mode = 0

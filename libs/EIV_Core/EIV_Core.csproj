@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <Configurations>Debug;ExportDebug;ExportRelease;DebugClient;DebugServer</Configurations>
+	  <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='DebugServer'">
+    <DefineConstants>$(DefineConstants);DRMFREE;SERVER;MODDABLE;TESTING</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='DebugClient'">
+    <DefineConstants>$(DefineConstants);DRMFREE;CLIENT;MODDABLE;TESTING</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="EIV_Game">
+      <HintPath>..\..\EXPORT\Client\data_EIV_Game_windows_x86_64\EIV_Game.dll</HintPath>
+    </Reference>
+    <Reference Include="GodotSharp">
+      <HintPath>..\..\EXPORT\Client\data_EIV_Game_windows_x86_64\GodotSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ModAPI">
+      <HintPath>..\..\EXPORT\Client\data_EIV_Game_windows_x86_64\ModAPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

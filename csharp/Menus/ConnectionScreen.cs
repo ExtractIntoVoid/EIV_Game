@@ -1,10 +1,10 @@
+#if CLIENT || GAME
 using ExtractIntoVoid.Managers;
 using ExtractIntoVoid.Worlds;
 using Godot;
 
 namespace ExtractIntoVoid.Menus;
 
-//  Todo: strip out this and others from Server Build, server doesnt need this data.
 public partial class ConnectionScreen : Control
 {
 	VBoxContainer ServerList;
@@ -20,11 +20,22 @@ public partial class ConnectionScreen : Control
     }
     public override void _Ready()
 	{
+        GameManager.Instance.UIManager.LoadScreenStop();
         ServerList = GetNode<VBoxContainer>("%ServerList");
+        CreateServer(new()
+        {
+            Address = "192.168.1.30",
+            Port = 3223,
+            ServerName = "This should be hidden!",
+            ServerInfo = "AAAAAAAAAAAAAAAAAAAAAAAA",
+            MapName = "YEETWORLD",
+            PlayerCount = 13,
+            MaxPlayerCount = 2,
+        });
         CreateServer(new()
         { 
             Address = "192.168.1.50",
-            Port = 8888,
+            Port = 7878,
             ServerName = "SlejmUr's Official Server - Vanilla",
             ServerInfo = "Vanilla, No modification.",
             MapName = "TestWorld",
@@ -41,16 +52,19 @@ public partial class ConnectionScreen : Control
             PlayerCount = 66,
             MaxPlayerCount = 100,
         });
-        CreateServer(new()
-        {
-            Address = "192.168.1.30",
-            Port = 3223,
-            ServerName = "This should be hidden!",
-            ServerInfo = "AAAAAAAAAAAAAAAAAAAAAAAA",
-            MapName = "YEETWORLD",
-            PlayerCount = 13,
-            MaxPlayerCount = 2,
-        });
+
+        for (int i = 0; i < 5; i++)
+            CreateServer(new()
+            {
+                Address = "192.168.1.50",
+                Port = 8889,
+                ServerName = "make it overflow to scroll!",
+                ServerInfo = "Modded. Contains 1.5x big every weapon. Initial Gear P90 and AWP.\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                MapName = "TestWorld",
+                PlayerCount = 66,
+                MaxPlayerCount = 100,
+            });
+
     }
 
 	public void CreateServer(ServerData data)
@@ -75,24 +89,27 @@ public partial class ConnectionScreen : Control
         Label ServerPlayerCount = new()
         {
             Position = new(600, 10),
-            Text = $"{data.PlayerCount}/{data.MaxPlayerCount}"
+            Text = $"{data.PlayerCount}/{data.MaxPlayerCount}",
+            HorizontalAlignment = HorizontalAlignment.Right,
         };
         Button connectButton = new()
         {
-            Text = "Connect"
+            Text = "Connect",
+            Position = new(705, 5),
         };
         connectButton.Pressed += () => 
         {
-#if CLIENT
+            this.Hide();
             var mainWorld = GameManager.Instance.SceneManager.GetPackedScene("MainWorld").Instantiate<MainWorld>();
             this.CallDeferred("add_sibling", mainWorld);
-            mainWorld.StartClient(data.Address, data.Port, data.MapName);
-#endif
+            mainWorld.CallDeferred("StartClient", data.Address, data.Port, data.MapName);
         };
         Control control = new();
         control.AddChild(serverName);
         control.AddChild(serverInfo);
         control.AddChild(ServerPlayerCount);
+        control.AddChild(connectButton);
         ServerList.AddChild(control);
     }
 }
+#endif

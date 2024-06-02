@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace ExtractIntoVoid.Managers;
+namespace ExtractIntoVoid.Client;
 
 public class UIManager
 {
@@ -11,7 +11,7 @@ public class UIManager
         LoadingScreen.Show();
     }
 
-    public void LoadScreenStop() 
+    public void LoadScreenStop()
     {
         LoadingScreen.Hide();
     }

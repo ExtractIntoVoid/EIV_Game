@@ -9,17 +9,22 @@ public partial class GameManager : Node
     public static GameManager Instance { get; set; }
     public SceneManager SceneManager { get; set; }
     public GodotResourceManager GodotResourceManager { get; set; }
-
-    public UIManager UIManager { get; set; }
 #if MODDABLE
     internal ModManager ModManagerInstance { get; set; }
 #endif
 
-#if SERVER
+#if GAME
+    public static string INI = Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()), "Game.ini");
+#elif SERVER
     public static string INI = Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()), "Server.ini");
 #elif CLIENT
     public static string INI = Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()), "Client.ini");
 #endif
+
+#if CLIENT || GAME
+    public Client.UIManager UIManager { get; set; }
+#endif
+
     Array<Node> Nodes = new();
 
     public BuildType BuildType { get =>
@@ -49,10 +54,12 @@ public partial class GameManager : Node
         Instance = this;
         SceneManager = new();
         GodotResourceManager = new();
-        UIManager = new();
 #if MODDABLE
         ModManagerInstance = new();
         Nodes.Add(ModManagerInstance);
+#endif
+#if CLIENT || GAME
+        UIManager = new();
 #endif
         GD.Print(Properties.Resource.BuildDate);
     }
@@ -63,18 +70,16 @@ public partial class GameManager : Node
         {
             this.CallDeferred("add_sibling", item);
         }
-#if CLIENT
+#if SERVER       
+        var mw = SceneManager.GetPackedScene("MainWorld").Instantiate();
+        this.CallDeferred("add_sibling", mw);
+#elif CLIENT || GAME
         var ls = SceneManager.GetPackedScene("LoadingScreen").Instantiate();
         this.CallDeferred("add_sibling", ls);
         UIManager.LoadingScreen = ls as Control;
         var MainMenu = SceneManager.GetPackedScene("MainMenu").Instantiate();
         this.CallDeferred("add_sibling", MainMenu);
 #endif
-#if SERVER
-        var mw = SceneManager.GetPackedScene("MainWorld").Instantiate();
-        this.CallDeferred("add_sibling", mw);
-#endif
-
     }
 
     public void Quit()

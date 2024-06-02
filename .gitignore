@@ -14,3 +14,10 @@ assets/sketchfab/**/**.import
 
 
 EXPORT/
+
+bin
+obj
+
+PublishProfiles
+
+*.user

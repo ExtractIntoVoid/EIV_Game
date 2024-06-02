@@ -1,16 +1,16 @@
 ﻿using ExtractIntoVoid.Managers;
 using Godot;
 using ModAPI.V2;
-using static ExtractIntoVoid.Modding.Multiplayer;
 using static ExtractIntoVoid.Modding.WorldEvents;
-using System;
+using ExtractIntoVoid.Modding.Mutliplayer;
 
-#if SERVER
+#if GAME
 using ExtractIntoVoid.Server;
-#endif
-
-#if CLIENT
-//using ExtractIntoVoid.Client;
+using ExtractIntoVoid.Client;
+#elif SERVER
+using ExtractIntoVoid.Server;
+#elif CLIENT
+using ExtractIntoVoid.Client;
 #endif
 
 
@@ -57,6 +57,7 @@ public partial class MainWorld : Node
         {
             GD.PrintErr("Scene cannot be loaded. Quitting...");
             GameManager.Instance.Quit();
+            return;
         }
         SubWorld = scene.Instantiate<BasicWorld>();
         this.AddChild(SubWorld);
@@ -67,11 +68,11 @@ public partial class MainWorld : Node
     {
         Spawner.Spawned -= Spawner_Spawned;
         Spawner.Despawned -= Spawner_Despawned;
-        if (Multiplayer.HasMultiplayerPeer())
+        if (Multiplayer.MultiplayerPeer == multiplayerPeer)
         {
             Multiplayer.PeerDisconnected -= MultiplayerPeer_PeerDisconnected;
             Multiplayer.PeerConnected -= MultiplayerPeer_PeerConnected;
-#if CLIENT
+#if CLIENT || GAME
             Multiplayer.ConnectedToServer -= Multiplayer_ConnectedToServer;
             Multiplayer.ConnectionFailed -= Multiplayer_ConnectionFailed;
             Multiplayer.ServerDisconnected -= Multiplayer_ServerDisconnected;
@@ -82,7 +83,7 @@ public partial class MainWorld : Node
     }
 
 
-#if SERVER
+#if SERVER|| GAME
     public void StartServer()
     {
         var Error = multiplayerPeer.CreateServer(NetManager.GetPort(), NetManager.GetMaxClients());
@@ -90,6 +91,7 @@ public partial class MainWorld : Node
         {
             GD.PrintErr($"StartServer error! ({Error}). Quitting...");
             GameManager.Instance.Quit();
+            return;
         }
         multiplayerPeer.Host.Compress(ENetConnection.CompressionMode.RangeCoder);
         Multiplayer.MultiplayerPeer = multiplayerPeer;
@@ -97,7 +99,7 @@ public partial class MainWorld : Node
         Multiplayer.PeerConnected += MultiplayerPeer_PeerConnected;
     }
 #endif
-#if CLIENT
+#if CLIENT || GAME
     public void StartClient(string Address, int port, string SubMapName) 
     {
         var Error = multiplayerPeer.CreateClient(Address, port);
@@ -105,6 +107,7 @@ public partial class MainWorld : Node
         {
             GD.PrintErr($"StartClient error! ({Error}). Quitting...");
             GameManager.Instance.Quit();
+            return;
         }
         multiplayerPeer.Host.Compress(ENetConnection.CompressionMode.RangeCoder);
         Multiplayer.MultiplayerPeer = multiplayerPeer;
@@ -118,6 +121,7 @@ public partial class MainWorld : Node
         {
             GD.PrintErr("Scene cannot be loaded. Quitting...");
             GameManager.Instance.Quit();
+            return;
         }
         SubWorld = scene.Instantiate<BasicWorld>();
         this.AddChild(SubWorld);
@@ -125,17 +129,17 @@ public partial class MainWorld : Node
 
     private void Multiplayer_ServerDisconnected()
     {
-        V2EventManager.TriggerEvent(new OnServerDisconnected());
+        V2EventManager.TriggerEvent(new OnServerDisconnected(this));
     }
 
     private void Multiplayer_ConnectionFailed()
     {
-        V2EventManager.TriggerEvent(new OnConnectionFailed());
+        V2EventManager.TriggerEvent(new OnConnectionFailed(this));
     }
 
     private void Multiplayer_ConnectedToServer()
     {
-        V2EventManager.TriggerEvent(new OnConnectedToServer());
+        V2EventManager.TriggerEvent(new OnConnectedToServer(this));
     }
 #endif
 
@@ -152,49 +156,29 @@ public partial class MainWorld : Node
 
     private void MultiplayerPeer_PeerDisconnected(long id)
     {
-#if SERVER
-        V2EventManager.TriggerEvent(new OnServerPeerDisconnect(id));
+#if GAME
+        V2EventManager.TriggerEvent(new OnGamePeerDisconnect(id, this));
+#elif SERVER
+        V2EventManager.TriggerEvent(new OnServerPeerDisconnect(id, this));
 #elif CLIENT
-        V2EventManager.TriggerEvent(new OnClientPeerDisconnect(id));
+        V2EventManager.TriggerEvent(new OnClientPeerDisconnect(id, this));
 #endif
     }
 
     private void MultiplayerPeer_PeerConnected(long id)
     {
-#if SERVER
-        V2EventManager.TriggerEvent(new OnServerPeerConnect(id));
+#if GAME
+        V2EventManager.TriggerEvent(new OnGamePeerConnect(id, this));
+#elif SERVER
+        V2EventManager.TriggerEvent(new OnServerPeerConnect(id, this));
 #elif CLIENT
-        V2EventManager.TriggerEvent(new OnClientPeerConnect(id));
+        V2EventManager.TriggerEvent(new OnClientPeerConnect(id, this));
 #endif
     }
     #endregion
-    #region Core related functions.
-    public void Core_DeSpawnNode(DeSpawnNode node)
+
+    public static void test(OnClientPeerConnect onClientPeerConnect)
     {
-        GD.Print("Core_DeSpawnNode", node);
-        if (node.Disable)
-            return;
-        // do stuff
+
     }
-
-    public void Core_SpawnNode(SpawnNode node)
-    {
-        GD.Print("Core_SpawnNode", node);
-        if (node.Disable)
-            return;
-        // do stuff
-    }
-    #endregion
-    #region Server Core
-    public void Core_ServerPeerConnected(OnServerPeerConnect onServerPeerConnect)
-    {
-        GD.Print("Core_ServerPeerConnected", onServerPeerConnect.Id);
-        if (onServerPeerConnect.Disable)
-            return;
-        SubWorld.Spawn(onServerPeerConnect.Id);
-    }
-
-
-
-    #endregion
 }

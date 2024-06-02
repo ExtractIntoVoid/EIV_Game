@@ -98,3 +98,7 @@ size_flags_horizontal = 4
 text = "EIV Testing 0.0.1-alpha"
 label_settings = SubResource("LabelSettings_1culb")
 vertical_alignment = 2
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/ButtonList/PlayButton" to="." method="Play"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/ButtonList/SettingsButton" to="." method="Settings"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/ButtonList/QuitButton" to="." method="Quit"]

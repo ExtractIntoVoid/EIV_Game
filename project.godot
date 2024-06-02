@@ -97,6 +97,6 @@ weapon_reload={
 ]
 }
 
-[rendering]
+[internationalization]
 
-driver/threads/thread_model=2
+rendering/threads/thread_model=2
