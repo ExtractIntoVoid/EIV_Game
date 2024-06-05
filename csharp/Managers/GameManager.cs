@@ -70,7 +70,16 @@ public partial class GameManager : Node
         {
             this.CallDeferred("add_sibling", item);
         }
-#if SERVER       
+#if MODDABLE
+        ModManagerInstance.AllModsLoaded += ModManagerInstance_AllModsLoaded;
+#else
+        ModManagerInstance_AllModsLoaded();
+#endif
+    }
+
+    private void ModManagerInstance_AllModsLoaded()
+    {
+#if SERVER
         var mw = SceneManager.GetPackedScene("MainWorld").Instantiate();
         this.CallDeferred("add_sibling", mw);
 #elif CLIENT || GAME

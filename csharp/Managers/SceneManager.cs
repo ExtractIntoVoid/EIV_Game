@@ -34,7 +34,8 @@ public class SceneManager
     {
         if (Scenes.TryGetValue(Name, out string path))
         {
-            return ResourceLoader.Load<PackedScene>(path);
+            if (ResourceLoader.Exists(path))
+                return ResourceLoader.Load<PackedScene>(path);
         }
         return null;
     }
@@ -43,8 +44,11 @@ public class SceneManager
     {
         if (Scenes.TryGetValue(Name, out string path))
         {
-            scene = ResourceLoader.Load<PackedScene>(path);
-            return true;
+            if (ResourceLoader.Exists(path))
+            {
+                scene = ResourceLoader.Load<PackedScene>(path);
+                return true;
+            }
         }
         scene = null;
         return false;

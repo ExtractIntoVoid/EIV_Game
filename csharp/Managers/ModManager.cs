@@ -1,8 +1,10 @@
 ﻿using ExtractIntoVoid.Data;
+using ExtractIntoVoid.Modding;
 using Godot;
 using ModAPI;
 using ModAPI.ModLoad;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -12,16 +14,23 @@ namespace ExtractIntoVoid.Managers
     {
         public Dictionary<string, ModData> Mods;
 
+        public event Action AllModsLoaded;
+
         public static readonly IReadOnlyList<string> ModLocations =
         [
             Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()), ProjectSettings.GlobalizePath("res://mods")),
             ProjectSettings.GlobalizePath("user://mods"),
         ];
 
+        static readonly List<string> SkipModLoad = 
+        [
+            "EIV_Game.dll", "GodotSharp.dll", "ModAPI.dll"
+        ];
+
         public override void _Ready()
         {
             Mods = new();
-            this.CallDeferred(nameof(this.LoadAllMods));
+            this.CallDeferred("LoadAllMods");
         }
 
         public void LoadAllMods()
@@ -30,18 +39,15 @@ namespace ExtractIntoVoid.Managers
             MainLoader.Init();
             // Adding ourself as main.
             MainLoader.SetMainModAssembly(typeof(ModManager).Assembly);
-            // Adding shared stuff into ALC
+            // Adding all DLL that in our data into ALC (it will skip if there is not a C# DLL or cannot load it.)
             var shared = Directory.GetFiles(Path.GetDirectoryName(typeof(ModManager).Assembly.Location), "*.dll");
             foreach ( var sharedFile in shared) 
             {
-                if (sharedFile.Contains("EIV_Game"))
-                    continue;
-                if (sharedFile.Contains("GodotSharp"))
-                    continue;
-                if (sharedFile.Contains("ModAPI"))
+                if (SkipModLoad.Contains(sharedFile))
                     continue;
                 MainLoader.AddSharedAssembly(sharedFile);
             }
+            MainLoader.LoadDependencies();
             foreach (var item in ModLocations)
             {
                 GD.Print(item);
@@ -51,14 +57,12 @@ namespace ExtractIntoVoid.Managers
                 foreach (var mod in modDirectories)
                 {
                     if (mod == "Dependencies")
-                    {
-                        LoadDependecies(mod);
                         continue;
-                    }
-
                     LoadMod(mod);
                 }
             }
+            RPC_EventManager.Load();
+            AllModsLoaded?.Invoke();
         }
 
         void LoadMod(string modDir)
@@ -84,15 +88,6 @@ namespace ExtractIntoVoid.Managers
             ProjectSettings.LoadResourcePack(Path.Combine(modDir, modData.ResourcePack));
 
             Mods.Add(modjson.Name, modData);
-        }
-
-
-        void LoadDependecies(string path)
-        {
-            foreach (var dll in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories))
-            {
-                MainLoader.AddSharedAssembly(dll);
-            }
         }
     }
 }

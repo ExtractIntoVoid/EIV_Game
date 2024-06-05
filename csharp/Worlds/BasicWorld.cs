@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using ExtractIntoVoid.Extensions;
+using Godot;
 using ModAPI.V2;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,9 @@ public partial class BasicWorld : Node3D
 
     public override void _Ready()
     {
-        var spawnpointers = this.GetChildren().Where(x=>x.IsInGroup("SpawnPoints"));
+        var spawnpointers = this.GetTree().GetNodesInGroup("SpawnPoints");
         foreach (var item in spawnpointers)
         {
-            GD.Print(item.Name);
             if (item is Node3D node && node != null)
                 SpwanPoints.Add(node);
         }
@@ -24,8 +24,11 @@ public partial class BasicWorld : Node3D
     }
 
 
-    public virtual void Spawn(long id)
+    public virtual void Spawn(Node node)
     {
-        GD.Print("Spawn",id);
+        GD.Print("Spawn" + node + " name/id: " + node.Name);
+        var rand = SpwanPoints.GetRandom();
+        var x = node as CharacterBody3D;
+        x.GlobalTransform = rand.GlobalTransform;
     }
 }

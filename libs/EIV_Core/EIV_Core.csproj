@@ -18,9 +18,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="EIV_Game">
-      <HintPath>..\..\EXPORT\Client\data_EIV_Game_windows_x86_64\EIV_Game.dll</HintPath>
-    </Reference>
+    <PackageReference Include="JWT" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="GodotSharp">
       <HintPath>..\..\EXPORT\Client\data_EIV_Game_windows_x86_64\GodotSharp.dll</HintPath>
     </Reference>
@@ -28,5 +29,16 @@
       <HintPath>..\..\EXPORT\Client\data_EIV_Game_windows_x86_64\ModAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)'=='DebugClient'">
+		<Reference Include="EIV_Game">
+			<HintPath>..\..\EXPORT\Client\data_EIV_Game_windows_x86_64\EIV_Game.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)'=='DebugServer'">
+		<Reference Include="EIV_Game">
+			<HintPath>..\..\EXPORT\Server\data_EIV_Game_windows_x86_64\EIV_Game.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
 </Project>

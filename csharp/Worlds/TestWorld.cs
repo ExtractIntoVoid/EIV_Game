@@ -1,5 +1,7 @@
 ﻿
 
+using Godot;
+
 namespace ExtractIntoVoid.Worlds;
 
 public partial class TestWorld : BasicWorld
@@ -9,8 +11,8 @@ public partial class TestWorld : BasicWorld
         base._Ready();
     }
 
-    public override void Spawn(long id)
+    public override void Spawn(Node node)
     {
-        base.Spawn(id);
+        base.Spawn(node);
     }
 }

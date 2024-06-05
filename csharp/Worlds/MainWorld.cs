@@ -3,6 +3,10 @@ using Godot;
 using ModAPI.V2;
 using static ExtractIntoVoid.Modding.WorldEvents;
 using ExtractIntoVoid.Modding.Mutliplayer;
+using ExtractIntoVoid.Modding.BaseEvents;
+using System.Collections.Generic;
+using System.Linq;
+using ExtractIntoVoid.Modding;
 
 #if GAME
 using ExtractIntoVoid.Server;
@@ -19,12 +23,13 @@ namespace ExtractIntoVoid.Worlds;
 public partial class MainWorld : Node
 {
     ENetMultiplayerPeer multiplayerPeer = new();
-    MultiplayerSpawner Spawner;
-    BasicWorld SubWorld;
+    public MultiplayerSpawner Spawner;
+    public BasicWorld SubWorld;
     public override void _EnterTree()
     {
         multiplayerPeer = new();
         Spawner = GetNode<MultiplayerSpawner>("Spawner");
+        Spawner.SpawnFunction = new Callable(this, "Spawn_Node");
         Spawner.Spawned += Spawner_Spawned;
         Spawner.Despawned += Spawner_Despawned;
         OnStartWorld onStartWorld = new()
@@ -177,8 +182,28 @@ public partial class MainWorld : Node
     }
     #endregion
 
-    public static void test(OnClientPeerConnect onClientPeerConnect)
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferChannel = 10)]
+    public void CustomRPC(string eventToCall, Godot.Collections.Array<Variant> variants)
     {
+        RPC_EventManager.CallMethod(eventToCall, variants);
+    }
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferChannel = 10)]
+    public void CustomRPC_NoLocal(string eventToCall, Godot.Collections.Array<Variant> variants)
+    {
+        RPC_EventManager.CallMethod(eventToCall, variants);
+    }
+
+    public Node Spawn_Node(Variant variant)
+    {
+        var Dict = (Godot.Collections.Dictionary<string, string>)variant;
+        var scene = Spawner.GetSpawnableScene(0);
+
+        // please do scene validatin!
+        var myNode = ResourceLoader.Load<PackedScene>(scene).Instantiate();
+        myNode.Name = Dict["id"];
+        SubWorld.Spawn(myNode);
+
+        return myNode;
     }
 }
