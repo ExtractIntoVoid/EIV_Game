@@ -4,13 +4,12 @@ android/
 
 # vs related
 .vs/
-
+*.import
 
 # sketchfab assets related
-assets/sketchfab/**/**.res
-assets/sketchfab/**/**.bin
-assets/sketchfab/**/**.gltf
-assets/sketchfab/**/**.import 
+#assets/sketchfab/**/**.res
+#assets/sketchfab/**/**.bin
+#assets/sketchfab/**/**.gltf
 
 
 EXPORT/
