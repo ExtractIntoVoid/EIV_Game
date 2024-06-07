@@ -7,24 +7,21 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yq4yf"]
 radius = 0.398394
-height = 2.23993
+height = 2.47017
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vlb66"]
 properties/0/path = NodePath(".:scale")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath(".:syncPos")
+properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
-properties/1/replication_mode = 2
-properties/2/path = NodePath(".:syncRot")
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:position")
 properties/2/spawn = true
-properties/2/replication_mode = 2
-properties/3/path = NodePath(".:rotation")
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:velocity")
 properties/3/spawn = true
 properties/3/replication_mode = 1
-properties/4/path = NodePath(".:position")
-properties/4/spawn = true
-properties/4/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_j2bt5")
@@ -569,20 +566,18 @@ mesh = ExtResource("5_yl3d6")
 skin = ExtResource("6_2pojy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.897126, 0)
 shape = SubResource("CapsuleShape3D_yq4yf")
+
+[node name="HandlePoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.124075, 1.6483, -0.755983)
+
+[node name="ColtM45a1" parent="HandlePoint" instance=ExtResource("3_7ioo4")]
+disable_mode = 1
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, -0.120471)
 fov = 80.0
 
-[node name="HandlePoint" type="Marker3D" parent="Camera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.124075, -0.201702, -0.635512)
-
-[node name="ColtM45a1" parent="Camera/HandlePoint" instance=ExtResource("3_7ioo4")]
-
 [node name="MSync" type="MultiplayerSynchronizer" parent="."]
-replication_interval = 0.1
-delta_interval = 0.1
 replication_config = SubResource("SceneReplicationConfig_vlb66")
-visibility_update_mode = 1

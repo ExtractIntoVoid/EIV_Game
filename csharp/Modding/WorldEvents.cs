@@ -1,4 +1,6 @@
-﻿using Godot;
+﻿using ExtractIntoVoid.Modding.BaseEvents;
+using ExtractIntoVoid.Worlds;
+using Godot;
 using ModAPI.V2;
 using System.Collections.Generic;
 
@@ -12,16 +14,14 @@ public class WorldEvents
         public List<string> SpawnableNodes = new();
     }
 
-    public class SpawnNode : NodeEvent, IDisableCoreEvent
+    public class OnSpawnNode : MainWorldEvent, IDisableCoreEvent
     {
-        public SpawnNode(Node node) : base(node) { }
-        public bool Disable { get; set; } = false;
-    }
-
-    public class DeSpawnNode : NodeEvent, IDisableCoreEvent
-    {
-        public DeSpawnNode(Node node) : base(node) { }
-        public bool Disable { get; set; } = false;
+        public OnSpawnNode(Variant inputVariant, MainWorld world) : base(world)
+        {
+            InputVariant = inputVariant;
+        }
+        public Node ReturnerNode { get; set; }
+        public Variant InputVariant { get; protected set; }
     }
     #endregion
     public class OnStartMapGen : BaseEvent, IDisableCoreEvent

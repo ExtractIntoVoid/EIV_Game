@@ -1,9 +1,13 @@
 ﻿#if SERVER
 using ExtractIntoVoid;
+using ExtractIntoVoid.Extensions;
+using ExtractIntoVoid.Managers;
 using ExtractIntoVoid.Modding;
 using ExtractIntoVoid.Modding.BaseEvents;
 using ExtractIntoVoid.Modding.Mutliplayer;
+using ExtractIntoVoid.Physics;
 using Godot;
+using System.IO;
 
 namespace EIV_Core.Server;
 
@@ -22,16 +26,13 @@ public class Connection
         // set to min to and start spawning
         if (ClientIds.Count >= 1)
         {
-            onServerPeerConnect.World.Spawner.Spawn(new Godot.Collections.Dictionary<string, string>()
+            var Transform = onServerPeerConnect.World.SubWorld.SpawnPoints.GetRandom().GlobalTransform;
+            onServerPeerConnect.World.Spawner.Spawn(new Godot.Collections.Dictionary<string, Variant>()
             {
-                { "id", onServerPeerConnect.Id.ToString() }
+                { "id", onServerPeerConnect.Id },
+                { "spawn_pos", Transform },
             });
         }
-
-        Godot.Collections.Dictionary<StringName, PackedScene> someDictionary = new()
-        {
-           { "FunnyName", ResourceLoader.Load<PackedScene>("res://yeet.tscn") }
-        };
         /*
         onServerPeerConnect.World.Rpc("CustomRPC", "RPC_TEST_SERVER", new Godot.Collections.Array<Variant>() { onServerPeerConnect.Id, true, true, false });
         onServerPeerConnect.World.Rpc("CustomRPC", "RPC_TEST_CLIENT", new Godot.Collections.Array<Variant>() { onServerPeerConnect.Id, true, false, false });
@@ -61,6 +62,37 @@ public class Connection
 
         Console.WriteLine(onServerPeerDisconnect.Id + " Left!");
         ClientIds.Remove(onServerPeerDisconnect.Id);
+        onServerPeerDisconnect.World.GetNode(onServerPeerDisconnect.Id.ToString()).QueueFree();
     }
+
+
+    public static void OnSpawnNode(WorldEvents.OnSpawnNode onSpawnNode)
+    {
+        if (onSpawnNode.Disable)
+            return;
+        Console.WriteLine(onSpawnNode.InputVariant + " OnSpawn!");
+
+        var Dict = (Godot.Collections.Dictionary<string, Variant>)onSpawnNode.InputVariant;
+        var scene = onSpawnNode.World.Spawner.GetSpawnableScene(0);
+
+        if (!ResourceLoader.Exists(scene))
+        {
+            GD.PrintErr("Scene is not exist!");
+            return;
+        }
+        var myNode = ResourceLoader.Load<PackedScene>(scene).Instantiate();
+        myNode.Name = (Dict["id"].AsInt32()).ToString();
+        var player = myNode as Player;
+        if (player == null)
+        {
+            GD.PrintErr("myNode should be the player but not!");
+            // myNode should be the player but not. That is not good so we just return.
+            return;
+        }
+        player.GlobalTransform = Dict["spawn_pos"].AsTransform3D();
+        onSpawnNode.ReturnerNode = player;
+        GD.Print("Should spawn");
+    }
+
 }
 #endif

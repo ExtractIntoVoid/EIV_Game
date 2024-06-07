@@ -3,9 +3,6 @@ using Godot;
 using ModAPI.V2;
 using static ExtractIntoVoid.Modding.WorldEvents;
 using ExtractIntoVoid.Modding.Mutliplayer;
-using ExtractIntoVoid.Modding.BaseEvents;
-using System.Collections.Generic;
-using System.Linq;
 using ExtractIntoVoid.Modding;
 
 #if GAME
@@ -30,13 +27,11 @@ public partial class MainWorld : Node
         multiplayerPeer = new();
         Spawner = GetNode<MultiplayerSpawner>("Spawner");
         Spawner.SpawnFunction = new Callable(this, "Spawn_Node");
-        Spawner.Spawned += Spawner_Spawned;
-        Spawner.Despawned += Spawner_Despawned;
         OnStartWorld onStartWorld = new()
         {
             SpawnableNodes = new()
             {
-                "res://scenes/Character/Player.tscn"
+                "res://scenes/Character/Player.tscn"    // 0 or first should always be the PLAYER!
             }
         };
 
@@ -44,7 +39,9 @@ public partial class MainWorld : Node
 
         // Make sure if we remove all we can spawn as default player.
         if (onStartWorld.SpawnableNodes.Count != 0)
+        {
             Spawner.AddSpawnableScene("res://scenes/Character/Player.tscn");
+        }
         else
             //  Otherwise we add into spawnable scene.
             onStartWorld.SpawnableNodes.ForEach(Spawner.AddSpawnableScene);
@@ -71,8 +68,6 @@ public partial class MainWorld : Node
 
     public override void _ExitTree()
     {
-        Spawner.Spawned -= Spawner_Spawned;
-        Spawner.Despawned -= Spawner_Despawned;
         if (Multiplayer.MultiplayerPeer == multiplayerPeer)
         {
             Multiplayer.PeerDisconnected -= MultiplayerPeer_PeerDisconnected;
@@ -149,15 +144,6 @@ public partial class MainWorld : Node
 #endif
 
     #region Calls
-    private void Spawner_Despawned(Node node)
-    {
-        V2EventManager.TriggerEvent(new DeSpawnNode(node));
-    }
-
-    private void Spawner_Spawned(Node node)
-    {
-        V2EventManager.TriggerEvent(new SpawnNode(node));
-    }
 
     private void MultiplayerPeer_PeerDisconnected(long id)
     {
@@ -196,14 +182,8 @@ public partial class MainWorld : Node
 
     public Node Spawn_Node(Variant variant)
     {
-        var Dict = (Godot.Collections.Dictionary<string, string>)variant;
-        var scene = Spawner.GetSpawnableScene(0);
-
-        // please do scene validatin!
-        var myNode = ResourceLoader.Load<PackedScene>(scene).Instantiate();
-        myNode.Name = Dict["id"];
-        SubWorld.Spawn(myNode);
-
-        return myNode;
+        OnSpawnNode onSpawnNode = new(variant, this);
+        V2EventManager.TriggerEvent(onSpawnNode);
+        return onSpawnNode.ReturnerNode;
     }
 }
