@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqd73ojgyw8pr"]
+[gd_scene load_steps=3 format=3 uid="uid://bqd73ojgyw8pr"]
 
 [ext_resource type="Script" path="res://csharp/Menus/ConnectionScreen.cs" id="1_25ms0"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fifmp"]
+font_size = 32
 
 [node name="ConnectionScreen" type="Control"]
 layout_mode = 3
@@ -10,6 +13,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_25ms0")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -73.0
+offset_top = 30.0
+offset_right = 73.0
+offset_bottom = 94.0
+grow_horizontal = 2
+text = "Connect to a Lobby"
+label_settings = SubResource("LabelSettings_fifmp")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 0
