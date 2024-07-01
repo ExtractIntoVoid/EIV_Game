@@ -5,7 +5,7 @@ using System;
 
 namespace ExtractIntoVoid.Server
 {
-    public static class NetManager
+    public class NetManager
     {
         public static int GetPort()
         {

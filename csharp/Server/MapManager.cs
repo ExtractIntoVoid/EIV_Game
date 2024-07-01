@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace ExtractIntoVoid.Server
 {
-    public static class MapManager
+    public class MapManager
     {
         public static List<string> Maps = new List<string>();
         public static void LoadMapList()

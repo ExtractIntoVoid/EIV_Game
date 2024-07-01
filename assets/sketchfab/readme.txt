@@ -1,0 +1,1 @@
+most guns and assets here are temporary, only exist for better development feeling and can work better.

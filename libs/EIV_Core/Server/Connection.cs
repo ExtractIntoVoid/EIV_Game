@@ -20,6 +20,8 @@ public class Connection
         if (onServerPeerConnect.Disable)
             return;
 
+        var jwt = JWT.Builder.JwtBuilder.Create().AddClaim("test", 00).Encode();
+        Console.WriteLine(jwt);
         Console.WriteLine(onServerPeerConnect.Id + " Joined!");
         ClientIds.Add(onServerPeerConnect.Id);
 
@@ -62,7 +64,8 @@ public class Connection
 
         Console.WriteLine(onServerPeerDisconnect.Id + " Left!");
         ClientIds.Remove(onServerPeerDisconnect.Id);
-        onServerPeerDisconnect.World.GetNode(onServerPeerDisconnect.Id.ToString()).QueueFree();
+        // note: no longer need to clear this.
+        //onServerPeerDisconnect.World.GetNode(onServerPeerDisconnect.Id.ToString()).QueueFree();
     }
 
 
@@ -93,6 +96,5 @@ public class Connection
         onSpawnNode.ReturnerNode = player;
         GD.Print("Should spawn");
     }
-
 }
 #endif

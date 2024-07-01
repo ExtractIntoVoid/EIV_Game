@@ -36,9 +36,13 @@ namespace ExtractIntoVoid.Managers
         public void LoadAllMods()
         {
             Debugger.Enabled = true;
+            ModLoad2.Init();
+            ModLoad2.LoadDependencies();
+            /*
             MainLoader.Init();
             // Adding ourself as main.
             MainLoader.SetMainModAssembly(typeof(ModManager).Assembly);
+            
             // Adding all DLL that in our data into ALC (it will skip if there is not a C# DLL or cannot load it.)
             var shared = Directory.GetFiles(Path.GetDirectoryName(typeof(ModManager).Assembly.Location), "*.dll");
             foreach ( var sharedFile in shared) 
@@ -48,6 +52,7 @@ namespace ExtractIntoVoid.Managers
                 MainLoader.AddSharedAssembly(sharedFile);
             }
             MainLoader.LoadDependencies();
+            */
             foreach (var item in ModLocations)
             {
                 GD.Print(item);
@@ -56,7 +61,7 @@ namespace ExtractIntoVoid.Managers
                 string[] modDirectories = Directory.GetDirectories(item);
                 foreach (var mod in modDirectories)
                 {
-                    if (mod == "Dependencies")
+                    if (mod.Contains("Dependencies"))
                         continue;
                     LoadMod(mod);
                 }
@@ -69,7 +74,7 @@ namespace ExtractIntoVoid.Managers
         {
             if (!File.Exists(Path.Combine(modDir, "Mod.json")))
             {
-                GD.Print("Mod.json not found skipping this dir");
+                GD.Print($"Mod.json not found skipping {modDir} dir");
                 return;
             }
 
@@ -84,7 +89,8 @@ namespace ExtractIntoVoid.Managers
 #endif
                 Hashes = new()
             };
-            MainLoader.LoadPlugin(Path.Combine(modDir, modData.AssemblyName));
+            // MainLoader.LoadPlugin(Path.Combine(modDir, modData.AssemblyName));
+            ModLoad2.LoadMod(Path.Combine(modDir, modData.AssemblyName));
             ProjectSettings.LoadResourcePack(Path.Combine(modDir, modData.ResourcePack));
 
             Mods.Add(modjson.Name, modData);
