@@ -2,7 +2,6 @@
 using ExtractIntoVoid.Modding;
 using Godot;
 using ModAPI;
-using ModAPI.ModLoad;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,11 +21,6 @@ namespace ExtractIntoVoid.Managers
             ProjectSettings.GlobalizePath("user://mods"),
         ];
 
-        static readonly List<string> SkipModLoad = 
-        [
-            "EIV_Game.dll", "GodotSharp.dll", "ModAPI.dll"
-        ];
-
         public override void _Ready()
         {
             Mods = new();
@@ -35,24 +29,8 @@ namespace ExtractIntoVoid.Managers
 
         public void LoadAllMods()
         {
-            Debugger.Enabled = true;
-            ModLoad2.Init();
-            ModLoad2.LoadDependencies();
-            /*
-            MainLoader.Init();
-            // Adding ourself as main.
-            MainLoader.SetMainModAssembly(typeof(ModManager).Assembly);
-            
-            // Adding all DLL that in our data into ALC (it will skip if there is not a C# DLL or cannot load it.)
-            var shared = Directory.GetFiles(Path.GetDirectoryName(typeof(ModManager).Assembly.Location), "*.dll");
-            foreach ( var sharedFile in shared) 
-            {
-                if (SkipModLoad.Contains(sharedFile))
-                    continue;
-                MainLoader.AddSharedAssembly(sharedFile);
-            }
-            MainLoader.LoadDependencies();
-            */
+            EIV_Common.ModManager.Init();
+            Debugger.ParseLogger(GameManager.Instance.logger);
             foreach (var item in ModLocations)
             {
                 GD.Print(item);
@@ -89,8 +67,7 @@ namespace ExtractIntoVoid.Managers
 #endif
                 Hashes = new()
             };
-            // MainLoader.LoadPlugin(Path.Combine(modDir, modData.AssemblyName));
-            ModLoad2.LoadMod(Path.Combine(modDir, modData.AssemblyName));
+            MainLoader.LoadMod(Path.Combine(modDir, modData.AssemblyName));
             ProjectSettings.LoadResourcePack(Path.Combine(modDir, modData.ResourcePack));
 
             Mods.Add(modjson.Name, modData);

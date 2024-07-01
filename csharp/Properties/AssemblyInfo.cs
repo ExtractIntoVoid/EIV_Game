@@ -33,5 +33,5 @@ using System.Runtime.InteropServices;
 
 // ModAPI.
 #if MODDABLE
-[assembly: ModAPI.Attributes.ModAPIType(ModAPI.Enums.ModAPIEnum.All)]
+[assembly: ModAPI.ModAPIType(ModAPI.ModAPIEnum.All)]
 #endif

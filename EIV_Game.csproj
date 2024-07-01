@@ -32,6 +32,9 @@
 
 
 	<ItemGroup>
+	  <ProjectReference Include="libs\EIV_Common\EIV_Common.csproj" />
+	  <ProjectReference Include="libs\EIV_DataPack\EIV_DataPack.csproj" />
+	  <ProjectReference Include="libs\EIV_JsonLib\EIV_JsonLib.csproj" />
 	  <ProjectReference Include="libs\GodotCSharpMod\ModAPI\ModAPI.csproj" />
 	</ItemGroup>
 

@@ -1,5 +1,5 @@
 ﻿#if SERVER || GAME
-using ExtractIntoVoid.Controllers;
+using EIV_Common;
 using ExtractIntoVoid.Extensions;
 using ExtractIntoVoid.Managers;
 using Godot;
@@ -14,7 +14,7 @@ namespace ExtractIntoVoid.Server
         public static List<string> Maps = new List<string>();
         public static void LoadMapList()
         {
-            var PlayableMaps = INIController.Read(GameManager.INI, "Maps", "PlayableMaps");
+            var PlayableMaps = ConfigINI.Read(GameManager.INI, "Maps", "PlayableMaps");
             if (PlayableMaps.Contains(","))
                 Maps.AddRange(PlayableMaps.Split(","));
             else
@@ -26,16 +26,16 @@ namespace ExtractIntoVoid.Server
             //  If there is no map, we just simply return empty.
             if (Maps.Count == 0)
                 return string.Empty;
-            var RandomizeMaps = INIController.Read(GameManager.INI, "Maps", "RandomizeMaps");
-            if (RandomizeMaps == "0")
+            var RandomizeMaps = ConfigINI.Read<int>(GameManager.INI, "Maps", "RandomizeMaps");
+            if (RandomizeMaps == 0)
             {
                 return Maps.First();
             }
-            if (RandomizeMaps == "1")
+            if (RandomizeMaps == 1)
             {
                 return Maps.GetRandom();
             }
-            if (RandomizeMaps == "2")
+            if (RandomizeMaps == 2)
             {
                 //randomization
             }

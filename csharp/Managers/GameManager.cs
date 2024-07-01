@@ -1,11 +1,15 @@
 ﻿using Godot;
 using Godot.Collections;
 using System.IO;
+using EIV_Common;
+using EIV_Common.Logger;
+using Serilog;
 
 namespace ExtractIntoVoid.Managers;
 
 public partial class GameManager : Node
 {
+    public ILogger logger;
     public static GameManager Instance { get; set; }
     public SceneManager SceneManager { get; set; }
     public GodotResourceManager GodotResourceManager { get; set; }
@@ -66,6 +70,8 @@ public partial class GameManager : Node
 
     public override void _Ready()
     {
+        MainLog.CreateNew();
+        logger = MainLog.logger;
         foreach (var item in Nodes)
         {
             this.CallDeferred("add_sibling", item);
@@ -75,6 +81,7 @@ public partial class GameManager : Node
 #else
         ModManagerInstance_AllModsLoaded();
 #endif
+        
     }
 
     private void ModManagerInstance_AllModsLoaded()
@@ -93,6 +100,7 @@ public partial class GameManager : Node
 
     public void Quit()
     {
+        MainLog.Close();
         GetTree().Quit();
     }
 }
