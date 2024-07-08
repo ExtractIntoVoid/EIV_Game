@@ -1,5 +1,7 @@
 ﻿using ExtractIntoVoid.Managers;
+using ExtractIntoVoid.Modules;
 using Godot;
+using System.Collections.Generic;
 
 namespace ExtractIntoVoid.Physics;
 
@@ -19,6 +21,11 @@ public partial class Player : CharacterBody3D
     [Export]
     float MouseSensitivity = 3f;
 
+
+    PlayerModule playerModules;
+
+
+
     public override void _EnterTree()
     {
         NetId = Name.ToString().ToInt();
@@ -36,6 +43,7 @@ public partial class Player : CharacterBody3D
             Camera.Current = true;
             Input.MouseMode = Input.MouseModeEnum.Captured;
         }
+        playerModules = new(this);
     }
 
     public sealed override void _PhysicsProcess(double delta)
@@ -98,7 +106,7 @@ public partial class Player : CharacterBody3D
             _actualRotation.X = Mathf.Clamp(-mouseMotion.Relative.Y / 1000 * MouseSensitivity, -1.45f, 1.45f);
             RotateY(_actualRotation.Y);
             Camera.RotateX(_actualRotation.X);
-            if (Camera.Rotation.X < -0.45f || Camera.Rotation.X > 1.20f)
+            if (Camera.Rotation.X < -0.45f || Camera.Rotation.X > 1.20f) //make sure we cannot loop over our head/feet
             {
                 Camera.RotateX(-_actualRotation.X);
             }

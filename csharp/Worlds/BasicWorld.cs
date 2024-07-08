@@ -20,6 +20,6 @@ public partial class BasicWorld : Node3D
                 SpawnPoints.Add(node);
         }
         //start map gen (if something like that exists)
-        V2EventManager.TriggerEvent(new OnStartMapGen());
+        V2Manager.TriggerEvent(new OnStartMapGen());
     }
 }

@@ -22,6 +22,9 @@ public partial class MainWorld : Node
     ENetMultiplayerPeer multiplayerPeer = new();
     public MultiplayerSpawner Spawner;
     public BasicWorld SubWorld;
+
+    public object V2EventManager { get; private set; }
+
     public override void _EnterTree()
     {
         multiplayerPeer = new();
@@ -35,7 +38,7 @@ public partial class MainWorld : Node
             }
         };
 
-        V2EventManager.TriggerEvent(onStartWorld);
+        V2Manager.TriggerEvent(onStartWorld);
 
         // Make sure if we remove all we can spawn as default player.
         if (onStartWorld.SpawnableNodes.Count != 0)
@@ -129,17 +132,17 @@ public partial class MainWorld : Node
 
     private void Multiplayer_ServerDisconnected()
     {
-        V2EventManager.TriggerEvent(new OnServerDisconnected(this));
+        V2Manager.TriggerEvent(new OnServerDisconnected(this));
     }
 
     private void Multiplayer_ConnectionFailed()
     {
-        V2EventManager.TriggerEvent(new OnConnectionFailed(this));
+        V2Manager.TriggerEvent(new OnConnectionFailed(this));
     }
 
     private void Multiplayer_ConnectedToServer()
     {
-        V2EventManager.TriggerEvent(new OnConnectedToServer(this));
+        V2Manager.TriggerEvent(new OnConnectedToServer(this));
     }
 #endif
 
@@ -148,22 +151,22 @@ public partial class MainWorld : Node
     private void MultiplayerPeer_PeerDisconnected(long id)
     {
 #if GAME
-        V2EventManager.TriggerEvent(new OnGamePeerDisconnect(id, this));
+        V2Manager.TriggerEvent(new OnGamePeerDisconnect(id, this));
 #elif SERVER
-        V2EventManager.TriggerEvent(new OnServerPeerDisconnect(id, this));
+        V2Manager.TriggerEvent(new OnServerPeerDisconnect(id, this));
 #elif CLIENT
-        V2EventManager.TriggerEvent(new OnClientPeerDisconnect(id, this));
+        V2Manager.TriggerEvent(new OnClientPeerDisconnect(id, this));
 #endif
     }
 
     private void MultiplayerPeer_PeerConnected(long id)
     {
 #if GAME
-        V2EventManager.TriggerEvent(new OnGamePeerConnect(id, this));
+        V2Manager.TriggerEvent(new OnGamePeerConnect(id, this));
 #elif SERVER
-        V2EventManager.TriggerEvent(new OnServerPeerConnect(id, this));
+        V2Manager.TriggerEvent(new OnServerPeerConnect(id, this));
 #elif CLIENT
-        V2EventManager.TriggerEvent(new OnClientPeerConnect(id, this));
+        V2Manager.TriggerEvent(new OnClientPeerConnect(id, this));
 #endif
     }
     #endregion
@@ -183,7 +186,7 @@ public partial class MainWorld : Node
     public Node Spawn_Node(Variant variant)
     {
         OnSpawnNode onSpawnNode = new(variant, this);
-        V2EventManager.TriggerEvent(onSpawnNode);
+        V2Manager.TriggerEvent(onSpawnNode);
         return onSpawnNode.ReturnerNode;
     }
 }

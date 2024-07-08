@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using ExtractIntoVoid.Managers;
 using Godot;
+using ModAPI;
 
 namespace ExtractIntoVoid.Modding
 {
@@ -13,9 +14,9 @@ namespace ExtractIntoVoid.Modding
 
         public static void Load()
         {
-            foreach (var item in ModAPI.ModLoad.MainLoader.Mods)
+            foreach (var item in MainLoader.Mods)
             {
-                LoadAssembly(item.assembly);
+                LoadAssembly(item);
             }
         }
 
