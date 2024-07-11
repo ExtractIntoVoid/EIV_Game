@@ -1,18 +1,16 @@
 ﻿using EIV_Common.Coroutines;
-using EIV_Common.JsonStuff;
 using EIV_JsonLib.Interfaces;
 using ExtractIntoVoid.Modules;
-using System;
 using System.Collections.Generic;
 
 namespace ExtractIntoVoid.Effects
 {
-    public abstract partial class EffectsBase
+    public abstract class EffectBase
     {
         Coroutine? TimeCoroutine;
         public IEffect CoreEffect { get; internal set; }
-        public PlayerModule PlayerModules;
-        public EffectsBase(IEffect effect, PlayerModule playerModules)
+        public PlayerModule PlayerModules { get; internal set; }
+        public EffectBase(IEffect effect, PlayerModule playerModules)
         {
             CoreEffect = effect;
             PlayerModules = playerModules;
@@ -25,7 +23,20 @@ namespace ExtractIntoVoid.Effects
             TimeCoroutine = CoroutineWorkerNode.StartCoroutine(TimeStuff(Seconds, Strength), CoroutineType.Process);
         }
 
-        public abstract void EffectTick(int Strength);
+        public virtual void KillEffect()
+        {
+            if (TimeCoroutine == null)
+                return;
+            CoroutineWorkerNode.KillCoroutineInstance(TimeCoroutine.Value);
+        }
+
+        public virtual void EffectTick(int Strength)
+        {
+            PlayerModules.Health.Damage(CoreEffect.Health.Negative * Strength, CoreEffect.Health.Cause);
+            PlayerModules.Health.Heal(CoreEffect.Health.Positive * Strength, true);
+            PlayerModules.Energy.RemoveValue(CoreEffect.Energy.Negative * Strength);
+            PlayerModules.Energy.AddValue(CoreEffect.Energy.Positive * Strength, false);
+        }
 
         private IEnumerator<double> TimeStuff(double InitialTime, int Strength)
         {
@@ -42,7 +53,7 @@ namespace ExtractIntoVoid.Effects
         }
     }
 
-    public class Alcohol : EffectsBase
+    public class Alcohol : EffectBase
     {
         public Alcohol(IEffect effect, PlayerModule playerModules) : base(effect, playerModules)
         {
@@ -51,8 +62,7 @@ namespace ExtractIntoVoid.Effects
 
         public override void EffectTick(int Strength)
         {
-            PlayerModules.Health.CurrentValue -= CoreEffect.Health.Negative;
-            PlayerModules.Health.CurrentValue += CoreEffect.Health.Positive;
+
         }
     }
 }

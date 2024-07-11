@@ -1,11 +1,6 @@
-﻿using ExtractIntoVoid.Modules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace ExtractIntoVoid.csharp.Modules
+namespace ExtractIntoVoid.Modules
 {
     public class HealthModule : BaseChangingModule
     {
@@ -13,19 +8,22 @@ namespace ExtractIntoVoid.csharp.Modules
         {
         }
 
+        string _LastCause;
+
         public void Damage(int value, string Cause)
         {
-            this.CurrentValue -= value;
-            if (this.CurrentValue == this.MinValue)
-            {
-                OnDeath?.Invoke(null, Cause);
-                // play Death
-            }
+            _LastCause = Cause;
+            base.RemoveValue(value);
         }
 
-        public void Heal(int value)
+        public void Heal(int value, bool EnableOverHeal)
         {
+            base.AddValue(value, EnableOverHeal);
+        }
 
+        public override void OnMinimum()
+        {
+            OnDeath?.Invoke(this, _LastCause);
         }
 
         public EventHandler<string> OnDeath;

@@ -1,4 +1,5 @@
 ﻿using EIV_Common.JsonStuff;
+using EIV_JsonLib.Interfaces;
 using ExtractIntoVoid.Modules;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,11 @@ namespace ExtractIntoVoid.Items
 
         public override void OnUsingFinished()
         {
+            var ihealing = UsableItem.As<IHealing>();
             base.OnUsingFinished();
             Modules.Inventory.Items.Remove(UsableItem);
-            Modules.Health.Heal(25);
+            Modules.Health.Heal(ihealing.HealAmount, true);
+            //UsableItem
             Modules.Effect.ApplyEffectFromItem(UsableItem, ApplyTo);
         }
 
