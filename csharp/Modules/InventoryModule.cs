@@ -18,6 +18,8 @@ namespace ExtractIntoVoid.Modules
         public List<IItem> Items { get; set; } = [];
 
         IItem CurrentItem = null;
+        UsableBase CurrentUsable = null;
+
 
         public void Select(int index)
         {
@@ -55,6 +57,12 @@ namespace ExtractIntoVoid.Modules
             UsableBase usable_base = new Adrenalin();
             usable_base.UsableItem = usable;
             usable_base.UsingStart();
+        }
+
+        void Gun_Use()
+        {
+            var gun = CurrentItem.As<IGun>();
+            gun.
         }
 
         public void Cancel()

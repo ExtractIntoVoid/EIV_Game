@@ -22,27 +22,12 @@
     <PackageReference Include="JWT" Version="10.1.1" />
   </ItemGroup>
 
-	<ItemGroup Condition="'$(Configuration)'=='DebugClient'">
-		<Reference Include="EIV_Game">
-			<HintPath>..\..\EXPORT\Client\data_EIV_Game_windows_x86_64\EIV_Game.dll</HintPath>
-		</Reference>
-		<Reference Include="GodotSharp">
-			<HintPath>..\..\EXPORT\Client\data_EIV_Game_windows_x86_64\GodotSharp.dll</HintPath>
-		</Reference>
-		<Reference Include="ModAPI">
-			<HintPath>..\..\EXPORT\Client\data_EIV_Game_windows_x86_64\ModAPI.dll</HintPath>
-		</Reference>
-	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)'=='DebugServer'">
-		<Reference Include="EIV_Game">
-			<HintPath>..\..\EXPORT\Server\data_EIV_Game_windows_x86_64\EIV_Game.dll</HintPath>
-		</Reference>
-		<Reference Include="GodotSharp">
-			<HintPath>..\..\EXPORT\Server\data_EIV_Game_windows_x86_64\GodotSharp.dll</HintPath>
-		</Reference>
-		<Reference Include="ModAPI">
-			<HintPath>..\..\EXPORT\Server\data_EIV_Game_windows_x86_64\ModAPI.dll</HintPath>
-		</Reference>
-	</ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\..\EIV_Game.csproj" />
+    <ProjectReference Include="..\EIV_Common\EIV_Common.csproj" />
+    <ProjectReference Include="..\EIV_JsonLib\EIV_JsonLib.csproj" />
+    <ProjectReference Include="..\GodotCSharpMod\ModAPI\ModAPI.csproj" />
+  </ItemGroup>
+	
+	
 </Project>

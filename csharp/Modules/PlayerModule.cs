@@ -1,11 +1,10 @@
-﻿using ExtractIntoVoid.csharp.Modules;
-using ExtractIntoVoid.Physics;
+﻿using ExtractIntoVoid.Physics;
 
 namespace ExtractIntoVoid.Modules
 {
     public class PlayerModule
     {
-        Player internal_player;
+        public Player Player;
 
         public InventoryModule Inventory;
         public HealthModule Health;
@@ -16,7 +15,7 @@ namespace ExtractIntoVoid.Modules
 
         public PlayerModule(Player player) 
         {
-            internal_player = player;
+            Player = player;
             Inventory = new(this);
             Health = new(0, 100);
             Energy = new(0, 100);

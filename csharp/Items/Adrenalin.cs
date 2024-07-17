@@ -23,7 +23,7 @@ namespace ExtractIntoVoid.Items
             Modules.Inventory.Items.Remove(UsableItem);
             Modules.Health.Heal(ihealing.HealAmount, true);
             //UsableItem
-            Modules.Effect.ApplyEffectFromItem(UsableItem, ApplyTo);
+            Modules.Effect.ApplyEffectFromItem(UsableItem);
         }
 
     }

@@ -6,7 +6,6 @@ namespace ExtractIntoVoid.Items
 {
     public abstract partial class UsableBase : RigidBody3D
     {
-        public string ApplyTo;
         public PlayerModule Modules;
         public IUsable UsableItem { get; set; }
         bool IsInUse = false;

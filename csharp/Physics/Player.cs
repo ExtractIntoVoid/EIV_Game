@@ -1,28 +1,30 @@
-﻿using ExtractIntoVoid.Managers;
-using ExtractIntoVoid.Modules;
+﻿using ExtractIntoVoid.Modules;
 using Godot;
-using System.Collections.Generic;
 
 namespace ExtractIntoVoid.Physics;
 
 public partial class Player : CharacterBody3D
 {
     public int NetId;
+    // Nodes connected to it.
+
+    // add bones here, and maybe animations.
     public Node HandlePoint;
+    public Camera3D Camera;
 
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
+    // const stuffs
     public const float Speed = 5.0f;
     public const float JumpVelocity = 4.5f;
     public const float RunSpeed = 8.5f;
-
-    Camera3D Camera;
-
+    
+    // Export stuffs
     [Export]
     float MouseSensitivity = 3f;
 
-
-    PlayerModule playerModules;
+    // Modules and others
+    public PlayerModule PlayerModule;
 
 
 
@@ -43,7 +45,7 @@ public partial class Player : CharacterBody3D
             Camera.Current = true;
             Input.MouseMode = Input.MouseModeEnum.Captured;
         }
-        playerModules = new(this);
+        PlayerModule = new(this);
     }
 
     public sealed override void _PhysicsProcess(double delta)

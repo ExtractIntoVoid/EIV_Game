@@ -23,7 +23,7 @@ namespace ExtractIntoVoid.Effects
             TimeCoroutine = CoroutineWorkerNode.StartCoroutine(TimeStuff(Seconds, Strength), CoroutineType.Process);
         }
 
-        public virtual void KillEffect()
+        public virtual void StopEffect()
         {
             if (TimeCoroutine == null)
                 return;
@@ -32,10 +32,16 @@ namespace ExtractIntoVoid.Effects
 
         public virtual void EffectTick(int Strength)
         {
-            PlayerModules.Health.Damage(CoreEffect.Health.Negative * Strength, CoreEffect.Health.Cause);
-            PlayerModules.Health.Heal(CoreEffect.Health.Positive * Strength, true);
-            PlayerModules.Energy.RemoveValue(CoreEffect.Energy.Negative * Strength);
-            PlayerModules.Energy.AddValue(CoreEffect.Energy.Positive * Strength, false);
+            if (CoreEffect.Strength.ApplyTo.Contains("Health"))
+            {
+                PlayerModules.Health.Damage(CoreEffect.Health.Negative * Strength, CoreEffect.Health.Cause);
+                PlayerModules.Health.Heal(CoreEffect.Health.Positive * Strength, true);
+            }
+            if (CoreEffect.Strength.ApplyTo.Contains("Energy"))
+            {
+                PlayerModules.Energy.RemoveValue(CoreEffect.Energy.Negative * Strength);
+                PlayerModules.Energy.AddValue(CoreEffect.Energy.Positive * Strength, false);
+            }
         }
 
         private IEnumerator<double> TimeStuff(double InitialTime, int Strength)
@@ -50,19 +56,6 @@ namespace ExtractIntoVoid.Effects
                 return time;
             });
             TimeCoroutine = null;
-        }
-    }
-
-    public class Alcohol : EffectBase
-    {
-        public Alcohol(IEffect effect, PlayerModule playerModules) : base(effect, playerModules)
-        {
-
-        }
-
-        public override void EffectTick(int Strength)
-        {
-
         }
     }
 }

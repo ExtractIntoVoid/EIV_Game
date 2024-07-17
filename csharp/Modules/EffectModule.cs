@@ -5,6 +5,7 @@ using ExtractIntoVoid.Effects;
 using ExtractIntoVoid.Modding.Effect;
 using ModAPI.V2;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ExtractIntoVoid.Modules
 {
@@ -34,12 +35,19 @@ namespace ExtractIntoVoid.Modules
         public void EffectApply(SideEffect sideEffect, IItem item)
         {
             var effect = EffectMaker.MakeNewEffect(sideEffect.EffectName);
+            if (effect == null)
+                return;
             bool ret = effect.AppliedFrom.Contains(item.BaseID) || effect.AppliedFrom.Contains(item.ItemType);
             // Cannot Apply from it.
             if (!ret)
                 return;
 
-            MakeEffectBase makeEffectBase = new(sideEffect.EffectName, PlayerModule, effect);
+            if (effect.Strength.Max < sideEffect.EffectStrength)
+                return;
+            if (effect.Strength.Min > sideEffect.EffectStrength)
+                return;
+
+            MakeEffectBase makeEffectBase = new(PlayerModule, effect);
             V2Manager.TriggerEvent(makeEffectBase);
             // This means we couldnt made EffectBase
             if (makeEffectBase.EffectBase == null)
@@ -48,9 +56,12 @@ namespace ExtractIntoVoid.Modules
             Effects.Add(makeEffectBase.EffectBase);
         }
 
-        public void DisableEffect()
+        public void DisableEffect(string EffectName)
         {
-
+            var effect = Effects.Where(x=>x.CoreEffect.EffectID == EffectName).SingleOrDefault();
+            if (effect == null)
+                return;
+            effect.StopEffect();
         }
     }
 }
