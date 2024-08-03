@@ -1,11 +1,5 @@
 ﻿using EIV_Common.JsonStuff;
 using EIV_JsonLib.Interfaces;
-using ExtractIntoVoid.Modules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExtractIntoVoid.Items
 {

@@ -581,3 +581,4 @@ fov = 80.0
 
 [node name="MSync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_vlb66")
+visibility_update_mode = 1

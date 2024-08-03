@@ -22,7 +22,7 @@ namespace ExtractIntoVoid.Modding
 
         static void LoadAssembly(Assembly assembly)
         {
-            BuildType build = GameManager.Instance.BuildType;
+            BuildType build = BuildDefined.Build;
             foreach (var item in assembly.GetTypes())
             {
                 var custom_rpc_methods = item.GetMethods().Where(method => method.GetCustomAttribute<CustomRPCAttribute>() != null && method.IsStatic);

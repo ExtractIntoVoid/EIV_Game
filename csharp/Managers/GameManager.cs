@@ -4,6 +4,8 @@ using System.IO;
 using EIV_Common;
 using EIV_Common.Logger;
 using Serilog;
+using EIV_JsonLib;
+using System;
 
 namespace ExtractIntoVoid.Managers;
 
@@ -14,48 +16,25 @@ public partial class GameManager : Node
     public SceneManager SceneManager { get; set; }
     public GodotResourceManager GodotResourceManager { get; set; }
 #if MODDABLE
-    internal ModManager ModManagerInstance { get; set; }
-#endif
-
-#if GAME
-    public static string INI = Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()), "Game.ini");
-#elif SERVER
-    public static string INI = Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()), "Server.ini");
-#elif CLIENT
-    public static string INI = Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()), "Client.ini");
+    public ModManager ModManagerInstance { get; set; }
 #endif
 
 #if CLIENT || GAME
     public Client.UIManager UIManager { get; set; }
 #endif
 
+    public DRMManager DRM_Manager { get; set; }
+
+
+
     Array<Node> Nodes = new();
-
-    public BuildType BuildType { get =>
-#if GAME
-            BuildType.Game;
-#elif CLIENT
-            BuildType.Client;
-#elif SERVER
-            BuildType.Server;
-#else
-            BuildType.None;
-#endif
-    }
-
-    public VersionType VersionType { get =>
-#if DEBUG && TESTING
-            VersionType.Testing;
-#elif DEBUG
-            VersionType.Development;
-#else
-            VersionType.Release; 
-#endif
-    }
 
     public override void _EnterTree()
     {
+        logger.Information(Properties.Resource.BuildDate);
+        logger.Information(BuildDefined.FullVersion);
         Instance = this;
+        GD.Print("Preload JsonLib! " + (JsonLibConverters.ModdedConverters.Count == 1));
         SceneManager = new();
         GodotResourceManager = new();
 #if MODDABLE
@@ -65,7 +44,7 @@ public partial class GameManager : Node
 #if CLIENT || GAME
         UIManager = new();
 #endif
-        GD.Print(Properties.Resource.BuildDate);
+        DRM_Manager = new();
     }
 
     public override void _Ready()
@@ -86,6 +65,13 @@ public partial class GameManager : Node
 
     private void ModManagerInstance_AllModsLoaded()
     {
+        DRM_Manager.Init();
+        if (DRM_Manager.DRM.DRMType == EIV_Common.DRM.DRMType.Unknown)
+        {
+            logger.Error("The DRM set to unknown. We dont know what DRM you using. Please use EIV_DRM.Free solution!");
+            Quit();
+        }
+
 #if SERVER
         var mw = SceneManager.GetPackedScene("MainWorld").Instantiate();
         this.CallDeferred("add_sibling", mw);

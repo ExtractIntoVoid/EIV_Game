@@ -1,17 +1,9 @@
-﻿using ExtractIntoVoid.Modules;
-using Godot;
+﻿using Godot;
 
 namespace ExtractIntoVoid.Physics;
 
-public partial class Player : CharacterBody3D
+public partial class Player : BasePlayer
 {
-    public int NetId;
-    // Nodes connected to it.
-
-    // add bones here, and maybe animations.
-    public Node HandlePoint;
-    public Camera3D Camera;
-
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
     // const stuffs
@@ -22,31 +14,6 @@ public partial class Player : CharacterBody3D
     // Export stuffs
     [Export]
     float MouseSensitivity = 3f;
-
-    // Modules and others
-    public PlayerModule PlayerModule;
-
-
-
-    public override void _EnterTree()
-    {
-        NetId = Name.ToString().ToInt();
-        SetMultiplayerAuthority(NetId);
-        GetNode<MultiplayerSynchronizer>("MSync").SetMultiplayerAuthority(NetId);
-
-    }
-
-    public override void _Ready()
-    {
-        Camera = GetNode<Camera3D>("Camera");
-        HandlePoint = GetNode("HandlePoint");
-        if (IsMultiplayerAuthority())
-        {
-            Camera.Current = true;
-            Input.MouseMode = Input.MouseModeEnum.Captured;
-        }
-        PlayerModule = new(this);
-    }
 
     public sealed override void _PhysicsProcess(double delta)
     {

@@ -8,9 +8,9 @@ public enum BuildType : byte
     Client,
 }
 
-public enum VersionType : byte
+public enum ReleaseType : byte
 {
-    Release,
+    Production,
     Testing,
     Development
 }

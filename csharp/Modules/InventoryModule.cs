@@ -1,28 +1,26 @@
 ﻿using EIV_Common.JsonStuff;
 using EIV_JsonLib.Interfaces;
-using ExtractIntoVoid.Items;
-using ExtractIntoVoid.Physics;
 using System.Collections.Generic;
 
 namespace ExtractIntoVoid.Modules
 {
     public class InventoryModule : IModule
     {
-        public PlayerModule Player;
+        public PlayerModule Module;
 
         public InventoryModule(PlayerModule playerModules)
         {
-            Player = playerModules;
+            Module = playerModules;
         }
 
         public List<IItem> Items { get; set; } = [];
 
         IItem CurrentItem = null;
-        UsableBase CurrentUsable = null;
-
 
         public void Select(int index)
         {
+            if (index > Items.Count)
+                return;
             CurrentItem = Items[index];
             Select(CurrentItem);
         }
@@ -31,15 +29,18 @@ namespace ExtractIntoVoid.Modules
         {
             if (selectedItem == null)
                 return;
-            
+            Module.InventoryNode.SelectItem(selectedItem);
         }
 
+        /// <summary>
+        /// Using the Selected Item
+        /// </summary>
         public void Use()
         {
             if (CurrentItem.Is<IUsable>())
-            {
-                Usable_Use();
-            }
+                Module.InventoryNode.Usable_Use();
+            if (CurrentItem.Is<IGun>())
+                Module.InventoryNode.Gun_Use();
         }
 
         /// <summary>
@@ -48,21 +49,6 @@ namespace ExtractIntoVoid.Modules
         public void Special_Action()
         {
 
-        }
-
-        void Usable_Use()
-        {
-            var usable = CurrentItem.As<IUsable>();
-            // replace herer with getting UsableBase from modding
-            UsableBase usable_base = new Adrenalin();
-            usable_base.UsableItem = usable;
-            usable_base.UsingStart();
-        }
-
-        void Gun_Use()
-        {
-            var gun = CurrentItem.As<IGun>();
-            gun.
         }
 
         public void Cancel()

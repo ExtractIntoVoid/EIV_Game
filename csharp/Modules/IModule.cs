@@ -1,6 +1,3 @@
-﻿namespace ExtractIntoVoid.Modules
-{
-    public interface IModule
-    {
-    }
-}
+﻿namespace ExtractIntoVoid.Modules;
+
+public interface IModule;

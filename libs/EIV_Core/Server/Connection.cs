@@ -85,7 +85,7 @@ public class Connection
         }
         var myNode = ResourceLoader.Load<PackedScene>(scene).Instantiate();
         myNode.Name = (Dict["id"].AsInt32()).ToString();
-        var player = myNode as Player;
+        var player = myNode as BasePlayer;
         if (player == null)
         {
             GD.PrintErr("myNode should be the player but not!");

@@ -7,6 +7,7 @@ public partial class MainMenu : Control
 	public override void _Ready()
 	{
 		GameManager.Instance.UIManager.LoadScreenStop();
+		GetNode<Label>("VersionLabel").Text = BuildDefined.FullVersion;
 	}
 
 	public void Play()
