@@ -12,4 +12,3 @@ gltf mesh export are always in subdirectory "mesh_gltf"
 
 mesh_renamer will have the first line the export needed file.
 then as a CSV it says what file rename to.
-

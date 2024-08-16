@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EIV_JsonLib", "libs\EIV_Jso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "..\TestApp\TestApp.csproj", "{46BF2AED-252D-45D8-8DA2-0CE3294A2645}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EIV_Common.MODAPI", "libs\EIV_Common\EIV_Common.MODAPI.csproj", "{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,18 @@ Global
 		{46BF2AED-252D-45D8-8DA2-0CE3294A2645}.ExportRelease|Any CPU.Build.0 = Release|Any CPU
 		{46BF2AED-252D-45D8-8DA2-0CE3294A2645}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46BF2AED-252D-45D8-8DA2-0CE3294A2645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.DebugClient|Any CPU.ActiveCfg = Debug|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.DebugClient|Any CPU.Build.0 = Debug|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.DebugServer|Any CPU.ActiveCfg = Debug|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.DebugServer|Any CPU.Build.0 = Debug|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.Release|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{F95C3E4B-34BD-4C55-AE54-5CC0382FEF39}.Release|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
