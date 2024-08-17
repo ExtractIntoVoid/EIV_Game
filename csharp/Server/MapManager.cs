@@ -1,6 +1,6 @@
 ﻿#if SERVER || GAME
 using EIV_Common;
-using ExtractIntoVoid.Extensions;
+using EIV_Common.Extensions;
 using ExtractIntoVoid.Managers;
 using Godot;
 using System.Collections.Generic;
