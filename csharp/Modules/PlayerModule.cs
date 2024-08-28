@@ -12,8 +12,8 @@ namespace ExtractIntoVoid.Modules
 
         public HealthModule Health;
 
-        public BaseChangingModule Energy;
-        public BaseChangingModule Hydration;
+        public BaseChangingModule<int> Energy; // should be double?
+        public BaseChangingModule<int> Hydration;
 
         public InventoryNodeModule InventoryNode;
 

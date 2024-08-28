@@ -13,7 +13,7 @@ namespace ExtractIntoVoid.Modules
     {
         public PlayerModule PlayerModule;
 
-        List<EffectBase> Effects = [];
+        internal List<EffectBase> Effects = [];
 
         public EffectModule(PlayerModule playerModule)
         {
@@ -37,9 +37,8 @@ namespace ExtractIntoVoid.Modules
             var effect = EffectMaker.MakeNewEffect(sideEffect.EffectName);
             if (effect == null)
                 return;
-            bool ret = effect.AppliedFrom.Contains(item.BaseID) || effect.AppliedFrom.Contains(item.ItemType);
             // Cannot Apply from it.
-            if (!ret)
+            if (!effect.AppliedFrom.Contains(item.BaseID) || effect.AppliedFrom.Contains(item.ItemType))
                 return;
 
             if (effect.Strength.Max < sideEffect.EffectStrength)
@@ -63,5 +62,9 @@ namespace ExtractIntoVoid.Modules
                 return;
             effect.StopEffect();
         }
+
+        public List<string> GetEffectNames() => Effects.Select(x=>x.CoreEffect.EffectID).ToList();
+
+
     }
 }

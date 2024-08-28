@@ -2,7 +2,7 @@
 
 namespace ExtractIntoVoid.Modules
 {
-    public class HealthModule : BaseChangingModule
+    public class HealthModule : BaseChangingModule<int>
     {
         public HealthModule(int minValue, int maxValue) : base(minValue, maxValue)
         {

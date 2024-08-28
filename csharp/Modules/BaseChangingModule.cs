@@ -1,6 +1,8 @@
-﻿namespace ExtractIntoVoid.Modules
+﻿using System.Numerics;
+
+namespace ExtractIntoVoid.Modules
 {
-    public class BaseChangingModule : IModule
+    public class BaseChangingModule<T> : IModule where T : IMinMaxValue<T>
     {
         public BaseChangingModule(int minValue, int maxValue)
         {

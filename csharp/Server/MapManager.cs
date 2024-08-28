@@ -14,7 +14,7 @@ namespace ExtractIntoVoid.Server
         public static List<string> Maps = new List<string>();
         public static void LoadMapList()
         {
-            var PlayableMaps = ConfigINI.Read(GameManager.INI, "Maps", "PlayableMaps");
+            var PlayableMaps = ConfigINI.Read(BuildDefined.INI, "Maps", "PlayableMaps");
             if (PlayableMaps.Contains(","))
                 Maps.AddRange(PlayableMaps.Split(","));
             else
@@ -26,7 +26,7 @@ namespace ExtractIntoVoid.Server
             //  If there is no map, we just simply return empty.
             if (Maps.Count == 0)
                 return string.Empty;
-            var RandomizeMaps = ConfigINI.Read<int>(GameManager.INI, "Maps", "RandomizeMaps");
+            var RandomizeMaps = ConfigINI.Read<int>(BuildDefined.INI, "Maps", "RandomizeMaps");
             if (RandomizeMaps == 0)
             {
                 return Maps.First();

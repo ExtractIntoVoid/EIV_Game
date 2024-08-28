@@ -141,7 +141,6 @@ grow_vertical = 2
 text = "BUTTON"
 
 [node name="Button Settings" type="VBoxContainer" parent="MarginContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 45
 
@@ -266,22 +265,22 @@ text = "BUTTON"
 layout_mode = 1
 offset_left = 615.0
 offset_top = 650.0
-offset_right = 667.0
-offset_bottom = 681.0
+offset_right = 675.0
+offset_bottom = 685.0
 text = "Apply"
 
 [node name="CancelButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 484.0
-offset_top = 643.0
-offset_right = 544.0
-offset_bottom = 674.0
+offset_left = 480.0
+offset_top = 650.0
+offset_right = 540.0
+offset_bottom = 685.0
 text = "Cancel"
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 724.0
-offset_top = 647.0
-offset_right = 769.0
-offset_bottom = 678.0
+offset_left = 750.0
+offset_top = 650.0
+offset_right = 810.0
+offset_bottom = 685.0
 text = "Back"

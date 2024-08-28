@@ -1,4 +1,5 @@
-﻿using EIV_JsonLib.Interfaces;
+﻿using EIV_Common.Extensions;
+using EIV_JsonLib.Interfaces;
 using ExtractIntoVoid.Items;
 using ExtractIntoVoid.Managers;
 using ExtractIntoVoid.Physics;
@@ -47,7 +48,7 @@ public partial class InventoryNodeModule : Node, IModule
     [Rpc(mode: MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferChannel = 2, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     private void ChangeHandScene(int id, string scene)
     {
-        GD.Print("ChangeHandScene!. " + id + " " + scene);
+        GD.Print($"{nameof(ChangeHandScene)}! id: {id} scene: {scene}");
         var playerNode = this.GetTree().GetNodesInGroup("Player").Where(x => x.Name == id.ToString()).FirstOrDefault();
         if (playerNode == null)
         {
@@ -58,7 +59,7 @@ public partial class InventoryNodeModule : Node, IModule
         if (scene == string.Empty)
         {
             GD.Print("freeing HandlePoint!.");
-            Rpc("Client_ClearHandScene", id, playerNode.GetPath());
+            Rpc(nameof(Client_ClearHandScene), id, playerNode.GetPath());
             foreach (var item in player.HandlePoint.GetChildren())
             {
                 item.QueueFree();
@@ -68,9 +69,9 @@ public partial class InventoryNodeModule : Node, IModule
         var node = GameManager.Instance.SceneManager.GetPackedScene(scene).Instantiate<RigidBody3D>();
         node.SetMultiplayerAuthority(id);
         player.HandlePoint.AddChild(node);
-        GD.Print("successfull!.");
         CurrentItemNode = node;
-        Rpc("Client_ChangeHandScene", id, scene, playerNode.GetPath());
+        GD.Print("successfull!.");
+        Rpc(nameof(Client_ChangeHandScene), id, scene, playerNode.GetPath());
     }
 
     [Rpc(mode: MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferChannel = 2, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

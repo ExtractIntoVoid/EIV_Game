@@ -34,12 +34,6 @@ namespace ExtractIntoVoid.Items
             }
         }
 
-        public void SetMP(int NetId)
-        {
-            SetMultiplayerAuthority(NetId);
-            GetNode<MultiplayerSynchronizer>("MSync").SetMultiplayerAuthority(NetId);
-        }
-
         public virtual void Shoot()
         {
             if (Gun.Magazine == null)
