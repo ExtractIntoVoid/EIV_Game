@@ -8,6 +8,8 @@ namespace ExtractIntoVoid.Client;
 
 public class MasterServerManager
 {
+    public static string JWTToken => Authenticate();
+
     public static bool CanConnect => ConfigINI.Read<bool>(BuildDefined.INI, "MasterServer", "ConnectToMasterServer");
 
     public static string MasterServerIP => ConfigINI.Read(BuildDefined.INI, "MasterServer", "MasterServerURL");

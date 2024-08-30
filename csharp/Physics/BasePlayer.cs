@@ -8,6 +8,8 @@ public abstract partial class BasePlayer : CharacterBody3D
     public int NetId { get; set; }
 
     public string PlayerName { get; set; }
+
+    public string UserId { get; set; }
     // Nodes connected to it.
 
     // add bones here, and maybe animations.

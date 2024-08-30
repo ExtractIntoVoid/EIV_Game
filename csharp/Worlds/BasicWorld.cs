@@ -6,8 +6,18 @@ using static ExtractIntoVoid.Modding.WorldEvents;
 
 namespace ExtractIntoVoid.Worlds;
 
-public partial class BasicWorld : Node3D
+public abstract partial class BasicWorld : Node3D
 {
+    /// <summary>
+    /// Map Name.
+    /// </summary>
+    public abstract string MapName { get; }
+
+    /// <summary>
+    /// Minimum players when the game should start.
+    /// </summary>
+    public abstract int MinPlayerCount { get; }
+
     public List<Node3D> SpawnPoints = new();
 
     public override void _Ready()

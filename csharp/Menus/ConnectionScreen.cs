@@ -1,13 +1,18 @@
 #if CLIENT || GAME
+using EIV_Common;
+using EIV_Common.InfoJSON;
 using ExtractIntoVoid.Managers;
 using ExtractIntoVoid.Worlds;
 using Godot;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace ExtractIntoVoid.Menus;
 
 public partial class ConnectionScreen : Control
 {
 	VBoxContainer ServerList;
+    InputScene InputScene;
     public struct ServerData 
     {
         public string Address;
@@ -20,51 +25,23 @@ public partial class ConnectionScreen : Control
     }
     public override void _Ready()
 	{
-        GameManager.Instance.UIManager.LoadScreenStop();
         ServerList = GetNode<VBoxContainer>("%ServerList");
-        CreateServer(new()
+        GameManager.Instance.UIManager.LoadScreenStop();
+        var lobbyList = ConfigINI.Read(BuildDefined.INI, "Lobby", "OfflineLobbyList");
+        if (lobbyList.Contains("{EXE}"))
         {
-            Address = "192.168.1.30",
-            Port = 3223,
-            ServerName = "This should be hidden!",
-            ServerInfo = "AAAAAAAAAAAAAAAAAAAAAAAA",
-            MapName = "YEETWORLD",
-            PlayerCount = 13,
-            MaxPlayerCount = 2,
-        });
-        CreateServer(new()
-        { 
-            Address = "192.168.1.50",
-            Port = 7878,
-            ServerName = "SlejmUr's Official Server - Vanilla",
-            ServerInfo = "Vanilla, No modification.",
-            MapName = "TestWorld",
-            PlayerCount = 0,
-            MaxPlayerCount = 100,
-        });
-        CreateServer(new()
+            lobbyList.Replace("{EXE}", Directory.GetCurrentDirectory());
+        }
+        if (lobbyList.Contains("{GAMEDATA}"))
         {
-            Address = "192.168.1.50",
-            Port = 8889,
-            ServerName = "SlejmUr's Official Server - Modded",
-            ServerInfo = "Modded. Contains 1.5x big every weapon. Initial Gear P90 and AWP.\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            MapName = "TestWorld",
-            PlayerCount = 66,
-            MaxPlayerCount = 100,
-        });
-
-        for (int i = 0; i < 5; i++)
-            CreateServer(new()
-            {
-                Address = "192.168.1.50",
-                Port = 8889,
-                ServerName = "make it overflow to scroll!",
-                ServerInfo = "Modded. Contains 1.5x big every weapon. Initial Gear P90 and AWP.\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                MapName = "TestWorld",
-                PlayerCount = 66,
-                MaxPlayerCount = 100,
-            });
-
+            lobbyList.Replace("{GAMEDATA}", "user://");
+            lobbyList = ProjectSettings.GlobalizePath(lobbyList);
+        }
+        var ipList = File.ReadAllLines(lobbyList);
+        foreach (var item in ipList)
+        {
+            CallbackButton(item);
+        }
     }
 
 	public void CreateServer(ServerData data)
@@ -110,6 +87,50 @@ public partial class ConnectionScreen : Control
         control.AddChild(ServerPlayerCount);
         control.AddChild(connectButton);
         ServerList.AddChild(control);
+    }
+
+
+
+    public void AddServerManually()
+    {
+        if (!GameManager.Instance.SceneManager.TryGetPackedScene("InputScene", out var scene))
+            return; // Display error ?
+        InputScene = scene.Instantiate<InputScene>();
+        InputScene.Question.Text = "Please enter lobby IP below with ports!";
+        InputScene.ShowInputOnly();
+        InputScene.ButtonCallback(null, null, CallbackButton);
+        this.AddChild(InputScene);
+    }
+
+    public void CallbackButton(string answer)
+    {
+        if (InputScene != null)
+        {
+            InputScene.QueueFree();
+            InputScene = null;
+        }
+        if (string.IsNullOrEmpty(answer))
+            return;
+        // GET to lobby.
+        System.Net.Http.HttpClient httpClient = new();
+        var rsp = httpClient.GetAsync(answer + "/EIV_Lobby/About").Result;
+        if (rsp.StatusCode != System.Net.HttpStatusCode.OK)
+            return;
+        var result = rsp.Content.ReadAsStringAsync().Result;
+        var serverInfo = JsonConvert.DeserializeObject<ServerInfoJSON>(result);
+        if (serverInfo == null) 
+            return;
+        ServerData serverData = new()
+        { 
+            Address = serverInfo.Connection.ServerAddress,
+            Port = serverInfo.Connection.ServerPort,
+            MapName = serverInfo.Game.Map,
+            MaxPlayerCount = serverInfo.Game.MaxPlayerNumbers,
+            PlayerCount = serverInfo.Game.PlayerNumbers,
+            ServerInfo = serverInfo.Server.ServerDescription,
+            ServerName = serverInfo.Server.ServerName,
+        };
+        CreateServer(serverData);
     }
 }
 #endif

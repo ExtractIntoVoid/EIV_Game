@@ -1,6 +1,6 @@
 ﻿#if SERVER
+using EIV_Common.Extensions;
 using ExtractIntoVoid;
-using ExtractIntoVoid.Extensions;
 using ExtractIntoVoid.Managers;
 using ExtractIntoVoid.Modding;
 using ExtractIntoVoid.Modding.BaseEvents;

@@ -67,8 +67,11 @@ public partial class ModManager : Node
 #endif
             Hashes = new()
         };
-        MainLoader.LoadMod(Path.Combine(modDir, modData.AssemblyName));
-        ProjectSettings.LoadResourcePack(Path.Combine(modDir, modData.ResourcePack));
+
+        if (File.Exists(Path.Combine(modDir, modData.AssemblyName)))
+            MainLoader.LoadMod(Path.Combine(modDir, modData.AssemblyName));
+        if (File.Exists(Path.Combine(modDir, modData.ResourcePack)))
+            ProjectSettings.LoadResourcePack(Path.Combine(modDir, modData.ResourcePack));
 
         Mods.Add(modjson.Name, modData);
     }

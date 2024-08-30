@@ -100,6 +100,7 @@ public partial class MainWorld : Node
         Multiplayer.MultiplayerPeer = multiplayerPeer;
         Multiplayer.PeerDisconnected += MultiplayerPeer_PeerDisconnected;
         Multiplayer.PeerConnected += MultiplayerPeer_PeerConnected;
+        V2Manager.TriggerEvent(new OnServerStarted(this));
     }
 #endif
 #if CLIENT || GAME
