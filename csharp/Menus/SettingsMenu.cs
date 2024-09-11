@@ -4,13 +4,29 @@ using Godot;
 
 public partial class SettingsMenu : Control
 {
-	public override void _Ready()
+    // menubutton and label lists
+    [Export]
+    public MenuButton WindowModeMenuButton;
+
+    [Export]
+    public Label WindowModeMenuLabel;
+
+
+
+
+    public override void _Ready()
 	{
 		GameManager.Instance.UIManager.LoadScreenStop();
-	}
+        WindowModeMenuButton.GetPopup().IdPressed += SettingsMenu_IdPressed;
 
+    }
 
-	public void Save()
+    public override void _ExitTree()
+    {
+        WindowModeMenuButton.GetPopup().IdPressed -= SettingsMenu_IdPressed;
+    }
+
+    public void Cancel()
 	{
 
 	}
@@ -19,7 +35,8 @@ public partial class SettingsMenu : Control
     {
         this.GetWindow().Borderless = false;
         this.GetWindow().Exclusive = false;
-        this.GetWindow().Size = new Vector2I(1920,2010);  
+        this.GetWindow().Size = new Vector2I(1920,2010);
+        //AudioServer.SetBusVolumeDb(0,0);
     }
 
     public void Back()
@@ -28,6 +45,13 @@ public partial class SettingsMenu : Control
     }
 
     #region X
+
+    private void SettingsMenu_IdPressed(long id)
+    {
+        WindowModeMenuLabel.Text = WindowModeMenuButton.GetPopup().GetItemText((int)id);
+    }
+
+
     #endregion
 }
 #endif

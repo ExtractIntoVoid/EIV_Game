@@ -26,7 +26,6 @@ public partial class ConnectionScreen : Control
     public override void _Ready()
 	{
         ServerList = GetNode<VBoxContainer>("%ServerList");
-        GameManager.Instance.UIManager.LoadScreenStop();
         var lobbyList = ConfigINI.Read(BuildDefined.INI, "Lobby", "OfflineLobbyList");
         if (lobbyList.Contains("{EXE}"))
         {
@@ -42,6 +41,7 @@ public partial class ConnectionScreen : Control
         {
             CallbackButton(item);
         }
+        GameManager.Instance.UIManager.LoadScreenStop();
     }
 
 	public void CreateServer(ServerData data)

@@ -1,12 +1,17 @@
-[gd_scene format=3 uid="uid://camb27xjx4gw3"]
+[gd_scene load_steps=2 format=3 uid="uid://camb27xjx4gw3"]
 
-[node name="Settings" type="Control"]
+[ext_resource type="Script" path="res://csharp/Menus/SettingsMenu.cs" id="1_onjc4"]
+
+[node name="Settings" type="Control" node_paths=PackedStringArray("WindowModeMenuButton", "WindowModeMenuLabel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_onjc4")
+WindowModeMenuButton = NodePath("MarginContainer/Visual Settings/Window Mode/MenuButton")
+WindowModeMenuLabel = NodePath("MarginContainer/Visual Settings/Window Mode/Label")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -28,10 +33,10 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "Visual Settings"
 
-[node name="Control" type="Control" parent="MarginContainer/Visual Settings"]
+[node name="Borderless" type="Control" parent="MarginContainer/Visual Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Visual Settings/Control"]
+[node name="Label" type="Label" parent="MarginContainer/Visual Settings/Borderless"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -40,26 +45,26 @@ offset_top = -11.5
 offset_right = 233.0
 offset_bottom = 11.5
 grow_vertical = 2
-text = "aaaaaaaaaaaaaaaaaaaaaaaaa"
+text = "Borderless"
 
-[node name="Button" type="Button" parent="MarginContainer/Visual Settings/Control"]
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/Visual Settings/Borderless"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -74.0
+offset_left = -81.0
 offset_top = -15.5
 offset_bottom = 15.5
 grow_horizontal = 0
 grow_vertical = 2
-text = "BUTTON"
+text = "Enable"
 
-[node name="Control2" type="Control" parent="MarginContainer/Visual Settings"]
+[node name="Exclusive" type="Control" parent="MarginContainer/Visual Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Visual Settings/Control2"]
+[node name="Label" type="Label" parent="MarginContainer/Visual Settings/Exclusive"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -68,26 +73,26 @@ offset_top = -11.5
 offset_right = 233.0
 offset_bottom = 11.5
 grow_vertical = 2
-text = "aaaaaaaaaaaaaaaaaaaaaaaaa"
+text = "Exclusive"
 
-[node name="Button" type="Button" parent="MarginContainer/Visual Settings/Control2"]
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/Visual Settings/Exclusive"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -74.0
+offset_left = -81.0
 offset_top = -15.5
 offset_bottom = 15.5
 grow_horizontal = 0
 grow_vertical = 2
-text = "BUTTON"
+text = "Enable"
 
-[node name="Control3" type="Control" parent="MarginContainer/Visual Settings"]
+[node name="Window Mode" type="Control" parent="MarginContainer/Visual Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Visual Settings/Control3"]
+[node name="Label" type="Label" parent="MarginContainer/Visual Settings/Window Mode"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -96,21 +101,32 @@ offset_top = -11.5
 offset_right = 233.0
 offset_bottom = 11.5
 grow_vertical = 2
-text = "aaaaaaaaaaaaaaaaaaaaaaaaa"
+text = "Window Mode"
 
-[node name="Button" type="Button" parent="MarginContainer/Visual Settings/Control3"]
+[node name="MenuButton" type="MenuButton" parent="MarginContainer/Visual Settings/Window Mode"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -74.0
+offset_left = -90.0
 offset_top = -15.5
 offset_bottom = 15.5
 grow_horizontal = 0
 grow_vertical = 2
-text = "BUTTON"
+text = "Windowed
+"
+item_count = 3
+popup/item_0/text = "Windowed"
+popup/item_0/checkable = 2
+popup/item_0/checked = true
+popup/item_1/text = "Fullscreen"
+popup/item_1/checkable = 2
+popup/item_1/id = 1
+popup/item_2/text = "ExclusiveFullscreen"
+popup/item_2/checkable = 2
+popup/item_2/id = 2
 
 [node name="Control4" type="Control" parent="MarginContainer/Visual Settings"]
 layout_mode = 2
@@ -141,6 +157,7 @@ grow_vertical = 2
 text = "BUTTON"
 
 [node name="Button Settings" type="VBoxContainer" parent="MarginContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 45
 
@@ -284,3 +301,7 @@ offset_top = 650.0
 offset_right = 810.0
 offset_bottom = 685.0
 text = "Back"
+
+[connection signal="pressed" from="ApplyButton" to="." method="Apply"]
+[connection signal="pressed" from="CancelButton" to="." method="Cancel"]
+[connection signal="pressed" from="BackButton" to="." method="Back"]
