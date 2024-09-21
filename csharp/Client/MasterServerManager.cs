@@ -1,5 +1,6 @@
 ﻿using EIV_Common;
 using EIV_Common.InfoJSON;
+using EIV_Common.Platform;
 using ExtractIntoVoid.Managers;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -19,15 +20,15 @@ public class MasterServerManager
         if (!CanConnect)
             return string.Empty;
 
-        var drm = GameManager.Instance.DRM_Manager.DRM;
-        var user = drm.GetUser();
+        IPlatform platform = GameManager.Instance.Platform_Manager.Platform;
+        IUser user = platform.GetUser();
         if (user == null)
             return string.Empty;
 
         HttpClient httpClient = new();
         UserInfoJSON userInfoJSON = new UserInfoJSON()
         {
-            DRM = drm.DRMType,
+            Platform = platform.PlatformType,
             UserId = user.GetUserID(),
             Name = user.GetUserName(),
             Version = BuildDefined.Version.ToString(),

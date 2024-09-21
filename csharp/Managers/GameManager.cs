@@ -20,7 +20,7 @@ public partial class GameManager : Node
     public Client.UIManager UIManager { get; set; }
 #endif
 
-    public DRMManager DRM_Manager { get; set; }
+    public PlatformManager Platform_Manager { get; set; }
 
 
 
@@ -41,7 +41,7 @@ public partial class GameManager : Node
 #if CLIENT || GAME
         UIManager = new();
 #endif
-        DRM_Manager = new();
+        Platform_Manager = new();
     }
 
     public override void _Ready()
@@ -62,10 +62,10 @@ public partial class GameManager : Node
 
     private void ModManagerInstance_AllModsLoaded()
     {
-        DRM_Manager.Init();
-        if (DRM_Manager.DRM.DRMType == EIV_Common.DRM.DRMType.Unknown)
+        Platform_Manager.Init();
+        if (Platform_Manager.Platform.PlatformType == EIV_Common.Platform.PlatformType.Unknown)
         {
-            logger.Error("The DRM set to unknown. We dont know what DRM you using. Please use EIV_DRM.Free solution!");
+            logger.Error("The Platform set to unknown. We dont know what Platform you using. Please use EIV_Platform.Free solution!");
             Quit();
         }
 
