@@ -1,53 +1,67 @@
-﻿using System.Numerics;
+﻿using Godot;
+using System.Numerics;
 
-namespace ExtractIntoVoid.Modules
+namespace ExtractIntoVoid.Modules;
+
+public partial class BaseChangingModule<T> : Node, IModule where T : IMinMaxValue<T>, INumber<T>
 {
-    public class BaseChangingModule<T> : IModule where T : IMinMaxValue<T>
+    public BaseChangingModule()
     {
-        public BaseChangingModule(int minValue, int maxValue)
-        {
-            MinValue = minValue;
-            MaxValue = maxValue;
-            CurrentValue = maxValue;
-        }
+        MinValue = T.MinValue;
+        MaxValue = T.MaxValue;
+        CurrentValue = T.MaxValue;
+    }
 
-        public virtual int MinValue { get; set; }
-        public virtual int MaxValue { get; set; }
-        public virtual int CurrentValue { get; set; }
+    public BaseChangingModule(T minValue, T maxValue)
+    {
+        MinValue = minValue;
+        MaxValue = maxValue;
+        CurrentValue = maxValue;
+    }
 
-        public virtual void AddValue(int value, bool EnableOverflow)
+    public BaseChangingModule(T minValue, T maxValue, T currentValue)
+    {
+        MinValue = minValue;
+        MaxValue = maxValue;
+        CurrentValue = currentValue;
+    }
+
+    public virtual T MinValue { get; set; }
+    public virtual T MaxValue { get; set; }
+    public virtual T CurrentValue { get; set; }
+
+    public virtual void AddValue(T value, bool EnableOverflow)
+    {
+        if (value < T.Zero)
+            return;
+        var newValue = CurrentValue + value;
+        if (newValue > this.MaxValue)
         {
-            if (value < 0)
-                return;
-            var newValue = CurrentValue + value;
-            if (newValue > this.MaxValue)
+            if (EnableOverflow)
             {
-                if (EnableOverflow)
-                {
-                    this.MaxValue = newValue;
-                    this.CurrentValue = newValue;
-                }
-            }
-            else
-            {
+                this.MaxValue = newValue;
                 this.CurrentValue = newValue;
             }
         }
-
-        public virtual void RemoveValue(int value) 
+        else
         {
-            if (value < 0)
-                return; 
-            this.CurrentValue -= value;
-            if (this.CurrentValue == this.MinValue)
-            {
-                OnMinimum();
-            }
+            this.CurrentValue = newValue;
         }
+    }
 
-        public virtual void OnMinimum()
+    public virtual void RemoveValue(T value) 
+    {
+        if (value < T.Zero)
+            return; 
+        this.CurrentValue -= value;
+        if (this.CurrentValue == this.MinValue)
         {
-
+            OnMinimum();
         }
+    }
+
+    public virtual void OnMinimum()
+    {
+
     }
 }

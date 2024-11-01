@@ -11,12 +11,11 @@ using System.Linq;
 
 namespace ExtractIntoVoid.Items
 {
-    public abstract partial class GunBase : RigidBody3D
+    public abstract partial class GunBase : ItemBase
     {
         Marker3D BulletSpawner;
         public virtual IGun Gun { get; set; }
         public virtual List<IAmmo> Ammos { get; set; } = [];
-        public PlayerModule Modules;
 
         public bool IsJammed { get; internal set; } = false;
         public override void _Ready()

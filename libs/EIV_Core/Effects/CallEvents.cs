@@ -19,7 +19,7 @@ namespace EIV_Core.Effects
                 return;
 
             var cctor = type.GetConstructors()[0];
-            var effectBase = (EffectBase)cctor.Invoke([makeEffectBase.CoreEfect, makeEffectBase.PlayerModule]);
+            var effectBase = (EffectBase)cctor.Invoke([makeEffectBase.CoreEfect, makeEffectBase.Node]);
             if (effectBase == null) 
                 return;
 

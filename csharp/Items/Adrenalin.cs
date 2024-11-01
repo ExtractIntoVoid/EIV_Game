@@ -1,5 +1,6 @@
 ﻿using EIV_Common.JsonStuff;
 using EIV_JsonLib.Interfaces;
+using ExtractIntoVoid.Modules;
 
 namespace ExtractIntoVoid.Items
 {
@@ -14,10 +15,10 @@ namespace ExtractIntoVoid.Items
         {
             var ihealing = UsableItem.As<IHealing>();
             base.OnUsingFinished();
-            Modules.Inventory.Items.Remove(UsableItem);
-            Modules.Health.Heal(ihealing.HealAmount, true);
+            this.InventoryModule.Items.Remove(UsableItem);
+            this.Player.GetModuleNode<HealthModule>().Heal(ihealing.HealAmount, true);
             //UsableItem
-            Modules.Effect.ApplyEffectFromItem(UsableItem);
+            this.Player.GetModuleNode<EffectModule>().ApplyEffectFromItem(UsableItem);
         }
 
     }

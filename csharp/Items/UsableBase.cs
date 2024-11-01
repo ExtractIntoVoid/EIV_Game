@@ -1,12 +1,10 @@
 ﻿using EIV_JsonLib.Interfaces;
-using ExtractIntoVoid.Modules;
 using Godot;
 
 namespace ExtractIntoVoid.Items
 {
-    public abstract partial class UsableBase : RigidBody3D
+    public abstract partial class UsableBase : ItemBase
     {
-        public PlayerModule Modules;
         public IUsable UsableItem { get; set; }
         bool IsInUse = false;
         decimal UseTime = 0;
@@ -41,6 +39,7 @@ namespace ExtractIntoVoid.Items
         {
             IsInUse = false;
             UsableItem.CanUse = false;
+            InventoryModule.FinishedUsing();
         }
 
         public override void _Process(double delta)

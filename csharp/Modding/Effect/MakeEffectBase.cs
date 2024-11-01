@@ -1,21 +1,17 @@
 ﻿using EIV_JsonLib.Interfaces;
 using ExtractIntoVoid.Effects;
-using ExtractIntoVoid.Modules;
-using ModAPI.V2;
+using Godot;
 
-namespace ExtractIntoVoid.Modding.Effect
+namespace ExtractIntoVoid.Modding.Effect;
+
+public class MakeEffectBase : NodeEvent, IDisableCoreEvent
 {
-    public class MakeEffectBase : BaseEvent, IDisableCoreEvent
+    public MakeEffectBase(Node node, IEffect coreEfect) : base(node)
     {
-        public MakeEffectBase(PlayerModule playerModule, IEffect coreEfect) 
-        {
-            PlayerModule = playerModule;
-            CoreEfect = coreEfect;
-        }
-
-        public bool Disable { get; set; }
-        public PlayerModule PlayerModule { get; set; }
-        public IEffect CoreEfect { get; set; }
-        public EffectBase EffectBase { get; set; }
+        CoreEfect = coreEfect;
     }
+
+    public bool Disable { get; set; }
+    public IEffect CoreEfect { get; set; }
+    public EffectBase EffectBase { get; set; }
 }
