@@ -74,5 +74,7 @@ public partial class ModManager : Node
             ProjectSettings.LoadResourcePack(Path.Combine(modDir, modData.ResourcePack));
 
         Mods.Add(modjson.Name, modData);
+        // Initializing the mods
+        ModAPI.V2.V2Manager.TriggerEvent(new InitEvent());
     }
 }

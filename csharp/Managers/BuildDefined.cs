@@ -37,11 +37,14 @@ public static class BuildDefined
 #endif
     }
 
+
+    public static string INI = Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()),
 #if GAME
-    public static string INI = Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()), "Game.ini");
+        "Game.ini"
 #elif SERVER
-    public static string INI = Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()), "Server.ini");
+        "Server.ini"
 #elif CLIENT
-    public static string INI = Path.Combine(Path.GetDirectoryName(OS.GetExecutablePath()), "Client.ini");
+        "Client.ini"
 #endif
+        );
 }

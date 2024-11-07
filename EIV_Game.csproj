@@ -8,13 +8,13 @@
     <Configurations>Debug;ExportDebug;ExportRelease;DebugClient;DebugServer</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>$(DefineConstants);DRMFREE;GAME;MODDABLE;TESTING</DefineConstants>
+    <DefineConstants>$(DefineConstants);GAME;TESTING</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='DebugServer'">
-    <DefineConstants>$(DefineConstants);DRMFREE;SERVER;MODDABLE;TESTING</DefineConstants>
+    <DefineConstants>$(DefineConstants);SERVER;TESTING</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='DebugClient'">
-    <DefineConstants>$(DefineConstants);DRMFREE;CLIENT;MODDABLE;TESTING</DefineConstants>
+    <DefineConstants>$(DefineConstants);CLIENT;TESTING</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <GodotExportConstants>GODOT_EXPORT</GodotExportConstants>

@@ -18,10 +18,13 @@ public abstract partial class EffectBase : Node
         ParentNode = parentNode;
     }
 
+    public virtual void StartEffect()
+    {
+        TimeCoroutine = CoroutineWorkerNode.StartCoroutine(TimeStuff(CoreEffect.Time.Initial, CoreEffect.Strength.Min), CoroutineType.Process);
+    }
+
     public virtual void StartEffect(double Seconds, int Strength)
     {
-        if (TimeCoroutine == null)
-            return;
         TimeCoroutine = CoroutineWorkerNode.StartCoroutine(TimeStuff(Seconds, Strength), CoroutineType.Process);
     }
 

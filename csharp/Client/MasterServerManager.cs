@@ -15,6 +15,8 @@ public class MasterServerManager
 
     public static string MasterServerIP => ConfigINI.Read(BuildDefined.INI, "MasterServer", "MasterServerURL");
 
+    const string AuthURL = "/EIV_Master/Users/Authenticate";
+
     public static string Authenticate()
     {
         if (!CanConnect)
@@ -33,8 +35,7 @@ public class MasterServerManager
             Name = user.GetUserName(),
             Version = BuildDefined.Version.ToString(),
         };
-        StringContent content = new(JsonConvert.SerializeObject(userInfoJSON));
-        var rsp = httpClient.PostAsync(MasterServerIP + "/EIV_Master/Users/Authenticate", content).Result;
+        var rsp = httpClient.PostAsync(MasterServerIP + AuthURL, new StringContent(JsonConvert.SerializeObject(userInfoJSON))).Result;
         if (rsp.StatusCode != System.Net.HttpStatusCode.OK)
             return string.Empty;
         return rsp.Content.ReadAsStringAsync().Result;

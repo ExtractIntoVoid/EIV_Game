@@ -4,7 +4,7 @@ using Godot;
 
 namespace ExtractIntoVoid.Items;
 
-public abstract partial class ItemBase : RigidBody3D
+public abstract partial class InventoryItemBase : RigidBody3D
 {
     public InventoryModule InventoryModule { get; set; }
     public BasePlayer Player { get; set; }

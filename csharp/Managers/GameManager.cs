@@ -12,9 +12,7 @@ public partial class GameManager : Node
     public static GameManager Instance { get; set; }
     public SceneManager SceneManager { get; set; }
     public GodotResourceManager GodotResourceManager { get; set; }
-#if MODDABLE
     public ModManager ModManagerInstance { get; set; }
-#endif
 
 #if CLIENT || GAME
     public Client.UIManager UIManager { get; set; }
@@ -34,10 +32,8 @@ public partial class GameManager : Node
         GD.Print("Preload JsonLib! " + (JsonLibConverters.ModdedConverters.Count == 1));
         SceneManager = new();
         GodotResourceManager = new();
-#if MODDABLE
         ModManagerInstance = new();
         Nodes.Add(ModManagerInstance);
-#endif
 #if CLIENT || GAME
         UIManager = new();
 #endif
@@ -52,11 +48,7 @@ public partial class GameManager : Node
         {
             this.CallDeferred("add_sibling", item);
         }
-#if MODDABLE
         ModManagerInstance.AllModsLoaded += ModManagerInstance_AllModsLoaded;
-#else
-        ModManagerInstance_AllModsLoaded();
-#endif
         
     }
 

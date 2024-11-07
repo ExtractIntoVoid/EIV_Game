@@ -32,6 +32,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 // ModAPI.
-#if MODDABLE
 [assembly: ModAPI.ModAPIType(ModAPI.ModAPIEnum.All)]
-#endif

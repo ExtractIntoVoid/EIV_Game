@@ -17,6 +17,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("0c4e0e38-30be-413c-82e5-609d2003faf2")]
 
 // ModAPI.
-#if MODDABLE
 [assembly: ModAPI.ModAPIType(ModAPI.ModAPIEnum.All)]
-#endif

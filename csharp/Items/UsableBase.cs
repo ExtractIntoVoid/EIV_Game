@@ -1,67 +1,76 @@
 ﻿using EIV_JsonLib.Interfaces;
 using Godot;
 
-namespace ExtractIntoVoid.Items
+namespace ExtractIntoVoid.Items;
+
+public abstract partial class UsableBase : InventoryItemBase
 {
-    public abstract partial class UsableBase : ItemBase
+    AnimationPlayer Animation;
+    public IUsable UsableItem { get; set; }
+    bool IsInUse = false;
+    decimal UseTime = 0;
+
+    public UsableBase() : base()
     {
-        public IUsable UsableItem { get; set; }
-        bool IsInUse = false;
-        decimal UseTime = 0;
+        if (HasNode("Animation"))
+            Animation = GetNode<AnimationPlayer>("Animation");
+        Animation = null;
+    }
 
-        public virtual void UsingStart()
+    public virtual void UsingStart()
+    {
+        UseTime = UsableItem.UseTime;
+        UsableItem.CanUse = false;
+        IsInUse = true;
+    }
+
+    public virtual void UsingCancel()
+    {
+        if (IsInUse)
         {
-            UseTime = UsableItem.UseTime;
-            UsableItem.CanUse = false;
-            IsInUse = true;
-        }
-
-        public virtual void UsingCancel()
-        {
-            if (IsInUse)
-            {
-                UsableItem.CanUse = true;
-                IsInUse = false;
-                UseTime = UsableItem.UseTime;
-            }
-        }
-        public virtual void OnUsingStarted()
-        {
-
-        }
-
-        public virtual void OnUsingCancelled()
-        {
-
-        }
-
-        public virtual void OnUsingFinished()
-        {
+            UsableItem.CanUse = true;
             IsInUse = false;
-            UsableItem.CanUse = false;
-            InventoryModule.FinishedUsing();
+            UseTime = UsableItem.UseTime;
         }
+    }
+    public virtual void OnUsingStarted()
+    {
+        if (Animation != null)
+            Animation.Play("Start");
+    }
 
-        public override void _Process(double delta)
+    public virtual void OnUsingCancelled()
+    {
+        if (Animation != null)
+            Animation.Play("RESET");
+    }
+
+    public virtual void OnUsingFinished()
+    {
+        IsInUse = false;
+        UsableItem.CanUse = false;
+        InventoryModule.FinishedUsing();
+    }
+
+    public override void _Process(double delta)
+    {
+        if (IsInUse)
         {
-            if (IsInUse)
+            if (UsableItem.UseTime == UseTime)
             {
-                if (UsableItem.UseTime == UseTime)
-                {
-                    OnUsingStarted();
-                }
-                UseTime--;
-                if (UseTime == 0)
-                {
-                    OnUsingFinished();
-                }
-                OnTick(delta);
+                OnUsingStarted();
             }
+            UseTime--;
+            if (UseTime == 0)
+            {
+                OnUsingFinished();
+            }
+            OnTick(delta);
         }
+    }
 
-        public virtual void OnTick(double delta)
-        {
+    public virtual void OnTick(double delta)
+    {
 
-        }
     }
 }

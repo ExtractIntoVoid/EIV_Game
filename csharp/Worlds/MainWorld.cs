@@ -89,7 +89,7 @@ public partial class MainWorld : Node
 #if SERVER|| GAME
     public void StartServer()
     {
-        var Error = multiplayerPeer.CreateServer(NetManager.GetPort(), NetManager.GetMaxClients());
+        var Error = multiplayerPeer.CreateServer(NetManager.GetPort());
         if (Error != Error.Ok)
         {
             GD.PrintErr($"StartServer error! ({Error}). Quitting...");

@@ -18,6 +18,8 @@ public abstract partial class BasicWorld : Node3D
     /// </summary>
     public abstract int MinPlayerCount { get; }
 
+    public abstract int MaxPlayerCount { get; }
+
     public List<Node3D> SpawnPoints = new();
 
     public override void _Ready()

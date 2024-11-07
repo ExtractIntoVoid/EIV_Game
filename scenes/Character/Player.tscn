@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://bdfd1j5ex1k4q"]
+[gd_scene load_steps=7 format=3 uid="uid://bdfd1j5ex1k4q"]
 
 [ext_resource type="Script" path="res://csharp/Physics/Player.cs" id="1_j2bt5"]
-[ext_resource type="PackedScene" uid="uid://bfrfd1gw1rype" path="res://scenes/Weapons/Guns/Pistol/Colt_m45a1.tscn" id="3_7ioo4"]
 [ext_resource type="PackedScene" uid="uid://c6laxxshv7wpn" path="res://scenes/UI/MainUI.tscn" id="5_8oq2b"]
 [ext_resource type="ArrayMesh" uid="uid://ba8eipt4fxpxm" path="res://assets/sketchfab/character/mat/Belorian Soldier LP.res" id="5_yl3d6"]
 [ext_resource type="Skin" uid="uid://b3ketk7we1nog" path="res://resources/Player_Skeleton.tres" id="6_2pojy"]
@@ -572,9 +571,6 @@ shape = SubResource("CapsuleShape3D_yq4yf")
 
 [node name="HandlePoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.124075, 1.6483, -0.755983)
-
-[node name="ColtM45a1" parent="HandlePoint" instance=ExtResource("3_7ioo4")]
-disable_mode = 1
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, -0.120471)

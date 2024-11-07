@@ -1,6 +1,11 @@
 ﻿using EIV_Common.Platform;
 using ExtractIntoVoid.Modding.Platform;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Loader;
 
 namespace ExtractIntoVoid.Managers;
 
@@ -17,37 +22,35 @@ public class PlatformManager
         Platform.Init();
     }
 
-
     public void GetDRM()
     {
-#if MODDABLE
         CreatePlatformEvent createPlatformEvent = new()
         {
             Platform = null
         };
         ModAPI.V2.V2Manager.TriggerEvent(createPlatformEvent);
         Platform = createPlatformEvent.Platform;
-#else
-        string thisLocation = typeof(DRMManager).Assembly.Location;
-
-        foreach (string item in PlatformNames)
+        if (Platform == null)
         {
-            string Platform_Location = Path.Combine(thisLocation, item);
-            GameManager.Instance.logger.Verbose(Platform_Location);
-            if (File.Exists(Platform_Location))
+            string thisLocation = typeof(PlatformManager).Assembly.Location;
+            foreach (string item in PlatformNames)
             {
-                AssemblyLoadContext assemblyLoadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly()) ?? AssemblyLoadContext.Default;
-                Assembly asm = assemblyLoadContext.LoadFromAssemblyPath(Platform_Location);
-                var iType = asm.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IPlatform))).FirstOrDefault();
-                if (iType == null)
-                    continue;
-                IPlatform platform = (IPlatform)Activator.CreateInstance(iType);
-                if (platform == null)
-                    continue;
-                Platform = platform;
+                string Platform_Location = Path.Combine(thisLocation, item);
+                GameManager.Instance.logger.Verbose(Platform_Location);
+                if (File.Exists(Platform_Location))
+                {
+                    AssemblyLoadContext assemblyLoadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly()) ?? AssemblyLoadContext.Default;
+                    Assembly asm = assemblyLoadContext.LoadFromAssemblyPath(Platform_Location);
+                    var iType = asm.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IPlatform))).FirstOrDefault();
+                    if (iType == null)
+                        continue;
+                    IPlatform platform = (IPlatform)Activator.CreateInstance(iType);
+                    if (platform == null)
+                        continue;
+                    Platform = platform;
+                }
             }
-        }    
-#endif
+        }
         if (Platform == null)
         {
             Platform = new UnknownPlatform();

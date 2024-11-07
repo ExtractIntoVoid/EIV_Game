@@ -1,6 +1,7 @@
 ﻿#if SERVER || GAME
 using EIV_Common;
 using ExtractIntoVoid.Managers;
+using System.Linq;
 
 namespace ExtractIntoVoid.Server
 {
@@ -8,18 +9,24 @@ namespace ExtractIntoVoid.Server
     {
         public static int GetPort()
         {
-            int port = ConfigINI.Read<int>(BuildDefined.INI, "Net", "Port");
+            int port = 0;
+            var cmd_args = Godot.OS.GetCmdlineArgs();
+            if (cmd_args.Contains("--port="))
+            {
+                foreach (var item in cmd_args)
+                {
+                    if (item.Contains("port"))
+                    {
+                        var string_port = item.Split("=")[1];
+                        if (int.TryParse(string_port, out port))
+                            return port;
+                    }
+                }
+            }
+            port = ConfigINI.Read<int>(BuildDefined.INI, "Net", "Port");
             if (port == 0)
                 return 7878;
             return port;
-        }
-
-        public static int GetMaxClients()
-        {
-            int maxClients = ConfigINI.Read<int>(BuildDefined.INI, "Net", "MaxClients");
-            if (maxClients == 0)
-                return 32;
-            return maxClients;
         }
 
         public static string GetBindIP()

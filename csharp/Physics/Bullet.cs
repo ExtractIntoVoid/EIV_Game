@@ -1,4 +1,5 @@
 ﻿using EIV_JsonLib.Interfaces;
+using ExtractIntoVoid.Modules;
 using Godot;
 
 namespace ExtractIntoVoid.Physics;
@@ -40,11 +41,9 @@ public partial class Bullet : Area3D
 
     public void OnBodyEntered(Node3D Body)
     {
-        if (Body.IsInGroup("Player"))
+        if (Body.TryGetModuleNode(out HealthModule healthModule))
         {
-            GD.Print("Take Damage! " + Ammo.Damage);
-            var player = Body as BasePlayer;
-            player.PlayerModule.Health.Damage((int)Ammo.Damage, Ammo.DamageType);
+            healthModule.Damage((int)Ammo.Damage, Ammo.DamageType);
         }
         // add bullet hole?
         QueueFree();

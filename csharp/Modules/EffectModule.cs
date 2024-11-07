@@ -25,6 +25,8 @@ public partial class EffectModule : Node, IModule
         }
     }
 
+
+
     public void EffectApply(SideEffect sideEffect, IItem item)
     {
         var effect = EffectMaker.MakeNewEffect(sideEffect.EffectName);
@@ -45,6 +47,28 @@ public partial class EffectModule : Node, IModule
         if (makeEffectBase.EffectBase == null)
             return;
         makeEffectBase.EffectBase.StartEffect(sideEffect.EffectTime, sideEffect.EffectStrength);
+        Effects.Add(makeEffectBase.EffectBase);
+    }
+
+
+    public void EffectApply(string EffectName)
+    {
+        var effect = EffectMaker.MakeNewEffect(EffectName);
+        if (effect == null)
+            return;
+        EffectApply(effect, effect.Time.Initial, effect.Strength.Min);
+    }
+
+    public void EffectApply(IEffect effect, double time, int strength)
+    {
+        if (effect == null)
+            return;
+        MakeEffectBase makeEffectBase = new(this, effect);
+        V2Manager.TriggerEvent(makeEffectBase);
+        // This means we couldnt made EffectBase
+        if (makeEffectBase.EffectBase == null)
+            return;
+        makeEffectBase.EffectBase.StartEffect(time, strength);
         Effects.Add(makeEffectBase.EffectBase);
     }
 
