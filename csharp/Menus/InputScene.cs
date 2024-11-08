@@ -2,6 +2,8 @@
 using Godot;
 using System;
 
+namespace ExtractIntoVoid.Menus;
+
 public partial class InputScene : Control
 {
     public Label Question;

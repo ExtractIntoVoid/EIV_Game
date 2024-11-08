@@ -1,4 +1,5 @@
-﻿using ExtractIntoVoid.Data;
+﻿using EIV_DataPack;
+using ExtractIntoVoid.Data;
 using ExtractIntoVoid.Modding;
 using Godot;
 using ModAPI;
@@ -33,7 +34,6 @@ public partial class ModManager : Node
         Debugger.ParseLogger(GameManager.Instance.logger);
         foreach (var item in ModLocations)
         {
-            GD.Print(item);
             if (!Directory.Exists(item))
                 continue;
             string[] modDirectories = Directory.GetDirectories(item);
@@ -41,6 +41,7 @@ public partial class ModManager : Node
             {
                 if (mod.Contains("Dependencies"))
                     continue;
+                GameManager.Instance.logger.Verbose($"Trying to load mod from Directory: {mod}");
                 LoadMod(mod);
             }
         }
@@ -50,9 +51,18 @@ public partial class ModManager : Node
 
     void LoadMod(string modDir)
     {
+        var eivpMods = Directory.GetFiles(modDir, ".eivp");
+        foreach (var mod in eivpMods)
+        {
+            var dp = DatapackCreator.Read(mod);
+            if (!dp.CanRead())
+                continue;
+            EIV_Common.ModManager.LoadAssets_Pack(dp.GetReader()!);
+        }
+
         if (!File.Exists(Path.Combine(modDir, "Mod.json")))
         {
-            GD.Print($"Mod.json not found skipping {modDir} dir");
+            GameManager.Instance.logger.Warning($"Mod.json not found skipping {modDir} dir");
             return;
         }
 
@@ -69,9 +79,9 @@ public partial class ModManager : Node
         };
 
         if (File.Exists(Path.Combine(modDir, modData.AssemblyName)))
-            MainLoader.LoadMod(Path.Combine(modDir, modData.AssemblyName));
+            GameManager.Instance.logger.Information("LoadMod Success? " + MainLoader.LoadMod(Path.Combine(modDir, modData.AssemblyName)));
         if (File.Exists(Path.Combine(modDir, modData.ResourcePack)))
-            ProjectSettings.LoadResourcePack(Path.Combine(modDir, modData.ResourcePack));
+            GameManager.Instance.logger.Information("LoadResourcePack Success? " + ProjectSettings.LoadResourcePack(Path.Combine(modDir, modData.ResourcePack)));
 
         Mods.Add(modjson.Name, modData);
         // Initializing the mods

@@ -20,16 +20,16 @@ public partial class GameManager : Node
 
     public PlatformManager Platform_Manager { get; set; }
 
-
-
     Array<Node> Nodes = new();
 
-    public override void _EnterTree()
+    public override void _Ready()
     {
-        logger.Information(Properties.Resource.BuildDate);
+        MainLog.CreateNew();
+        logger = MainLog.logger;
+        logger.Information(csharp.Properties.Resource.BuildDate);
         logger.Information(BuildDefined.FullVersion);
         Instance = this;
-        GD.Print("Preload JsonLib! " + (JsonLibConverters.ModdedConverters.Count == 1));
+        logger.Verbose("Preload JsonLib! " + (JsonLibConverters.ModdedConverters.Count == 1));
         SceneManager = new();
         GodotResourceManager = new();
         ModManagerInstance = new();
@@ -38,12 +38,6 @@ public partial class GameManager : Node
         UIManager = new();
 #endif
         Platform_Manager = new();
-    }
-
-    public override void _Ready()
-    {
-        MainLog.CreateNew();
-        logger = MainLog.logger;
         foreach (var item in Nodes)
         {
             this.CallDeferred("add_sibling", item);

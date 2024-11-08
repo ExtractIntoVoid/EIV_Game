@@ -19,6 +19,7 @@ public partial class Bullet : Area3D
     public override void _EnterTree()
     {
         GetNode<MultiplayerSynchronizer>("MSync").SetMultiplayerAuthority(GetMultiplayerAuthority());
+        this.BodyEntered += OnBodyEntered;
     }
 
     public override void _Process(double delta)
@@ -31,9 +32,10 @@ public partial class Bullet : Area3D
 
         TimeToLive -= (float)delta;
         if (TimeToLive <= 0)
-            QueueFree();
+            BulletDestroyed();
     }
-    public void SetAmmo(IAmmo ammo)
+
+    public virtual void SetAmmo(IAmmo ammo)
     {
         Ammo = ammo;
         //Speed = Ammo.Speed;
@@ -46,6 +48,12 @@ public partial class Bullet : Area3D
             healthModule.Damage((int)Ammo.Damage, Ammo.DamageType);
         }
         // add bullet hole?
+        BulletDestroyed();
+    }
+
+    public virtual void BulletDestroyed()
+    {
+        this.BodyEntered -= OnBodyEntered;
         QueueFree();
     }
 }

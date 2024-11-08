@@ -5,6 +5,7 @@ using ExtractIntoVoid.Managers;
 using ExtractIntoVoid.Worlds;
 using Godot;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 
 namespace ExtractIntoVoid.Menus;
@@ -35,6 +36,11 @@ public partial class ConnectionScreen : Control
         {
             lobbyList.Replace("{GAMEDATA}", "user://");
             lobbyList = ProjectSettings.GlobalizePath(lobbyList);
+        }
+        if (!File.Exists(lobbyList))
+        {
+            GameManager.Instance.UIManager.LoadScreenStop();
+            return;
         }
         var ipList = File.ReadAllLines(lobbyList);
         foreach (var item in ipList)
@@ -96,14 +102,16 @@ public partial class ConnectionScreen : Control
         if (!GameManager.Instance.SceneManager.TryGetPackedScene("InputScene", out var scene))
             return; // Display error ?
         InputScene = scene.Instantiate<InputScene>();
-        InputScene.Question.Text = "Please enter lobby IP below with ports!";
+        this.GetParent().AddChild(InputScene);
+        this.Hide();
+        InputScene.Question.Text = "Please enter lobby IP and ports below!";
         InputScene.ShowInputOnly();
         InputScene.ButtonCallback(null, null, CallbackButton);
-        this.AddChild(InputScene);
     }
 
     public void CallbackButton(string answer)
     {
+        this.Show();
         if (InputScene != null)
         {
             InputScene.QueueFree();
@@ -113,24 +121,32 @@ public partial class ConnectionScreen : Control
             return;
         // GET to lobby.
         System.Net.Http.HttpClient httpClient = new();
-        var rsp = httpClient.GetAsync(answer + "/EIV_Lobby/About").Result;
-        if (rsp.StatusCode != System.Net.HttpStatusCode.OK)
-            return;
-        var result = rsp.Content.ReadAsStringAsync().Result;
-        var serverInfo = JsonConvert.DeserializeObject<ServerInfoJSON>(result);
-        if (serverInfo == null) 
-            return;
-        ServerData serverData = new()
-        { 
-            Address = serverInfo.Connection.ServerAddress,
-            Port = serverInfo.Connection.ServerPort,
-            MapName = serverInfo.Game.Map,
-            MaxPlayerCount = serverInfo.Game.MaxPlayerNumbers,
-            PlayerCount = serverInfo.Game.PlayerNumbers,
-            ServerInfo = serverInfo.Server.ServerDescription,
-            ServerName = serverInfo.Server.ServerName,
-        };
-        CreateServer(serverData);
+        var rsp = httpClient.GetAsync($"http://{answer}/EIV_Lobby/About");
+        rsp.Wait(100);
+        if (rsp.IsCompletedSuccessfully)
+        {
+            if (rsp.Result.StatusCode != System.Net.HttpStatusCode.OK)
+                return;
+            var result = rsp.Result.Content.ReadAsStringAsync().Result;
+            var serverInfo = JsonConvert.DeserializeObject<ServerInfoJSON>(result);
+            if (serverInfo == null)
+                return;
+            ServerData serverData = new()
+            {
+                Address = serverInfo.Connection.ServerAddress,
+                Port = serverInfo.Connection.ServerPort,
+                MapName = serverInfo.Game.Map,
+                MaxPlayerCount = serverInfo.Game.MaxPlayerNumbers,
+                PlayerCount = serverInfo.Game.PlayerNumbers,
+                ServerInfo = serverInfo.Server.ServerDescription,
+                ServerName = serverInfo.Server.ServerName,
+            };
+            CreateServer(serverData);
+        }
+        else
+        {
+            GameManager.Instance.logger.Warning($"Result for {answer} is Failed!");
+        }
     }
 }
 #endif

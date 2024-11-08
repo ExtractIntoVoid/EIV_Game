@@ -1,10 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6laxxshv7wpn"]
+[gd_scene load_steps=4 format=3 uid="uid://c6laxxshv7wpn"]
 
 [ext_resource type="Shader" path="res://shaders/RGB_Vignette.gdshader" id="1_tu3ki"]
+[ext_resource type="Script" path="res://csharp/Menus/MainUI.cs" id="1_wvrip"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bwgpt"]
 shader = ExtResource("1_tu3ki")
-shader_parameter/outerRadius = 5.0
+shader_parameter/OuterRadius = 3.68
 shader_parameter/MainAlpha = 0.2
 shader_parameter/Red = 0.0
 shader_parameter/Green = 0.4
@@ -17,8 +18,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_wvrip")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="BasePanel" type="Panel" parent="."]
 material = SubResource("ShaderMaterial_bwgpt")
 layout_mode = 1
 anchors_preset = 15

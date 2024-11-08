@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ExtractIntoVoid.Properties {
+namespace ExtractIntoVoid.csharp.Properties {
     using System;
     
     
