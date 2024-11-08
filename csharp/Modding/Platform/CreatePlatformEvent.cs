@@ -5,6 +5,5 @@ namespace ExtractIntoVoid.Modding.Platform;
 
 public class CreatePlatformEvent : BaseEvent
 {
-
     public IPlatform Platform { get; set; }
 }

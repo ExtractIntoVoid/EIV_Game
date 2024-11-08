@@ -27,5 +27,6 @@ public class WorldEvents
     public class OnStartMapGen : BaseEvent, IDisableCoreEvent
     {
         public bool Disable { get; set; } = false;
+        public int Seed { get; set; }
     }
 }

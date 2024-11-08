@@ -2,6 +2,8 @@
 using ExtractIntoVoid.Managers;
 using Godot;
 
+namespace ExtractIntoVoid.Menus;
+
 public partial class MainMenu : Control
 {
 	public override void _Ready()

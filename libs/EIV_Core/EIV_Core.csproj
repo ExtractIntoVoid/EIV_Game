@@ -6,27 +6,21 @@
     <Nullable>enable</Nullable>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <Configurations>Debug;ExportDebug;ExportRelease;DebugClient;DebugServer</Configurations>
-	  <PlatformTarget>x64</PlatformTarget>
-	  <EnableDynamicLoading>true</EnableDynamicLoading>
+	<PlatformTarget>x64</PlatformTarget>
+	<EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='DebugServer'">
-    <DefineConstants>$(DefineConstants);DRMFREE;SERVER;MODDABLE;TESTING</DefineConstants>
+    <DefineConstants>$(DefineConstants);SERVER;TESTING</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='DebugClient'">
-    <DefineConstants>$(DefineConstants);DRMFREE;CLIENT;MODDABLE;TESTING</DefineConstants>
+    <DefineConstants>$(DefineConstants);CLIENT;TESTING</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="JWT" Version="10.1.1" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\EIV_Game.csproj" />
-    <ProjectReference Include="..\EIV_Common\EIV_Common.csproj" />
-    <ProjectReference Include="..\EIV_JsonLib\EIV_JsonLib.csproj" />
-    <ProjectReference Include="..\GodotCSharpMod\ModAPI\ModAPI.csproj" />
   </ItemGroup>
 	
 	
