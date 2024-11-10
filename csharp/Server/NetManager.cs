@@ -10,6 +10,7 @@ namespace ExtractIntoVoid.Server
         public static int GetPort()
         {
             int port = 0;
+            // TODO: move this out and we could get others of this.
             var cmd_args = Godot.OS.GetCmdlineArgs();
             if (cmd_args.Contains("--port="))
             {

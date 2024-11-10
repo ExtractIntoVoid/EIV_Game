@@ -19,7 +19,7 @@
   <PropertyGroup>
     <GodotExportConstants>GODOT_EXPORT</GodotExportConstants>
     <DefineConstants>$(GodotExportConstants);$(DefineConstants)</DefineConstants>
-    <Version>0.0.1-alpha</Version>
+    <Version>0.0.1-alpha1</Version>
     <Title>Extract Into Void Game Base</Title>
     <Authors>Extract Into Void</Authors>
     <Description>$(Title)</Description>
