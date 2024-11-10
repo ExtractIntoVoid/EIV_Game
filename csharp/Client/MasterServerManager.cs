@@ -1,5 +1,5 @@
 ﻿using EIV_Common;
-using EIV_Common.InfoJSON;
+using EIV_Common.InfoJson;
 using EIV_Common.Platform;
 using ExtractIntoVoid.Managers;
 using Newtonsoft.Json;
@@ -28,10 +28,10 @@ public class MasterServerManager
             return string.Empty;
 
         HttpClient httpClient = new();
-        UserInfoJSON userInfoJSON = new UserInfoJSON()
+        UserInfoJson userInfoJSON = new()
         {
             Platform = platform.PlatformType,
-            UserId = user.GetUserID(),
+            UserId = user.GetUserId(),
             Name = user.GetUserName(),
             Version = BuildDefined.Version.ToString(),
         };

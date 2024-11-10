@@ -1,6 +1,6 @@
 #if CLIENT || GAME
 using EIV_Common;
-using EIV_Common.InfoJSON;
+using EIV_Common.InfoJson;
 using ExtractIntoVoid.Managers;
 using ExtractIntoVoid.Worlds;
 using Godot;
@@ -128,7 +128,7 @@ public partial class ConnectionScreen : Control
             if (rsp.Result.StatusCode != System.Net.HttpStatusCode.OK)
                 return;
             var result = rsp.Result.Content.ReadAsStringAsync().Result;
-            var serverInfo = JsonConvert.DeserializeObject<ServerInfoJSON>(result);
+            var serverInfo = JsonConvert.DeserializeObject<ServerInfoJson>(result);
             if (serverInfo == null)
                 return;
             ServerData serverData = new()

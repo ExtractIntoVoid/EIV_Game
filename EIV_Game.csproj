@@ -46,7 +46,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EIV_Common" Version="0.0.1.1" />
+    <PackageReference Include="EIV_Common" Version="0.0.1.2" />
     <PackageReference Include="EIV_DataPack" Version="1.0.3.1" />
     <PackageReference Include="EIV_JsonLib" Version="1.0.0" />
     <PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
@@ -70,4 +70,23 @@
   <Target Name="PreBuild" BeforeTargets="Build" Condition="'$(OS)' == 'Windows_NT'">
     <Exec Command="git branch --show-current &gt; &quot;$(ProjectDir)/csharp/Properties/BuildDate.txt&quot;&#xD;&#xA;echo $([System.DateTime]::UtcNow.ToString(&quot;s&quot;))&gt;&gt; &quot;$(ProjectDir)/csharp/Properties/BuildDate.txt&quot;&#xD;&#xA;git rev-parse --short HEAD &gt;&gt; &quot;$(ProjectDir)/csharp/Properties/BuildDate.txt&quot;" />
   </Target>
+	<!-- INI placement. (So we dont need to do manually) -->
+	<ItemGroup>
+	  <Content Include="resources/ini/Client.ini" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(DefineConstants), '^(.*;)*CLIENT(;.*)*$'))">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<TargetPath>Client.ini</TargetPath>
+	  </Content>
+	  <Content Include="resources/ini/Server.ini" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(DefineConstants), '^(.*;)*SERVER(;.*)*$'))">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<TargetPath>Server.ini</TargetPath>
+	  </Content>
+	  <Content Include="resources/ini/Game.ini" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(DefineConstants), '^(.*;)*GAME(;.*)*$'))">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<TargetPath>Game.ini</TargetPath>
+	  </Content>
+		<!-- This here because we can see the dll in VS (if you remove it still works.) -->
+		<None Include="resources/ini/Client.ini" />
+		<None Include="resources/ini/Game.ini" />
+		<None Include="resources/ini/Server.ini" />
+	</ItemGroup>
 </Project>
