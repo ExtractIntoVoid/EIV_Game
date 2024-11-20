@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace ExtractIntoVoid.Managers;
 
-public class SceneManager
+public static class SceneManager
 {
-    public Dictionary<string, string> Scenes = new();
+    public static Dictionary<string, string> Scenes = new();
 
-    public SceneManager()
+    static SceneManager()
     {
         Scenes = new()
         {
@@ -32,7 +32,7 @@ public class SceneManager
 
     }
 
-    public PackedScene GetPackedScene(string Name)
+    public static PackedScene GetPackedScene(string Name)
     {
         if (Scenes.TryGetValue(Name, out string path))
         {
@@ -42,7 +42,7 @@ public class SceneManager
         return null;
     }
 
-    public bool TryGetPackedScene(string Name, out PackedScene scene)
+    public static bool TryGetPackedScene(string Name, out PackedScene scene)
     {
         if (Scenes.TryGetValue(Name, out string path))
         {

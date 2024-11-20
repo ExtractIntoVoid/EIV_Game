@@ -2,10 +2,8 @@
 using EIV_Common;
 using EIV_Common.InfoJson;
 using ExtractIntoVoid.Managers;
-using ExtractIntoVoid.Worlds;
 using Godot;
 using Newtonsoft.Json;
-using System;
 using System.IO;
 
 namespace ExtractIntoVoid.Menus;
@@ -53,7 +51,7 @@ public partial class ConnectionScreen : Control
 	public void CreateServer(ServerData data)
 	{
         // Skip map names
-        if (!GameManager.Instance.SceneManager.Scenes.ContainsKey(data.MapName))
+        if (!SceneManager.Scenes.ContainsKey(data.MapName))
             return;
 
 		Label serverName = new()
@@ -83,9 +81,12 @@ public partial class ConnectionScreen : Control
         connectButton.Pressed += () => 
         {
             this.Hide();
-            var mainWorld = GameManager.Instance.SceneManager.GetPackedScene("MainWorld").Instantiate<MainWorld>();
-            this.CallDeferred("add_sibling", mainWorld);
-            mainWorld.CallDeferred("StartClient", data.Address, data.Port, data.MapName);
+            var lobby = SceneManager.GetPackedScene("LobbyScene").Instantiate<LobbyScene>();
+            this.CallDeferred("add_sibling", lobby);
+            lobby.ServerAddress = data.ServerName;
+            lobby.ServerPort = data.Port;
+            lobby.ServerMap = data.MapName;
+            lobby.ServerText.Text = data.ServerName;
         };
         Control control = new();
         control.AddChild(serverName);
@@ -99,7 +100,7 @@ public partial class ConnectionScreen : Control
 
     public void AddServerManually()
     {
-        if (!GameManager.Instance.SceneManager.TryGetPackedScene("InputScene", out var scene))
+        if (!SceneManager.TryGetPackedScene("InputScene", out var scene))
             return; // Display error ?
         InputScene = scene.Instantiate<InputScene>();
         this.GetParent().AddChild(InputScene);

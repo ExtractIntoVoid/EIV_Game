@@ -10,7 +10,6 @@ public partial class GameManager : Node
 {
     public ILogger logger;
     public static GameManager Instance { get; set; }
-    public SceneManager SceneManager { get; set; }
     public GodotResourceManager GodotResourceManager { get; set; }
     public ModManager ModManagerInstance { get; set; }
 
@@ -30,7 +29,6 @@ public partial class GameManager : Node
         logger.Information(BuildDefined.FullVersion);
         Instance = this;
         logger.Verbose("Preload JsonLib! " + (JsonLibConverters.ModdedConverters.Count == 1));
-        SceneManager = new();
         GodotResourceManager = new();
         ModManagerInstance = new();
         Nodes.Add(ModManagerInstance);
