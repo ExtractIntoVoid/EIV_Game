@@ -2,9 +2,7 @@
 using EIV_Common;
 using EIV_Common.Extensions;
 using ExtractIntoVoid.Managers;
-using Godot;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace ExtractIntoVoid.Server

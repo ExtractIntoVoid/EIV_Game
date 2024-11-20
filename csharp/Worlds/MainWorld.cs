@@ -57,6 +57,8 @@ public partial class MainWorld : Node
         StartServer();
         MapManager.LoadMapList();
         var mapname = MapManager.RandomizeMap();
+        if (ArgManager.HasArgParam("map"))
+            mapname = ArgManager.GetArgParam("map");      
         GD.Print("Map choosen to load: " + mapname);
         if (!GameManager.Instance.SceneManager.TryGetPackedScene(mapname, out var scene))
         {
