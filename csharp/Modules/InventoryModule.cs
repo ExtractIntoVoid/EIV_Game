@@ -79,7 +79,7 @@ public partial class InventoryModule : Node, IModule
 
         CurrentItemNode = null;
 
-        if (GameManager.Instance.SceneManager.Scenes.ContainsKey(selectedItem.BaseID))
+        if (SceneManager.Scenes.ContainsKey(selectedItem.BaseID))
         {
             GD.Print("Item does not have a scene inside SceneManager!.");
             Rpc("ChangeHandScene", CurrentPlayer.NetId, string.Empty);
@@ -140,7 +140,7 @@ public partial class InventoryModule : Node, IModule
             }
             return;
         }
-        var node = GameManager.Instance.SceneManager.GetPackedScene(scene).Instantiate<InventoryItemBase>();
+        var node = SceneManager.GetPackedScene(scene).Instantiate<InventoryItemBase>();
         node.InventoryModule = this;
         node.Player = CurrentPlayer;
         node.SetMultiplayerAuthority(id);
@@ -155,7 +155,7 @@ public partial class InventoryModule : Node, IModule
     {
         GD.Print("Client_ChangeHandScene!. " + id + " " + scene);
         var player = this.GetNode(playernode) as BasePlayer;
-        var node = GameManager.Instance.SceneManager.GetPackedScene(scene).Instantiate<InventoryItemBase>();
+        var node = SceneManager.GetPackedScene(scene).Instantiate<InventoryItemBase>();
         node.InventoryModule = player.GetModuleNode<InventoryModule>();
         node.Player = player;
         node.SetMultiplayerAuthority(id);

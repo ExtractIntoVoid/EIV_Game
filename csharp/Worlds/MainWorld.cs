@@ -60,7 +60,7 @@ public partial class MainWorld : Node
         if (ArgManager.HasArgParam("map"))
             mapname = ArgManager.GetArgParam("map");      
         GD.Print("Map choosen to load: " + mapname);
-        if (!GameManager.Instance.SceneManager.TryGetPackedScene(mapname, out var scene))
+        if (!SceneManager.TryGetPackedScene(mapname, out var scene))
         {
             GD.PrintErr("Scene cannot be loaded. Quitting...");
             GameManager.Instance.Quit();
@@ -123,7 +123,7 @@ public partial class MainWorld : Node
         Multiplayer.ConnectionFailed += Multiplayer_ConnectionFailed;
         Multiplayer.ServerDisconnected += Multiplayer_ServerDisconnected;
         GD.Print("Map choosen to load: " + SubMapName);
-        if (!GameManager.Instance.SceneManager.TryGetPackedScene(SubMapName, out var scene))
+        if (!SceneManager.TryGetPackedScene(SubMapName, out var scene))
         {
             GD.PrintErr("Scene cannot be loaded. Quitting...");
             GameManager.Instance.Quit();

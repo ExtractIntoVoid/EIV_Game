@@ -15,7 +15,7 @@ public partial class MainMenu : Control
 	public void Play()
 	{
         this.Hide();
-        var MainMenu = GameManager.Instance.SceneManager.GetPackedScene("ConnectionScreen").Instantiate();
+        var MainMenu = SceneManager.GetPackedScene("ConnectionScreen").Instantiate();
         this.CallDeferred("add_sibling", MainMenu);
         GameManager.Instance.UIManager.LoadScreenStart();
     }

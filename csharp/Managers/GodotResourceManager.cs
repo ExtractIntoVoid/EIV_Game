@@ -3,20 +3,19 @@ using System.Collections.Generic;
 
 namespace ExtractIntoVoid.Managers;
 
-public class GodotResourceManager
+public static class GodotResourceManager
 {
-    public Dictionary<string, string> Resources = new();
+    public static Dictionary<string, string> Resources = new();
 
-    public GodotResourceManager()
+    static GodotResourceManager()
     {
         Resources = new()
         {
 
         };
-
     }
 
-    public Resource GetResource(string Name)
+    public static Resource GetResource(string Name)
     {
         if (Resources.TryGetValue(Name, out string path))
         {
@@ -26,7 +25,7 @@ public class GodotResourceManager
 
     }
 
-    public bool TryGetResourcePath(string Name, out string resource_path)
+    public static bool TryGetResourcePath(string Name, out string resource_path)
     {
         if (Resources.TryGetValue(Name, out string path))
         {
