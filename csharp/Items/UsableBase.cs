@@ -1,4 +1,4 @@
-﻿using EIV_JsonLib.Interfaces;
+﻿using EIV_JsonLib.Base;
 using Godot;
 
 namespace ExtractIntoVoid.Items;
@@ -6,7 +6,7 @@ namespace ExtractIntoVoid.Items;
 public abstract partial class UsableBase : InventoryItemBase
 {
     AnimationPlayer Animation;
-    public IUsable UsableItem { get; set; }
+    public UsableItemBase UsableItem { get; set; }
     bool IsInUse = false;
     decimal UseTime = 0;
 

@@ -3,8 +3,8 @@ using EIV_Common;
 using EIV_Common.InfoJson;
 using ExtractIntoVoid.Managers;
 using Godot;
-using Newtonsoft.Json;
 using System.IO;
+using System.Text.Json;
 
 namespace ExtractIntoVoid.Menus;
 
@@ -129,7 +129,7 @@ public partial class ConnectionScreen : Control
             if (rsp.Result.StatusCode != System.Net.HttpStatusCode.OK)
                 return;
             var result = rsp.Result.Content.ReadAsStringAsync().Result;
-            var serverInfo = JsonConvert.DeserializeObject<ServerInfoJson>(result);
+            var serverInfo = JsonSerializer.Deserialize<ServerInfoJson>(result);
             if (serverInfo == null)
                 return;
             ServerData serverData = new()

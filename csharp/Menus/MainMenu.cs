@@ -27,9 +27,11 @@ public partial class MainMenu : Control
 
 	public void Settings()
 	{
-
-
-	}
+        this.Hide();
+        var MainMenu = SceneManager.GetPackedScene("Settings").Instantiate();
+        this.CallDeferred("add_sibling", MainMenu);
+        GameManager.Instance.UIManager.LoadScreenStart();
+    }
 
 }
 #endif

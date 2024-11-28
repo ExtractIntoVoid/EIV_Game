@@ -1,5 +1,5 @@
 ﻿using EIV_Common.JsonStuff;
-using EIV_JsonLib.Interfaces;
+using EIV_JsonLib;
 using ExtractIntoVoid.Modules;
 
 namespace ExtractIntoVoid.Items;
@@ -9,7 +9,7 @@ public partial class HealingBase : UsableBase
 
     public override void OnUsingFinished()
     {
-        var ihealing = UsableItem.As<IHealing>();
+        var ihealing = UsableItem.As<Healing>();
         base.OnUsingFinished();
         this.Player.GetModuleNode<HealthModule>().Heal(ihealing.HealAmount, true);
         this.Player.GetModuleNode<EffectModule>().ApplyEffectFromItem(UsableItem);

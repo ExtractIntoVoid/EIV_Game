@@ -7,20 +7,20 @@ namespace ExtractIntoVoid.Menus;
 public partial class InputScene : Control
 {
     public Label Question;
-	LineEdit Answer;
+    LineEdit Answer;
     Button ApplyButton;
     Button RightButton;
-	Button LeftButton;
-	Control Field;
-	Control Buttons;
+    Button LeftButton;
+    Control Field;
+    Control Buttons;
 
     Action leftAction;
     Action rightAction;
     Action<string> anwserDoneAction;
 
-	public override void _Ready()
-	{
-		Question = GetNode<Label>("Margin/VBox/Question");
+    public override void _Ready()
+    {
+        Question = GetNode<Label>("Margin/VBox/Question");
         Field = GetNode<Control>("Margin/VBox/Field");
         Answer = GetNode<LineEdit>("Margin/VBox/Field/LineEdit");
         ApplyButton = GetNode<Button>("Margin/VBox/Field/ApplyButton");
@@ -52,9 +52,9 @@ public partial class InputScene : Control
     }
 
     public void ShowButtonOnly()
-	{
-		Field.Hide();
-		Buttons.Show();
+    {
+        Field.Hide();
+        Buttons.Show();
     }
 
     public void ShowInputOnly()

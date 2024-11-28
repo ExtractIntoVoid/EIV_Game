@@ -42,9 +42,7 @@ public partial class MainWorld : Node
 
         // Make sure if we remove all we can spawn as default player.
         if (onStartWorld.SpawnableNodes.Count != 0)
-        {
             Spawner.AddSpawnableScene("res://scenes/Character/Player.tscn");
-        }
         else
             //  Otherwise we add into spawnable scene.
             onStartWorld.SpawnableNodes.ForEach(Spawner.AddSpawnableScene);

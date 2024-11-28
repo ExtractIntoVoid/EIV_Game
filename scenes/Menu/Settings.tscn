@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://csharp/Menus/SettingsMenu.cs" id="1_onjc4"]
 
-[node name="Settings" type="Control" node_paths=PackedStringArray("WindowModeMenuButton", "WindowModeMenuLabel")]
+[node name="Settings" type="Control" node_paths=PackedStringArray("MSAA2DMenuButton", "MSAA3DMenuButton", "WindowModeMenuButton", "AllSettingsContainer", "GameSettingsContainer", "VideoSettings", "ControlsSettings", "AudioSettings")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,10 +10,55 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_onjc4")
-WindowModeMenuButton = NodePath("MarginContainer/Visual Settings/Window Mode/MenuButton")
-WindowModeMenuLabel = NodePath("MarginContainer/Visual Settings/Window Mode/Label")
+MSAA2DMenuButton = NodePath("Container/Video Settings/MSAA 2D/MenuButton")
+MSAA3DMenuButton = NodePath("Container/Video Settings/MSAA 3D/MenuButton")
+WindowModeMenuButton = NodePath("Container/Video Settings/Window Mode/MenuButton")
+AllSettingsContainer = NodePath("Container")
+GameSettingsContainer = NodePath("Container/Game Settings")
+VideoSettings = NodePath("Container/Video Settings")
+ControlsSettings = NodePath("Container/Controls Settings")
+AudioSettings = NodePath("Container/Audio Settings")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="TopElements" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -324.0
+offset_right = 324.0
+offset_bottom = 65.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 20
+
+[node name="Separator" type="HBoxContainer" parent="TopElements"]
+layout_mode = 2
+theme_override_constants/separation = 60
+alignment = 1
+
+[node name="Game" type="Button" parent="TopElements/Separator"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 27
+text = "Game"
+
+[node name="Video" type="Button" parent="TopElements/Separator"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 27
+text = "Video"
+
+[node name="Controls" type="Button" parent="TopElements/Separator"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 27
+text = "Controls"
+
+[node name="Audio" type="Button" parent="TopElements/Separator"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 27
+text = "Audio"
+
+[node name="Container" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,22 +66,62 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 150
-theme_override_constants/margin_top = 40
+theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 150
 
-[node name="Visual Settings" type="VBoxContainer" parent="MarginContainer"]
+[node name="Game Settings" type="VBoxContainer" parent="Container"]
 layout_mode = 2
 theme_override_constants/separation = 45
 
-[node name="Label" type="Label" parent="MarginContainer/Visual Settings"]
+[node name="Label" type="Label" parent="Container/Game Settings"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Visual Settings"
+theme_override_font_sizes/font_size = 20
+text = "Game Settings"
 
-[node name="Borderless" type="Control" parent="MarginContainer/Visual Settings"]
+[node name="Control" type="Control" parent="Container/Game Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Visual Settings/Borderless"]
+[node name="Label" type="Label" parent="Container/Game Settings/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 233.0
+offset_bottom = 11.5
+grow_vertical = 2
+text = "aaaaaaaaaaaaaaaaaaaaaaaaa"
+
+[node name="Button" type="Button" parent="Container/Game Settings/Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = -15.5
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "BUTTON"
+
+[node name="Video Settings" type="VBoxContainer" parent="Container"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="Label" type="Label" parent="Container/Video Settings"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 20
+text = "Video Settings"
+
+[node name="Borderless" type="Control" parent="Container/Video Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Container/Video Settings/Borderless"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -47,7 +132,7 @@ offset_bottom = 11.5
 grow_vertical = 2
 text = "Borderless"
 
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/Visual Settings/Borderless"]
+[node name="CheckBox" type="CheckBox" parent="Container/Video Settings/Borderless"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -61,10 +146,10 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "Enable"
 
-[node name="Exclusive" type="Control" parent="MarginContainer/Visual Settings"]
+[node name="Exclusive" type="Control" parent="Container/Video Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Visual Settings/Exclusive"]
+[node name="Label" type="Label" parent="Container/Video Settings/Exclusive"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -75,7 +160,7 @@ offset_bottom = 11.5
 grow_vertical = 2
 text = "Exclusive"
 
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/Visual Settings/Exclusive"]
+[node name="CheckBox" type="CheckBox" parent="Container/Video Settings/Exclusive"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -89,10 +174,10 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "Enable"
 
-[node name="Window Mode" type="Control" parent="MarginContainer/Visual Settings"]
+[node name="Window Mode" type="Control" parent="Container/Video Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Visual Settings/Window Mode"]
+[node name="Label" type="Label" parent="Container/Video Settings/Window Mode"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -103,7 +188,7 @@ offset_bottom = 11.5
 grow_vertical = 2
 text = "Window Mode"
 
-[node name="MenuButton" type="MenuButton" parent="MarginContainer/Visual Settings/Window Mode"]
+[node name="MenuButton" type="MenuButton" parent="Container/Video Settings/Window Mode"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -128,10 +213,92 @@ popup/item_2/text = "ExclusiveFullscreen"
 popup/item_2/checkable = 2
 popup/item_2/id = 2
 
-[node name="Control4" type="Control" parent="MarginContainer/Visual Settings"]
+[node name="MSAA 2D" type="Control" parent="Container/Video Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Visual Settings/Control4"]
+[node name="Label" type="Label" parent="Container/Video Settings/MSAA 2D"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 233.0
+offset_bottom = 11.5
+grow_vertical = 2
+text = "MSAA 2D"
+
+[node name="MenuButton" type="MenuButton" parent="Container/Video Settings/MSAA 2D"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -15.5
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "Disabled"
+item_count = 4
+popup/item_0/text = "Disabled"
+popup/item_0/checkable = 2
+popup/item_0/checked = true
+popup/item_1/text = "Msaa2X"
+popup/item_1/checkable = 2
+popup/item_1/id = 1
+popup/item_2/text = "Msaa4X"
+popup/item_2/checkable = 2
+popup/item_2/id = 2
+popup/item_3/text = "Msaa8X"
+popup/item_3/checkable = 2
+popup/item_3/id = 3
+
+[node name="MSAA 3D" type="Control" parent="Container/Video Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Container/Video Settings/MSAA 3D"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 233.0
+offset_bottom = 11.5
+grow_vertical = 2
+text = "MSAA 3D"
+
+[node name="MenuButton" type="MenuButton" parent="Container/Video Settings/MSAA 3D"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -15.5
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "Disabled"
+item_count = 4
+popup/item_0/text = "Disabled"
+popup/item_0/checkable = 2
+popup/item_0/checked = true
+popup/item_1/text = "Msaa2X"
+popup/item_1/checkable = 2
+popup/item_1/id = 1
+popup/item_2/text = "Msaa4X"
+popup/item_2/checkable = 2
+popup/item_2/id = 2
+popup/item_3/text = "Msaa8X"
+popup/item_3/checkable = 2
+popup/item_3/id = 3
+
+[node name="Control4" type="Control" parent="Container/Video Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Container/Video Settings/Control4"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -142,7 +309,7 @@ offset_bottom = 11.5
 grow_vertical = 2
 text = "aaaaaaaaaaaaaaaaaaaaaaaaa"
 
-[node name="Button" type="Button" parent="MarginContainer/Visual Settings/Control4"]
+[node name="Button" type="Button" parent="Container/Video Settings/Control4"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -156,20 +323,21 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "BUTTON"
 
-[node name="Button Settings" type="VBoxContainer" parent="MarginContainer"]
+[node name="Controls Settings" type="VBoxContainer" parent="Container"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 45
 
-[node name="Label" type="Label" parent="MarginContainer/Button Settings"]
+[node name="Label" type="Label" parent="Container/Controls Settings"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Button Settings"
+theme_override_font_sizes/font_size = 20
+text = "Controls Settings"
 
-[node name="Control" type="Control" parent="MarginContainer/Button Settings"]
+[node name="Control" type="Control" parent="Container/Controls Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Button Settings/Control"]
+[node name="Label" type="Label" parent="Container/Controls Settings/Control"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -180,7 +348,7 @@ offset_bottom = 11.5
 grow_vertical = 2
 text = "aaaaaaaaaaaaaaaaaaaaaaaaa"
 
-[node name="Button" type="Button" parent="MarginContainer/Button Settings/Control"]
+[node name="Button" type="Button" parent="Container/Controls Settings/Control"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -194,10 +362,10 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "BUTTON"
 
-[node name="Control2" type="Control" parent="MarginContainer/Button Settings"]
+[node name="Control2" type="Control" parent="Container/Controls Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Button Settings/Control2"]
+[node name="Label" type="Label" parent="Container/Controls Settings/Control2"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -208,7 +376,7 @@ offset_bottom = 11.5
 grow_vertical = 2
 text = "aaaaaaaaaaaaaaaaaaaaaaaaa"
 
-[node name="Button" type="Button" parent="MarginContainer/Button Settings/Control2"]
+[node name="Button" type="Button" parent="Container/Controls Settings/Control2"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -222,10 +390,10 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "BUTTON"
 
-[node name="Control3" type="Control" parent="MarginContainer/Button Settings"]
+[node name="Control3" type="Control" parent="Container/Controls Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Button Settings/Control3"]
+[node name="Label" type="Label" parent="Container/Controls Settings/Control3"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -236,7 +404,7 @@ offset_bottom = 11.5
 grow_vertical = 2
 text = "aaaaaaaaaaaaaaaaaaaaaaaaa"
 
-[node name="Button" type="Button" parent="MarginContainer/Button Settings/Control3"]
+[node name="Button" type="Button" parent="Container/Controls Settings/Control3"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -250,10 +418,10 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "BUTTON"
 
-[node name="Control4" type="Control" parent="MarginContainer/Button Settings"]
+[node name="Control4" type="Control" parent="Container/Controls Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/Button Settings/Control4"]
+[node name="Label" type="Label" parent="Container/Controls Settings/Control4"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -264,7 +432,46 @@ offset_bottom = 11.5
 grow_vertical = 2
 text = "aaaaaaaaaaaaaaaaaaaaaaaaa"
 
-[node name="Button" type="Button" parent="MarginContainer/Button Settings/Control4"]
+[node name="Button" type="Button" parent="Container/Controls Settings/Control4"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = -15.5
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "BUTTON"
+
+[node name="Audio Settings" type="VBoxContainer" parent="Container"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="Label" type="Label" parent="Container/Audio Settings"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 20
+text = "Audio Settings"
+
+[node name="Control" type="Control" parent="Container/Audio Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Container/Audio Settings/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 233.0
+offset_bottom = 11.5
+grow_vertical = 2
+text = "aaaaaaaaaaaaaaaaaaaaaaaaa"
+
+[node name="Button" type="Button" parent="Container/Audio Settings/Control"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -280,10 +487,17 @@ text = "BUTTON"
 
 [node name="ApplyButton" type="Button" parent="."]
 layout_mode = 1
-offset_left = 615.0
-offset_top = 650.0
-offset_right = 675.0
-offset_bottom = 685.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -70.0
+offset_right = 30.0
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "Apply"
 
 [node name="CancelButton" type="Button" parent="."]
@@ -302,6 +516,9 @@ offset_right = 810.0
 offset_bottom = 685.0
 text = "Back"
 
+[connection signal="pressed" from="TopElements/Separator/Video" to="." method="VideoButton_Pressed"]
+[connection signal="pressed" from="TopElements/Separator/Controls" to="." method="ControlsButton_Pressed"]
+[connection signal="pressed" from="TopElements/Separator/Audio" to="." method="AudioButton_Pressed"]
 [connection signal="pressed" from="ApplyButton" to="." method="Apply"]
 [connection signal="pressed" from="CancelButton" to="." method="Cancel"]
 [connection signal="pressed" from="BackButton" to="." method="Back"]

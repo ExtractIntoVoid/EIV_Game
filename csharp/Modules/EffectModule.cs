@@ -1,6 +1,6 @@
 ﻿using EIV_Common.JsonStuff;
-using EIV_JsonLib.Classes;
-using EIV_JsonLib.Interfaces;
+using EIV_JsonLib;
+using EIV_JsonLib.Base;
 using ExtractIntoVoid.Effects;
 using ExtractIntoVoid.Modding.Effect;
 using Godot;
@@ -14,7 +14,7 @@ public partial class EffectModule : Node, IModule
 {
     internal List<EffectBase> Effects = [];
 
-    public void ApplyEffectFromItem(IItem item)
+    public void ApplyEffectFromItem(ItemBase item)
     {
         var sideEffects = item.GetProperty<List<SideEffect>>("SideEffects");
         if (sideEffects.Count == 0)
@@ -27,7 +27,7 @@ public partial class EffectModule : Node, IModule
 
 
 
-    public void EffectApply(SideEffect sideEffect, IItem item)
+    public void EffectApply(SideEffect sideEffect, ItemBase item)
     {
         var effect = EffectMaker.MakeNewEffect(sideEffect.EffectName);
         if (effect == null)
@@ -59,7 +59,7 @@ public partial class EffectModule : Node, IModule
         EffectApply(effect, effect.Time.Initial, effect.Strength.Min);
     }
 
-    public void EffectApply(IEffect effect, double time, int strength)
+    public void EffectApply(Effect effect, double time, int strength)
     {
         if (effect == null)
             return;

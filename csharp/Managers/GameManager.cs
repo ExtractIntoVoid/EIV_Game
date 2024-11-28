@@ -2,7 +2,7 @@
 using Godot.Collections;
 using EIV_Common.Logger;
 using Serilog;
-using EIV_JsonLib;
+using EIV_JsonLib.Json;
 
 namespace ExtractIntoVoid.Managers;
 
@@ -27,7 +27,7 @@ public partial class GameManager : Node
         logger.Information(csharp.Properties.Resource.BuildDate);
         logger.Information(BuildDefined.FullVersion);
         Instance = this;
-        logger.Verbose("Preload JsonLib! " + (JsonLibConverters.ModdedConverters.Count == 1));
+        logger.Verbose("Preload JsonLib! " + (CoreConverters.Converters.Count == 1));
         ModManagerInstance = new();
         Nodes.Add(ModManagerInstance);
 #if CLIENT || GAME

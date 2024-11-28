@@ -1,9 +1,9 @@
 ﻿using EIV_Common.Extensions;
 using EIV_Common.JsonStuff;
-using EIV_JsonLib.Convert;
-using EIV_JsonLib.Interfaces;
+using EIV_JsonLib;
 using ExtractIntoVoid.Physics;
 using Godot;
+using MemoryPack;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,8 +12,8 @@ namespace ExtractIntoVoid.Items;
 public abstract partial class GunBase : InventoryItemBase
 {
     Marker3D BulletSpawner;
-    public virtual IGun Gun { get; set; }
-    public virtual List<IAmmo> Ammos { get; set; } = [];
+    public virtual Gun Gun { get; set; }
+    public virtual List<Ammo> Ammos { get; set; } = [];
 
     public bool IsJammed { get; internal set; } = false;
     public override void _Ready()
@@ -21,9 +21,9 @@ public abstract partial class GunBase : InventoryItemBase
         BulletSpawner = GetNode<Marker3D>("BulletSpawner");
         if (Gun.Magazine != null)
         {
-            foreach (var item in Gun.Magazine.Ammunition)
+            foreach (var item in Gun.Magazine.Ammunitions)
             {
-                var ammo = ItemMaker.CreateItem<IAmmo>(item);
+                var ammo = ItemMaker.CreateItem<Ammo>(item);
                 if (ammo == null)
                     continue;
                 Ammos.Add(ammo);
@@ -48,7 +48,7 @@ public abstract partial class GunBase : InventoryItemBase
             }
             var id = GD.Randi();
             var BulletSpawnTransform = BulletSpawner.GlobalTransform.LookingAt(BulletSpawner.Position);
-            Rpc("ShootBullet", (int)id, MPConvertHelper.Serialize(ammo), BulletSpawnTransform);
+            Rpc("ShootBullet", (int)id, MemoryPackSerializer.Serialize(ammo), BulletSpawnTransform);
             GetNode<AnimationPlayer>("AnimationPlayer").Play("Shoot");
             // UI update here
             Ammos.Remove(ammo);
@@ -75,7 +75,7 @@ public abstract partial class GunBase : InventoryItemBase
     private void ShootBullet(int id, byte[] ammo, Transform3D transform)
     {
         PackedScene bulletScene = null;
-        var iammo = MPConvertHelper.Deserialize<IAmmo>(ammo);
+        var iammo = MemoryPackSerializer.Deserialize<Ammo>(ammo);
         bulletScene = ResourceLoader.Load<PackedScene>(iammo.AssetPath);
         if (!iammo.HasValidAssetPath())
         {

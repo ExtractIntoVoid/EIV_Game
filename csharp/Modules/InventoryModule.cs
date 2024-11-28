@@ -1,6 +1,7 @@
 ﻿using EIV_Common.Extensions;
 using EIV_Common.JsonStuff;
-using EIV_JsonLib.Interfaces;
+using EIV_JsonLib;
+using EIV_JsonLib.Base;
 using ExtractIntoVoid.Items;
 using ExtractIntoVoid.Managers;
 using ExtractIntoVoid.Physics;
@@ -29,9 +30,9 @@ public partial class InventoryModule : Node, IModule
 
     public RigidBody3D CurrentItemNode;
 
-    public List<IItem> Items { get; set; } = [];
+    public List<ItemBase> Items { get; set; } = [];
 
-    IItem CurrentItem = null;
+    ItemBase CurrentItem = null;
 
     public void Select(int index)
     {
@@ -41,7 +42,7 @@ public partial class InventoryModule : Node, IModule
         Select(CurrentItem);
     }
 
-    private void Select(IItem selectedItem)
+    private void Select(ItemBase selectedItem)
     {
         if (selectedItem == null)
             return;
@@ -53,9 +54,9 @@ public partial class InventoryModule : Node, IModule
     /// </summary>
     public void Use()
     {
-        if (CurrentItem.Is<IUsable>())
+        if (CurrentItem.Is<UsableItemBase>())
             Usable_Use();
-        if (CurrentItem.Is<IGun>())
+        if (CurrentItem.Is<Gun>())
             Gun_Use();
     }
 
@@ -72,7 +73,7 @@ public partial class InventoryModule : Node, IModule
 
     }
 
-    public void SelectItem(IItem selectedItem)
+    public void SelectItem(ItemBase selectedItem)
     {
         if (selectedItem == null)
             return;
@@ -95,7 +96,7 @@ public partial class InventoryModule : Node, IModule
 
     public void FinishedUsing()
     {
-        if (CurrentItem.Is<IUsable>())
+        if (CurrentItem.Is<UsableItemBase>())
         {
             Items.Remove(CurrentItem);
             CurrentItemNode.QueueFree();

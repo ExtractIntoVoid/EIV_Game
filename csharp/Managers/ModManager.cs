@@ -3,10 +3,10 @@ using ExtractIntoVoid.Data;
 using ExtractIntoVoid.Modding;
 using Godot;
 using ModAPI;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 
 namespace ExtractIntoVoid.Managers;
 
@@ -66,7 +66,7 @@ public partial class ModManager : Node
             return;
         }
 
-        var modjson = JsonConvert.DeserializeObject<ModJson>(File.ReadAllText(Path.Combine(modDir, "Mod.json")));
+        var modjson = JsonSerializer.Deserialize<ModJson>(File.ReadAllText(Path.Combine(modDir, "Mod.json")));
         ModData modData = new()
         {
             AssemblyName = modjson.InternalName + ".dll",

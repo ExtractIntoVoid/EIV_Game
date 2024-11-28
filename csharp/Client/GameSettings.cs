@@ -5,6 +5,13 @@ namespace ExtractIntoVoid.Client;
 public partial class GameSettings : Resource
 {
     [Export]
+    public VisualSettings Visual { get; set; } = new();
+}
+
+public partial class VisualSettings : Resource
+{
+
+    [Export]
     public bool Borderless = false;
     [Export]
     public bool Exclusive = false;

@@ -2,8 +2,8 @@
 using EIV_Common.InfoJson;
 using EIV_Common.Platform;
 using ExtractIntoVoid.Managers;
-using Newtonsoft.Json;
 using System.Net.Http;
+using System.Text.Json;
 
 namespace ExtractIntoVoid.Client;
 
@@ -35,7 +35,7 @@ public class MasterServerManager
             Name = user.GetUserName(),
             Version = BuildDefined.Version.ToString(),
         };
-        var rsp = httpClient.PostAsync(MasterServerIP + AuthURL, new StringContent(JsonConvert.SerializeObject(userInfoJSON))).Result;
+        var rsp = httpClient.PostAsync(MasterServerIP + AuthURL, new StringContent(JsonSerializer.Serialize(userInfoJSON))).Result;
         if (rsp.StatusCode != System.Net.HttpStatusCode.OK)
             return string.Empty;
         return rsp.Content.ReadAsStringAsync().Result;

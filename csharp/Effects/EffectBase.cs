@@ -1,5 +1,5 @@
 ﻿using EIV_Common.Coroutines;
-using EIV_JsonLib.Interfaces;
+using EIV_JsonLib;
 using ExtractIntoVoid.Modules;
 using Godot;
 using System.Collections.Generic;
@@ -9,10 +9,10 @@ namespace ExtractIntoVoid.Effects;
 public abstract partial class EffectBase : Node
 {
     Coroutine? TimeCoroutine;
-    public IEffect CoreEffect { get; internal set; }
+    public Effect CoreEffect { get; internal set; }
     public Node ParentNode { get; internal set; }
 
-    public EffectBase(IEffect effect, Node parentNode)
+    public EffectBase(Effect effect, Node parentNode)
     {
         CoreEffect = effect;
         ParentNode = parentNode;

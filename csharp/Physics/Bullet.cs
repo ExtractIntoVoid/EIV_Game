@@ -1,4 +1,4 @@
-﻿using EIV_JsonLib.Interfaces;
+﻿using EIV_JsonLib;
 using ExtractIntoVoid.Modules;
 using Godot;
 
@@ -14,7 +14,7 @@ public partial class Bullet : Area3D
 
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
-    private IAmmo Ammo;
+    private Ammo Ammo;
 
     public override void _EnterTree()
     {
@@ -35,7 +35,7 @@ public partial class Bullet : Area3D
             BulletDestroyed();
     }
 
-    public virtual void SetAmmo(IAmmo ammo)
+    public virtual void SetAmmo(Ammo ammo)
     {
         Ammo = ammo;
         //Speed = Ammo.Speed;
