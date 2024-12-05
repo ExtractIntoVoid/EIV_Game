@@ -20,3 +20,6 @@ obj
 PublishProfiles
 
 *.user
+
+logs.txt
+EIV_Platform.*

@@ -19,11 +19,11 @@ public class PlatformManager
     public void Init()
     {
         if (Platform == null)
-            GetDRM();
+            GetPlatform();
         Platform.Init();
     }
 
-    public void GetDRM()
+    public void GetPlatform()
     {
         CreatePlatformEvent createPlatformEvent = new()
         {
@@ -34,6 +34,9 @@ public class PlatformManager
         if (Platform == null)
         {
             string thisLocation = typeof(PlatformManager).Assembly.Location.GetBaseDir();
+            // this fixing if we "playing" in-editor.
+            if (string.IsNullOrEmpty(thisLocation))
+                thisLocation = Directory.GetCurrentDirectory();
             foreach (string item in PlatformNames)
             {
                 string Platform_Location = Path.Combine(thisLocation, item);
