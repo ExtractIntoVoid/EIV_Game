@@ -22,6 +22,7 @@ public static class SceneManager
             { "ConnectionScreen", "res://scenes/Menu/ConnectionScreen.tscn" },
             { "InputScene", "res://scenes/Menu/InputScene.tscn" },
             { "LobbyScene", "res://scenes/Menu/LobbyScene.tscn" },
+            { "DevConsole", "res://scenes/UI/DevConsole.tscn" },
             // soon
 //            { "Inventory", "res://scenes/Menu/Inventory.tscn" },
 //            { "Escape", "res://scenes/Menu/EscapeScene.tscn" },
