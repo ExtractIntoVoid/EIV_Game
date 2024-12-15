@@ -15,6 +15,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
+      # ExportX is only for building godot.
         builds: [ 'Debug', 'ExportDebug', 'ExportRelease', 'DebugClient', 'DebugServer' ]
     steps:
     - name: Checkout
@@ -37,10 +38,12 @@ jobs:
     - name: Publish
       run: dotnet publish EIV_Game.csproj -c ${{ matrix.builds }} -o Out
     
-#    # This is test if works. For future we dont need this!
-#    - name: Upload artifact
-#      uses: actions/upload-artifact@v4
-#      with:
-#        name: EIV_Game_DOTNET-${{ matrix.builds }}
-#        path: Out
-#        if-no-files-found: error
+    - name: Package
+      run: dotnet pack EIV_Game.csproj -c ${{ matrix.builds }} -o Out
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: EIV_Game_DOTNET-${{ matrix.builds }}
+        path: Out
+        if-no-files-found: error
