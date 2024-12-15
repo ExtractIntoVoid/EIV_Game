@@ -1,4 +1,5 @@
-﻿using ExtractIntoVoid.Managers;
+﻿#if CLIENT || GAME
+using ExtractIntoVoid.Managers;
 using ExtractIntoVoid.Worlds;
 using Godot;
 
@@ -30,3 +31,4 @@ public partial class LobbyScene : Control
     }
 
 }
+#endif
