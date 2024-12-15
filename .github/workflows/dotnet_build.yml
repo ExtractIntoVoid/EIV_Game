@@ -1,0 +1,46 @@
+name: Dotnet Build
+
+on:
+  push:
+    paths-ignore:
+      - '**/*.md'
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+  workflow_dispatch:
+    # allows manual trigger
+
+jobs:
+  linux:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        builds: [ 'Debug', 'ExportDebug', 'ExportRelease', 'DebugClient', 'DebugServer' ]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Clone EIV Nuget repository
+      uses: actions/checkout@v2
+      with:
+        repository: ExtractIntoVoid/Nuget
+        path: eiv_nuget
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Add eiv_nuget to nuget souce
+      run: dotnet nuget add source --name eiv_nuget "eiv_nuget"
+
+    - name: Publish
+      run: dotnet publish EIV_Game.csproj -c ${{ matrix.builds }} -o Out
+    
+    # This is test if works. For future we dont need this!
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: EIV_Game_DOTNET-${{ matrix.builds }}
+        path: Out
+        if-no-files-found: error
