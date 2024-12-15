@@ -32,7 +32,7 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Add eiv_nuget to nuget souce
-      run: dotnet nuget add source --name eiv_nuget "$GITHUB_WORKSPACE/eiv_nuget"
+      run: dotnet nuget add source --name eiv_nuget ./eiv_nuget
 
     - name: Publish
       run: dotnet publish EIV_Game.csproj -c ${{ matrix.builds }} -o Out
