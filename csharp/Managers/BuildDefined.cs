@@ -46,6 +46,8 @@ public static class BuildDefined
         "Server.ini"
 #elif CLIENT
         "Client.ini"
+#else
+        ""
 #endif
         );
 }
