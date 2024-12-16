@@ -1,8 +1,9 @@
 #if CLIENT || GAME
 using EIV_Common;
-using EIV_Common.InfoJson;
+using EIV_JsonLib;
 using ExtractIntoVoid.Managers;
 using Godot;
+using Serilog;
 using System.IO;
 using System.Text.Json;
 
@@ -12,51 +13,17 @@ public partial class ConnectionScreen : Control
 {
 	VBoxContainer ServerList;
     InputScene InputScene;
-    public struct ServerData 
-    {
-        public string Address;
-        public int Port;
-        public string ServerName;
-        public string ServerInfo;
-        public int PlayerCount;
-        public int MaxPlayerCount;
-        public string MapName;
-    }
     public override void _Ready()
 	{
         ServerList = GetNode<VBoxContainer>("%ServerList");
-        var lobbyList = ConfigINI.Read(BuildDefined.INI, "Lobby", "OfflineLobbyList");
-        if (lobbyList.Contains("{EXE}"))
-        {
-            lobbyList.Replace("{EXE}", Directory.GetCurrentDirectory());
-        }
-        if (lobbyList.Contains("{GAMEDATA}"))
-        {
-            lobbyList.Replace("{GAMEDATA}", "user://");
-            lobbyList = ProjectSettings.GlobalizePath(lobbyList);
-        }
-        if (!File.Exists(lobbyList))
-        {
-            GameManager.Instance.UIManager.LoadScreenStop();
-            return;
-        }
-        var ipList = File.ReadAllLines(lobbyList);
-        foreach (var item in ipList)
-        {
-            CallbackButton(item);
-        }
-        GameManager.Instance.UIManager.LoadScreenStop();
+        Refresh();
     }
 
-	public void CreateServer(ServerData data)
+	public void CreateServer(ServerInfoJson serverInfojson, string address)
 	{
-        // Skip map names
-        if (!SceneManager.Scenes.ContainsKey(data.MapName))
-            return;
-
 		Label serverName = new()
 		{ 
-            Text = data.ServerName,
+            Text = serverInfojson.LobbyInfo.Name,
 			LabelSettings = new()
             {
                 FontSize = 30
@@ -65,12 +32,12 @@ public partial class ConnectionScreen : Control
         Label serverInfo = new()
         {
             Position = new(0, 40),
-            Text = data.ServerInfo
+            Text = serverInfojson.LobbyInfo.Description
         };
         Label ServerPlayerCount = new()
         {
             Position = new(600, 10),
-            Text = $"{data.PlayerCount}/{data.MaxPlayerCount}",
+            Text = $"{serverInfojson.LobbyInfo.PlayerNumbers}/{serverInfojson.LobbyInfo.MaxPlayerNumbers}",
             HorizontalAlignment = HorizontalAlignment.Right,
         };
         Button connectButton = new()
@@ -83,10 +50,9 @@ public partial class ConnectionScreen : Control
             this.Hide();
             var lobby = SceneManager.GetPackedScene("LobbyScene").Instantiate<LobbyScene>();
             this.CallDeferred("add_sibling", lobby);
-            lobby.ServerAddress = data.ServerName;
-            lobby.ServerPort = data.Port;
-            lobby.ServerMap = data.MapName;
-            lobby.ServerText.Text = data.ServerName;
+            lobby.LobbyAddress = address;
+            lobby.ServerText.Text = serverInfojson.LobbyInfo.Name;
+            lobby.Connect();
         };
         Control control = new();
         control.AddChild(serverName);
@@ -132,22 +98,43 @@ public partial class ConnectionScreen : Control
             var serverInfo = JsonSerializer.Deserialize<ServerInfoJson>(result);
             if (serverInfo == null)
                 return;
-            ServerData serverData = new()
-            {
-                Address = serverInfo.Connection.ServerAddress,
-                Port = serverInfo.Connection.ServerPort,
-                MapName = serverInfo.Game.Map,
-                MaxPlayerCount = serverInfo.Game.MaxPlayerNumbers,
-                PlayerCount = serverInfo.Game.PlayerNumbers,
-                ServerInfo = serverInfo.Server.ServerDescription,
-                ServerName = serverInfo.Server.ServerName,
-            };
-            CreateServer(serverData);
+            CreateServer(serverInfo, answer);
         }
         else
         {
-            GameManager.Instance.logger.Warning($"Result for {answer} is Failed!");
+            Log.Warning($"Result for {answer} is Failed!");
         }
+    }
+
+    public void Refresh()
+    {
+        GameManager.Instance.UIManager.LoadScreenStart();
+        foreach (var item in ServerList.GetChildren())
+        {
+            ServerList.RemoveChild(item);
+        }
+        var lobbyList = ConfigINI.Read(BuildDefined.INI, "Lobby", "OfflineLobbyList");
+        if (lobbyList.Contains("{EXE}"))
+        {
+            lobbyList.Replace("{EXE}", Directory.GetCurrentDirectory());
+        }
+        if (lobbyList.Contains("{GAMEDATA}"))
+        {
+            lobbyList.Replace("{GAMEDATA}", "user://");
+            lobbyList = ProjectSettings.GlobalizePath(lobbyList);
+        }
+        if (!File.Exists(lobbyList))
+        {
+            GameManager.Instance.UIManager.LoadScreenStop();
+            return;
+        }
+        var ipList = File.ReadAllLines(lobbyList);
+        foreach (var item in ipList)
+        {
+            CallbackButton(item);
+        }
+        GameManager.Instance.UIManager.LoadScreenStop();
+
     }
 }
 #endif

@@ -1,6 +1,7 @@
 ﻿using EIV_Common.Platform;
 using ExtractIntoVoid.Modding.Platform;
 using Godot;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,7 +41,7 @@ public class PlatformManager
             foreach (string item in PlatformNames)
             {
                 string Platform_Location = Path.Combine(thisLocation, item);
-                GameManager.Instance.logger.Verbose($"Checking if DRM exist here: {Platform_Location}");
+                Log.Verbose($"Checking if DRM exist here: {Platform_Location}");
                 if (File.Exists(Platform_Location))
                 {
                     AssemblyLoadContext assemblyLoadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly()) ?? AssemblyLoadContext.Default;

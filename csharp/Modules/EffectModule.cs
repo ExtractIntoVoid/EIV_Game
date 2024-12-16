@@ -1,6 +1,7 @@
 ﻿using EIV_Common.JsonStuff;
 using EIV_JsonLib;
 using EIV_JsonLib.Base;
+using EIV_JsonLib.Extension;
 using ExtractIntoVoid.Effects;
 using ExtractIntoVoid.Modding.Effect;
 using Godot;
@@ -14,7 +15,7 @@ public partial class EffectModule : Node, IModule
 {
     internal List<EffectBase> Effects = [];
 
-    public void ApplyEffectFromItem(ItemBase item)
+    public void ApplyEffectFromItem(CoreItem item)
     {
         var sideEffects = item.GetProperty<List<SideEffect>>("SideEffects");
         if (sideEffects.Count == 0)
@@ -27,13 +28,13 @@ public partial class EffectModule : Node, IModule
 
 
 
-    public void EffectApply(SideEffect sideEffect, ItemBase item)
+    public void EffectApply(SideEffect sideEffect, CoreItem item)
     {
         var effect = EffectMaker.MakeNewEffect(sideEffect.EffectName);
         if (effect == null)
             return;
         // Cannot Apply from it.
-        if (!effect.AppliedFrom.Contains(item.BaseID) || effect.AppliedFrom.Contains(item.ItemType))
+        if (!effect.AppliedFrom.Contains(item.Id) || effect.AppliedFrom.Contains(item.ItemType))
             return;
 
         if (effect.Strength.Max < sideEffect.EffectStrength)
@@ -74,12 +75,12 @@ public partial class EffectModule : Node, IModule
 
     public void DisableEffect(string EffectName)
     {
-        var effect = Effects.Where(x=>x.CoreEffect.EffectID == EffectName).SingleOrDefault();
+        var effect = Effects.Where(x=>x.CoreEffect.EffectName == EffectName).SingleOrDefault();
         if (effect == null)
             return;
         effect.StopEffect();
     }
 
-    public List<string> GetEffectNames() => Effects.Select(x=>x.CoreEffect.EffectID).ToList();
+    public List<string> GetEffectNames() => Effects.Select(x=>x.CoreEffect.EffectName).ToList();
 
 }

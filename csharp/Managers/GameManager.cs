@@ -8,7 +8,6 @@ namespace ExtractIntoVoid.Managers;
 
 public partial class GameManager : Node
 {
-    public ILogger logger;
     public static GameManager Instance { get; set; }
     public ModManager ModManagerInstance { get; set; }
 
@@ -23,11 +22,10 @@ public partial class GameManager : Node
     public override void _Ready()
     {
         MainLog.CreateNew();
-        logger = MainLog.logger;
-        logger.Information(csharp.Properties.Resource.BuildDate);
-        logger.Information(BuildDefined.FullVersion);
+        Log.Information(csharp.Properties.Resource.BuildDate.Replace("\n", ""));
+        Log.Information(BuildDefined.FullVersion);
         Instance = this;
-        logger.Verbose("Preload JsonLib! " + (CoreConverters.Converters.Count == 1));
+        Log.Verbose("Preload JsonLib! " + (CoreConverters.Converters.Count == 1));
         ModManagerInstance = new();
         Nodes.Add(ModManagerInstance);
 #if CLIENT || GAME
@@ -47,7 +45,7 @@ public partial class GameManager : Node
         Platform_Manager.Init();
         if (Platform_Manager.Platform.PlatformType == EIV_Common.Platform.PlatformType.Unknown)
         {
-            logger.Error("The Platform set to unknown. We dont know what Platform you using. Please use EIV_Platform.Free solution!");
+            Log.Error("The Platform set to unknown. We dont know what Platform you using. Please use EIV_Platform.Free solution!");
             Quit();
         }
 

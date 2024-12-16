@@ -1,12 +1,12 @@
 ﻿using EIV_Common.Extensions;
-using EIV_Common.JsonStuff;
 using EIV_JsonLib;
 using EIV_JsonLib.Base;
+using EIV_JsonLib.Extension;
 using ExtractIntoVoid.Items;
 using ExtractIntoVoid.Managers;
 using ExtractIntoVoid.Physics;
 using Godot;
-using System.Collections.Generic;
+using Serilog;
 using System.Linq;
 
 namespace ExtractIntoVoid.Modules;
@@ -22,7 +22,7 @@ public partial class InventoryModule : Node, IModule
         }
         else
         {
-            GameManager.Instance.logger.Error("InventoryModule's parent is not a BasePlayer!");
+            Log.Error("InventoryModule's parent is not a BasePlayer!");
         }
     }
 
@@ -30,19 +30,18 @@ public partial class InventoryModule : Node, IModule
 
     public RigidBody3D CurrentItemNode;
 
-    public List<ItemBase> Items { get; set; } = [];
+    public Inventory Inventory;
 
-    ItemBase CurrentItem = null;
 
     public void Select(int index)
     {
-        if (index > Items.Count)
+        if (index > Inventory.Items.Count)
             return;
-        CurrentItem = Items[index];
-        Select(CurrentItem);
+        Inventory.Hand = Inventory.Items[index];
+        Select(Inventory.Hand);
     }
 
-    private void Select(ItemBase selectedItem)
+    private void Select(CoreItem selectedItem)
     {
         if (selectedItem == null)
             return;
@@ -54,9 +53,9 @@ public partial class InventoryModule : Node, IModule
     /// </summary>
     public void Use()
     {
-        if (CurrentItem.Is<UsableItemBase>())
+        if (Inventory.Hand.Is<CoreUsable>())
             Usable_Use();
-        if (CurrentItem.Is<Gun>())
+        if (Inventory.Hand.Is<Gun>())
             Gun_Use();
     }
 
@@ -73,20 +72,20 @@ public partial class InventoryModule : Node, IModule
 
     }
 
-    public void SelectItem(ItemBase selectedItem)
+    public void SelectItem(CoreItem selectedItem)
     {
         if (selectedItem == null)
             return;
 
         CurrentItemNode = null;
 
-        if (SceneManager.Scenes.ContainsKey(selectedItem.BaseID))
+        if (SceneManager.Scenes.ContainsKey(selectedItem.Id))
         {
             GD.Print("Item does not have a scene inside SceneManager!.");
             Rpc("ChangeHandScene", CurrentPlayer.NetId, string.Empty);
             return;
         }
-        Rpc("ChangeHandScene", CurrentPlayer.NetId, selectedItem.BaseID);
+        Rpc("ChangeHandScene", CurrentPlayer.NetId, selectedItem.Id);
     }
 
     public void SelectHand()
@@ -96,9 +95,9 @@ public partial class InventoryModule : Node, IModule
 
     public void FinishedUsing()
     {
-        if (CurrentItem.Is<UsableItemBase>())
+        if (Inventory.Hand.Is<CoreUsable>())
         {
-            Items.Remove(CurrentItem);
+            Inventory.Hand = null;
             CurrentItemNode.QueueFree();
             CurrentItemNode = null;
         }

@@ -1,5 +1,6 @@
 ﻿using EIV_Common.JsonStuff;
 using EIV_JsonLib;
+using EIV_JsonLib.Extension;
 using ExtractIntoVoid.Modules;
 
 namespace ExtractIntoVoid.Items;

@@ -6,10 +6,9 @@ namespace ExtractIntoVoid.Physics;
 public abstract partial class BasePlayer : CharacterBody3D
 {
     public int NetId { get; set; }
-
     public string PlayerName { get; set; }
-
     public string UserId { get; set; }
+    public string UserToken { get; set; }
     // Nodes connected to it.
 
     // add bones here, and maybe animations.
@@ -18,9 +17,9 @@ public abstract partial class BasePlayer : CharacterBody3D
 
     public override void _EnterTree()
     {
-        if (!int.TryParse(Name.ToString(), out int _))
+        if (!int.TryParse(Name.ToString(), out int netId))
             return;
-        NetId = Name.ToString().ToInt();
+        NetId = netId;
         SetMultiplayerAuthority(NetId);
         GetNode<MultiplayerSynchronizer>("MSync").SetMultiplayerAuthority(NetId);
     }
@@ -39,5 +38,13 @@ public abstract partial class BasePlayer : CharacterBody3D
         this.AddModuleNode(new HydrationModule());
         this.AddModuleNode(new EffectModule());
         this.AddModuleNode(new InventoryModule());
+        var health = this.GetModuleNode<HealthModule>();
+        health.OnDeath += OnDeath;
+    }
+
+    public virtual void OnDeath(object sender, string e)
+    {
+        // TODO: show lobby instead of just quitting.
+        Managers.GameManager.Instance.Quit();
     }
 }

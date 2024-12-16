@@ -13,22 +13,11 @@ public abstract partial class GunBase : InventoryItemBase
 {
     Marker3D BulletSpawner;
     public virtual Gun Gun { get; set; }
-    public virtual List<Ammo> Ammos { get; set; } = [];
 
     public bool IsJammed { get; internal set; } = false;
     public override void _Ready()
     {
         BulletSpawner = GetNode<Marker3D>("BulletSpawner");
-        if (Gun.Magazine != null)
-        {
-            foreach (var item in Gun.Magazine.Ammunitions)
-            {
-                var ammo = ItemMaker.CreateItem<Ammo>(item);
-                if (ammo == null)
-                    continue;
-                Ammos.Add(ammo);
-            }
-        }
     }
 
     public virtual void Shoot()
@@ -37,9 +26,9 @@ public abstract partial class GunBase : InventoryItemBase
             return;
         if (IsJammed)
             return;
-        if (Ammos.Count > 0)
+        if (Gun.Magazine.Ammunitions.Count > 0)
         {
-            var ammo = Ammos.First();
+            var ammo = Gun.Magazine.Ammunitions.First();
             // Ammo doesnt have 3D representation of itself :(
             if (!ammo.HasValidAssetPath())
             {
@@ -51,7 +40,7 @@ public abstract partial class GunBase : InventoryItemBase
             Rpc("ShootBullet", (int)id, MemoryPackSerializer.Serialize(ammo), BulletSpawnTransform);
             GetNode<AnimationPlayer>("AnimationPlayer").Play("Shoot");
             // UI update here
-            Ammos.Remove(ammo);
+            Gun.Magazine.Ammunitions.Remove(ammo);
         }
     }
 

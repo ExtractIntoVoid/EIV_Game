@@ -6,7 +6,7 @@ namespace ExtractIntoVoid.Items;
 public abstract partial class UsableBase : InventoryItemBase
 {
     AnimationPlayer Animation;
-    public UsableItemBase UsableItem { get; set; }
+    public CoreUsable UsableItem { get; set; }
     bool IsInUse = false;
     decimal UseTime = 0;
 

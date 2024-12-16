@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using EIV_JsonLib;
 using ExtractIntoVoid.Managers;
 using Godot;
 using ModAPI;
@@ -20,7 +21,7 @@ public class RPC_EventManager
         }
     }
 
-    static void LoadAssembly(Assembly assembly)
+    public static void LoadAssembly(Assembly assembly)
     {
         BuildType build = BuildDefined.Build;
         foreach (var item in assembly.GetTypes())
