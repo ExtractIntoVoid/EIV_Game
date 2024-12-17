@@ -30,11 +30,11 @@ public partial class DevConsole : Window
 	}
 	private void  OnInputSubmitted(string input)
 	{
-		
-		
-		
-		var command = input.Split(' ').First();
-		var args = input.Split(' ').Skip(1).ToArray();//TakeLast(input.Split(' ').Length - 1).ToArray();
+
+
+		var split = input.Split(' ');
+		var command = split.First();
+		var args = split.Skip(1).ToArray();//TakeLast(input.Split(' ').Length - 1).ToArray();
 		Input.Text = "";
 		Print("> " + input);
 		
@@ -43,54 +43,53 @@ public partial class DevConsole : Window
 	}
 	public override void _Input(InputEvent @event)
 	{
-		if(@event is InputEventKey eventKey)
-			if (eventKey.Pressed && eventKey.Keycode == Key.Tab && Input.Text != "")
-			{
-				var types = ConsoleManager.GetAll();
-				if (!types.Keys.Any(s => s.StartsWith(Input.Text)))
-				{
-					return;
-				}
-				//Print(_cTypes.Keys.FirstOrDefault(s => s.StartsWith(Input.Text)));
-				var suggestions = new PopupMenu()
-				{
-					Size = new Vector2I(0, 0),
-					Position = new Vector2I((int)Input.GetScreenPosition().X, (int)Input.GetScreenPosition().Y + 24)
-				};
-				foreach (var item in types.Where(s => s.Key.StartsWith(Input.Text)))
-				{
-					var context = new CommandContext(this, null);
+        if (@event is InputEventKey eventKey && eventKey.Pressed && eventKey.Keycode == Key.Tab && Input.Text != "")
+        {
+            var types = ConsoleManager.GetAll();
+            if (!types.Keys.Any(s => s.StartsWith(Input.Text)))
+            {
+                return;
+            }
+            //Print(_cTypes.Keys.FirstOrDefault(s => s.StartsWith(Input.Text)));
+            var suggestions = new PopupMenu()
+            {
+                Size = new Vector2I(0, 0),
+                Position = new Vector2I((int)Input.GetScreenPosition().X, (int)Input.GetScreenPosition().Y + 24)
+            };
+            foreach (var item in types.Where(s => s.Key.StartsWith(Input.Text)))
+            {
+                var context = new CommandContext(this, null);
 
-					var value = "";
-					if (item.Value is CVar<string> cVarString)
-					{
-						value += " " + cVarString.Get(context);
-					}
-					if (item.Value is CVar<bool> cVarBool)
-					{
-						value += " " + cVarBool.Get(context);
-					}
-					if (item.Value is CVar<int> cVarInt)
-					{
-						value += " " + cVarInt.Get(context);
-					}
-					if (item.Value is CVar<float> cVarFloat)
-					{
-						value += " " + cVarFloat.Get(context);
-					}
-					suggestions.AddItem($"{item.Key}{value}");
-				}
-				suggestions.IdPressed += delegate(long id)
-				{
-					Input.Text = suggestions.GetItemText((int)id).Split(" ").First();
-					Input.CaretColumn = Input.Text.Length;
-				};
-				suggestions.SetFocusedItem(0);
-				Input.AddChild(suggestions);
-				suggestions.Popup();
-				//_cTypes.Keys.Where(s => s.StartsWith(Input.Text));
-			}
-		base._Input(@event);
+                var value = "";
+                if (item.Value is CVar<string> cVarString)
+                {
+                    value += " " + cVarString.Get(context);
+                }
+                if (item.Value is CVar<bool> cVarBool)
+                {
+                    value += " " + cVarBool.Get(context);
+                }
+                if (item.Value is CVar<int> cVarInt)
+                {
+                    value += " " + cVarInt.Get(context);
+                }
+                if (item.Value is CVar<float> cVarFloat)
+                {
+                    value += " " + cVarFloat.Get(context);
+                }
+                suggestions.AddItem($"{item.Key}{value}");
+            }
+            suggestions.IdPressed += delegate (long id)
+            {
+                Input.Text = suggestions.GetItemText((int)id).Split(" ").First();
+                Input.CaretColumn = Input.Text.Length;
+            };
+            suggestions.SetFocusedItem(0);
+            Input.AddChild(suggestions);
+            suggestions.Popup();
+            //_cTypes.Keys.Where(s => s.StartsWith(Input.Text));
+        }
+        base._Input(@event);
 	}
 
 	public void Close()
