@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://h368fwjarh3n"]
+
+[ext_resource type="StyleBox" uid="uid://bs0wxlu2afue2" path="res://assets/themes/box.tres" id="1_seonm"]
+
+[resource]
+LineEdit/font_sizes/font_size = 16
+LineEdit/styles/focus = ExtResource("1_seonm")
+LineEdit/styles/normal = ExtResource("1_seonm")
+LineEdit/styles/read_only = ExtResource("1_seonm")

@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbwpas7xc1y2p"]
+
+[ext_resource type="Script" path="res://csharp/Client/UI/DevConsole.cs" id="1_naa01"]
+[ext_resource type="StyleBox" uid="uid://bs0wxlu2afue2" path="res://assets/pixel/themes/Console.tres" id="2_qfiw7"]
+[ext_resource type="Theme" uid="uid://h368fwjarh3n" path="res://assets/pixel/themes/ConsoleInput.tres" id="3_6r46u"]
+
+[sub_resource type="FontVariation" id="FontVariation_1hqaq"]
+variation_opentype = {
+2003265652: 700
+}
+
+[node name="DevConsole" type="Window"]
+auto_translate_mode = 1
+title = "Developer Console"
+initial_position = 2
+size = Vector2i(854, 480)
+min_size = Vector2i(320, 180)
+content_scale_mode = 1
+script = ExtResource("1_naa01")
+
+[node name="BackroundColor" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.25098, 0.25098, 0.25098, 1)
+
+[node name="Background" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 2
+
+[node name="InputDecoration" type="Panel" parent="Background"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_qfiw7")
+
+[node name="Control" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Output" type="TextEdit" parent="Control"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_readonly_color = Color(0.894118, 0.894118, 0.894118, 1)
+theme_override_fonts/font = SubResource("FontVariation_1hqaq")
+theme_override_styles/normal = ExtResource("2_qfiw7")
+editable = false
+virtual_keyboard_enabled = false
+scroll_smooth = true
+caret_multiple = false
+
+[node name="InputArea" type="HBoxContainer" parent="Control"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Control/InputArea"]
+layout_mode = 2
+
+[node name="InputField" type="LineEdit" parent="Control/InputArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+theme = ExtResource("3_6r46u")
+placeholder_text = "Cvar or CFunc"
+flat = true
+
+[connection signal="text_submitted" from="Control/InputArea/InputField" to="." method="OnInputSubmitted"]
